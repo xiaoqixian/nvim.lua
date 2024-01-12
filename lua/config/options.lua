@@ -1,20 +1,14 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
+-- enable line number and relative line number
+vim.opt.number = true
+vim.opt.relativenumber = true
 
-vim.g.mapleader = ","
-vim.opt.guicursor = ""
+-- width of a tab
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
 vim.opt.wrap = true
-vim.opt.pumblend = 0
 
-vim.g.transparency = true
+-- use number of spaces to insert a <Tab>
+vim.opt.expandtab = true
 
-
-require("mini.comment").setup({
-    mappings = {
-        comment_line = "<leader>cc",
-        comment = "<leader>cc"
-    }
-})
+vim.opt.guicursor = ""
