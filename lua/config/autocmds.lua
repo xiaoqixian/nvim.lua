@@ -104,11 +104,21 @@ end
 
 local function set_file_header()
     local extension = vim.fn.expand("%:e")
+    if extension == "" then return end
+    local escape_extensions = { "md", "json", "css", "html", "txt" }
+    for _, esc_ext in ipairs(escape_extensions) do
+        if esc_ext == extension then
+            return
+        end
+    end
+
     if extension == "typ" then
         set_typst_header()
     else 
         set_most_file_header(extension)
     end
+
+    vim.cmd.normal("G")
 end
 
 vim.api.nvim_create_autocmd("BufNewFile", {
@@ -118,12 +128,23 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 -- Tabwidth by file
 -- default by 4
-vim.api.nvim_create_autocmd("BufEnter", {
-   pattern = { "*.lua", "*.json", "*.vim", "*.xml", "*.css", "*.typ" },
-   callback = function()
-     vim.opt.shiftwidth = 2
-     vim.opt.tabstop = 2
-     vim.opt.softtabstop = 2
-   end
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.lua", "*.json", "*.vim", "*.xml", "*.css", "*.typ" },
+  callback = function()
+    vim.opt.shiftwidth = 2
+    vim.opt.tabstop = 2
+    vim.opt.softtabstop = 2
+  end
 })
 
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    -- cancel semantic highlighting for c/cpp
+    -- cause I've got better solution.
+    if client.name == "clangd" then
+      client.server_capabilities.semanticTokensProvider = nil
+      vim.cmd("source ~/.config/nvim/lua/after/syntax/cpp_stl.vim")
+    end
+  end,
+});

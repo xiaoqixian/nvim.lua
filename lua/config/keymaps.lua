@@ -6,7 +6,7 @@ vim.keymap.set("i", "jj", "<ESC>")
 vim.keymap.set("n", "<space>", "<C-w>w")
 
 -- map <leader>c to copying things into the clipboard.
-vim.keymap.set({ "n", "v" }, "<Leader>c", '"+y', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', { noremap = true, silent = true })
 
 -- map cursor moving between windows to 
 -- the coresspoding uppercase letters.

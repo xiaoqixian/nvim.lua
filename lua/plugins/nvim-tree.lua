@@ -41,6 +41,8 @@ local function on_attach(bufnr)
 
   local api = require("nvim-tree.api")
 
+  -- overwrite the api.tree.open function here.
+  vim.keymap.set("n", "<leader>e", api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
   vim.keymap.set("n", "?", api.tree.toggle_help, opts("help"))
   vim.keymap.set('n', 't', api.node.open.tab, opts('open in new tab'))
   vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts('toggle or focus'))
@@ -56,7 +58,7 @@ function M.init()
   })
   vim.g.is_nvim_tree_exists = true
   vim.g.is_nvim_tree_open = false
-  vim.keymap.set("n", "<leader>e", smart_toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
+  vim.keymap.set("n", "<leader>e", require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
 end
 
 return M

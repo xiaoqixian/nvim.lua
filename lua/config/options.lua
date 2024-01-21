@@ -12,3 +12,6 @@ vim.opt.wrap = true
 vim.opt.expandtab = true
 
 vim.opt.guicursor = ""
+
+-- set line break
+vim.opt.lbr = true
