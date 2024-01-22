@@ -47,18 +47,84 @@ local function on_attach(bufnr)
   vim.keymap.set('n', 't', api.node.open.tab, opts('open in new tab'))
   vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts('toggle or focus'))
 
-  vim.keymap.set("n", "<CR>", api.node.open.edit, { desc = "nvim-tree: open", buffer = bufnr, noremap = true, nowait = true })
-  vim.keymap.set("n", "<S-CR>", api.tree.change_root_to_node, opts("change root to node"))
+  vim.keymap.set("n", "<CR>", api.node.open.no_window_picker, opts("just open it"))
+  vim.keymap.set("n", "<S-CR>", api.node.open.edit, opts("edit with window picker"))
+
+  vim.keymap.set("n", "s", api.node.open.vertical, opts("nvim-tree: vertical split view"))
+  vim.keymap.set("n", "i", api.node.open.horizontal, opts("nvim-tree: horizontal split view"))
+
+  vim.keymap.set("n", ">", api.tree.change_root_to_node, opts("change root to node"))
+  vim.keymap.set("n", "<", api.tree.change_root_to_parent, opts("change root to node"))
+
+  vim.keymap.set("n", "a", api.fs.create, opts("fs.create"))
+  vim.keymap.set("n", "y", api.fs.copy.node, opts("copy node"))
+  vim.keymap.set("n", "p", api.fs.paste, opts("paste node"))
+  vim.keymap.set("n", "d", api.fs.trash, opts("move file to trash"))
+  vim.keymap.set("n", "D", api.fs.remove, opts("rm file"))
+  vim.keymap.set("n", "c", api.fs.cut, opts("cur node"))
+  vim.keymap.set("n", "r", api.fs.rename, opts("rename node"))
+end
+
+local function get_float_view_config()
+  local FLOAT_HEIGHT_RATIO = 0.8
+  local FLOAT_WIDTH_RATIO = 0.75
+  -- enable float view when the window 
+  -- width <= 100.
+  return {
+    open_win_config = function()
+      local screen_w = vim.opt.columns:get()
+      local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+      local window_w = screen_w * FLOAT_WIDTH_RATIO
+      local window_h = screen_h * FLOAT_HEIGHT_RATIO
+      local window_w_int = math.floor(window_w)
+      local window_h_int = math.floor(window_h)
+      local center_x = (screen_w - window_w) / 2
+      local center_y = ((vim.opt.lines:get() - window_h) / 2)
+                       - vim.opt.cmdheight:get()
+      return {
+        border = 'rounded',
+        relative = 'editor',
+        row = center_y,
+        col = center_x,
+        width = window_w_int,
+        height = window_h_int,
+      }
+    end
+  }
 end
 
 -- init is always executed on startup
 function M.init() 
+  local float_view = get_float_view_config()
+  local screen_width = vim.opt.columns:get()
+  float_view.enable = screen_width <= 100
+
   require("nvim-tree").setup({
+    ui = {
+      confirm = {
+        remove = true,
+        trash = false
+      }
+    },
     on_attach = on_attach,
+    view = {
+      float = float_view
+    }
   })
+
   vim.g.is_nvim_tree_exists = true
   vim.g.is_nvim_tree_open = false
   vim.keymap.set("n", "<leader>e", require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
+  
+  -- auto adjust window width to select 
+  -- open aside or open float.
+  vim.api.nvim_create_autocmd("VimResized", {
+    callback = function()
+      local view = require("nvim-tree.view")
+      local screen_width = vim.opt.columns:get()
+      view.View.float.enable = screen_width <= 100
+    end
+  })
 end
 
 return M
