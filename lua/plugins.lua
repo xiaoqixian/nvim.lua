@@ -64,7 +64,10 @@ require("lazy").setup({
 
   {
     "xiaoqixian/buffer-explorer.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { 
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons"
+    },
     lazy = false,
     init = require("plugins/buffer_explorer").init
   }

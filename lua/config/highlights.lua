@@ -11,7 +11,7 @@ highlights = {
   'hi! SignColumn ctermbg=none',
   'hi CursorLine ctermfg=0 ctermbg=111',
   'hi CursorLineNr ctermfg=0 ctermbg=111',
-  --[[ 'hi CursorLine ctermfg=236 ctermbg=105 underline=none' ]]
+  'hi ErrorMsg ctermfg=0 ctermbg=1'
 }
 
 for i, hl in ipairs(highlights) do
@@ -41,3 +41,4 @@ local function python_hl()
   vim.cmd("syn keyword Number False")
   vim.api.nvim_set_hl(0, "Self", { ctermfg = 3, italic = true })
 end
+

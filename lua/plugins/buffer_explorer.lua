@@ -43,8 +43,8 @@ function M.init()
           desc = "force delete a buffer"
         },
         ["e"] = {
-          op = utils.expand_buf_name,
-          desc = "expand buffer name"
+          op = utils.toggle_buf_name,
+          desc = "toggle buffer name"
         }
       },
 

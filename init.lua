@@ -14,6 +14,10 @@ vim.opt.rtp:prepend(lazypath)
 require("config/keymaps")
 require("config/options")
 require("config/autocmds")
-require("config/highlights")
 
 require("plugins")
+
+-- vim.cmd("colorscheme default")
+
+require("config/highlights")
+vim.cmd("source ~/.config/nvim/lua/config/indent.vim")

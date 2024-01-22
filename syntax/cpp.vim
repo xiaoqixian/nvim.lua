@@ -2279,7 +2279,8 @@ if version >= 508 || !exists("did_cpp_syntax_inits")
   HiLink cppSTLfunctional   Typedef
   HiLink cppSTLconstant     Constant
   HiLink cppSTLnamespace    Constant
-  HiLink cppSTLtype         Typedef
+  "HiLink cppSTLtype         Typedef
+  HiLink cppSTLtype         String
   HiLink cppSTLexception    Exception
   HiLink cppSTLiterator     Typedef
   HiLink cppSTLiterator_tag Typedef
