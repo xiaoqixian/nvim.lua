@@ -144,7 +144,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- cause I've got better solution.
     if client.name == "clangd" then
       client.server_capabilities.semanticTokensProvider = nil
-      vim.cmd("source ~/.config/nvim/lua/after/syntax/cpp_stl.vim")
     end
   end,
 });
