@@ -1,0 +1,142 @@
+local M = {}
+
+local function index(list, target) 
+  for i, elem in ipairs(list) do
+    if elem == target then
+      return i
+    end
+  end
+  return 0
+end
+
+local function contains(list, target) 
+  return index(list, target) > 0
+end
+
+local function set_most_file_header(extension) 
+  local cmt_syb_table = {
+    py = "#",
+    sh = "#",
+    lua = "--",
+    vim = '"',
+  }
+
+  local cmt_syb = cmt_syb_table[extension] or "//"
+
+  local header_lines = {
+    cmt_syb .. " Date: " .. vim.fn.strftime("%a %b %d %X %Y"),
+    cmt_syb .. " Mail: lunar_ubuntu@qq.com",
+    cmt_syb .. " Author: https://github.com/xiaoqixian",
+    ""
+  }
+
+  local cur_line = vim.fn.line(".") - 1
+
+  vim.api.nvim_buf_set_lines(0, cur_line, cur_line + #header_lines, false, header_lines)
+
+  vim.cmd.normal("G")
+
+end
+
+local function set_cheader_header(extension)
+  local macro_name = string.format("_%s_%s", 
+    string.upper(vim.fn.expand("%:t:r")),
+    string.upper(extension))
+
+  local header_define = {
+    "#ifndef " .. macro_name,
+    "#define " .. macro_name,
+    "",
+    "",
+    "",
+    "#endif // " .. macro_name
+  }
+
+  local btm_line = vim.fn.line("$")
+  vim.api.nvim_buf_set_lines(0, btm_line, btm_line + #header_define, false, header_define)
+  vim.cmd.normal("Gkk")
+end
+
+local function set_typst_header() 
+  local lines = {
+    '#let title(content) = {',
+    '  return align(center)[',
+    '    #block(inset: (bottom: 20pt))[',
+    '      #set text(20pt)',
+    '      #content',
+    '    ]',
+    '  ]',
+    '}',
+    '',
+    '#set heading(numbering: "1.")',
+    '#show heading.where(level: 1): it => [',
+    '  #block(inset: (bottom: 5pt))[',
+    '    #set text(16pt)',
+    '    #it',
+    '  ]',
+    ']',
+    '#show heading.where(level: 2): it => [',
+    '  #block(inset: (bottom: 4pt))[',
+    '    #set text(14pt)',
+    '    #it',
+    '  ]',
+    ']',
+    '#show heading.where(level: 3): it => [',
+    '  #block(inset: (bottom: 3pt))[',
+    '    #set text(13pt)',
+    '    #it',
+    '  ]',
+    ']',
+    '',
+    '#let mypar(content) = {',
+    '  if not content.has("children") {',
+    '    return content',
+    '  }',
+    '  let elems = ()',
+    '',
+    '  elems.push(h(1em))',
+    '  for i in content.children {',
+    '    elems.push(i)',
+    '    if i.func() == parbreak {',
+    '      elems.push(h(1em))',
+    '    }',
+    '  }',
+    '  return elems.join()',
+    '}',
+    '',
+    '#set page(numbering: "1/1")',
+    '#set text(12pt, font: ("Times New Roman", "STSong"))',
+    '#set list(indent: 20pt)',
+    '#set enum(indent: 20pt)',
+    '#set math.equation(numbering: "(1)")',
+  }
+
+  local btm_line = vim.fn.line("$")
+  vim.api.nvim_buf_set_lines(0, btm_line, btm_line + #lines, false, lines)
+end
+
+function M.set_file_header()
+  local extension = vim.fn.expand("%:e")
+  local escape_extensions = { 
+    "", "md", "json", "css", "html", "txt", "toml", "yml", "xml" 
+  }
+
+  if contains(escape_extensions, extension) then
+    return
+  end
+
+  set_most_file_header(extension)
+
+  local extra_feedings = {
+    typ = set_typst_header,
+    h = set_cheader_header,
+    hpp = set_cheader_header
+  }
+
+  if type(extra_feedings[extension]) == "function" then
+    extra_feedings[extension](extension)
+  end
+
+end
+
+return M
