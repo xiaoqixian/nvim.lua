@@ -55,13 +55,6 @@ require("lazy").setup({
     init = require("plugins/autopairs").init
   },
 
-  -- {
-  --   'j-morano/buffer_manager.nvim',
-  --   dependencies = { 'nvim-lua/plenary.nvim' },
-  --   lazy = false,
-  --   init = require("plugins/buffer_manager").init
-  -- },
-
   {
     "xiaoqixian/buffer-explorer.nvim",
     dependencies = { 
@@ -70,6 +63,15 @@ require("lazy").setup({
     },
     lazy = false,
     init = require("plugins/buffer_explorer").init
+  },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim"
+    },
+    lazy = false,
+    init = require("plugins/telescope").init
   }
 })
 
