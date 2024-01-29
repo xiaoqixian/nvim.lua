@@ -44,3 +44,6 @@ vim.keymap.set("n", "<leader>zz", ":.s/\\[/{/g<CR>:.s/\\]/}/g<CR>:nohl<CR>", opt
 vim.keymap.set("n", "<leader>sh", utils.set_file_header, opts("set file header"))
 
 vim.keymap.set("t", "jj", "<C-\\><C-n>", opts("escape terminal mode"))
+
+vim.keymap.set("n", "<leader><leader>", vim.diagnostic.goto_prev, opts("goto prev error"))
+vim.keymap.set("n", "<leader>.", vim.diagnostic.goto_next, opts("goto next error"))
