@@ -1,5 +1,9 @@
 local M = {}
 
+function M.echoerr(msg)
+  vim.cmd(string.format("echoerr '%s'", msg))
+end
+
 local function index(list, target) 
   for i, elem in ipairs(list) do
     if elem == target then
@@ -24,8 +28,8 @@ local function set_most_file_header(extension)
   local cmt_syb = cmt_syb_table[extension] or "//"
 
   local header_lines = {
-    cmt_syb .. " Date: " .. vim.fn.strftime("%a %b %d %X %Y"),
-    cmt_syb .. " Mail: lunar_ubuntu@qq.com",
+    cmt_syb .. " Date:   " .. vim.fn.strftime("%a %b %d %X %Y"),
+    cmt_syb .. " Mail:   lunar_ubuntu@qq.com",
     cmt_syb .. " Author: https://github.com/xiaoqixian",
     ""
   }
@@ -137,6 +141,60 @@ function M.set_file_header()
     extra_feedings[extension](extension)
   end
 
+end
+
+function M.stop_cpp_access_indent()
+  local line_num = vim.fn.line(".")
+  local curr_line = vim.fn.getline(".") .. ":"
+  local access_specifier_list = {
+    "public", "private", "protected"
+  }
+
+  local flag = false
+  for _, sp in ipairs(access_specifier_list) do
+    if curr_line:match("^%s*" .. sp) then
+      flag = true
+    end
+  end
+
+  if not flag then
+    vim.api.nvim_put({curr_line}, "c", true, true)
+    return
+  end
+
+  local class_line = line_num - 1
+  local class_indent = 0
+
+  while class_line > 0 do
+    local line = vim.fn.getline(class_line)
+    if line:match("^%s*class") or line:match("^%s*struct") then
+      class_indent = vim.fn.indent(class_line)
+      break
+    end
+    class_line = class_line - 1
+  end
+
+  local _, extra_space = curr_line:gsub(" ", "")
+  local new_line, _ = curr_line:gsub(" ", "", extra_space -  class_indent)
+
+  vim.api.nvim_set_current_line(new_line)
+end
+
+function M.keymap_opts(desc, extra_opts) 
+  local opts = {
+    desc = desc,
+    noremap = true,
+    nowait = true,
+    silent = true
+  }
+
+  if type(extra_opts) == "table" then
+    for k, v in pairs(extra_opts) do 
+      opts[k] = v
+    end
+  end
+
+  return opts
 end
 
 return M
