@@ -113,6 +113,12 @@ local function set_typst_header()
     '#set list(indent: 20pt)',
     '#set enum(indent: 20pt)',
     '#set math.equation(numbering: "(1)")',
+    '',
+    '#show terms.item: it => [',
+      '#text(font: "Kai", weight: "bold")[#it.term]',
+      '#h(1em)',
+      '#it.description',
+    ']'
   }
 
   local btm_line = vim.fn.line("$")
@@ -158,26 +164,12 @@ function M.stop_cpp_access_indent()
   end
 
   if not flag then
-    vim.api.nvim_put({curr_line}, "c", true, true)
-    return
+    vim.api.nvim_put({ ":" }, "c", false, true)
+  else 
+    local new_line, _ = curr_line:gsub(" ", "", vim.bo.shiftwidth)
+    vim.api.nvim_set_current_line(new_line)
   end
 
-  local class_line = line_num - 1
-  local class_indent = 0
-
-  while class_line > 0 do
-    local line = vim.fn.getline(class_line)
-    if line:match("^%s*class") or line:match("^%s*struct") then
-      class_indent = vim.fn.indent(class_line)
-      break
-    end
-    class_line = class_line - 1
-  end
-
-  local _, extra_space = curr_line:gsub(" ", "")
-  local new_line, _ = curr_line:gsub(" ", "", extra_space -  class_indent)
-
-  vim.api.nvim_set_current_line(new_line)
 end
 
 function M.keymap_opts(desc, extra_opts) 
