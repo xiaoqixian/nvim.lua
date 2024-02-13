@@ -1,13 +1,5 @@
 local utils = require("config.utils")
-
-local function opts(desc) 
-  return {
-    desc = desc,
-    noremap = true,
-    nowait = true,
-    silent = true
-  }
-end
+local opts = utils.keymap_opts
 
 -- set mapleader to ,
 vim.g.mapleader = ","
@@ -47,3 +39,5 @@ vim.keymap.set("t", "jj", "<C-\\><C-n>", opts("escape terminal mode"))
 
 vim.keymap.set("n", "<leader><leader>", vim.diagnostic.goto_prev, opts("goto prev error"))
 vim.keymap.set("n", "<leader>.", vim.diagnostic.goto_next, opts("goto next error"))
+
+vim.keymap.set("t", "<S-Space>", "<Space>", opts("tmap S-space to space"))
