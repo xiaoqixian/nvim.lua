@@ -11,7 +11,7 @@ highlights = {
   'hi! SignColumn ctermbg=none',
   'hi CursorLine ctermfg=0 ctermbg=111',
   'hi CursorLineNr ctermfg=0 ctermbg=111',
-  'hi ErrorMsg ctermfg=0 ctermbg=1'
+  'hi ErrorMsg ctermfg=224 ctermbg=204'
 }
 
 for i, hl in ipairs(highlights) do
