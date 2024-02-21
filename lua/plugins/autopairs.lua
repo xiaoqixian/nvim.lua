@@ -1,5 +1,9 @@
 local M = {}
 
+local function err(msg)
+  vim.cmd(string.format("echoerr '%s'", msg))
+end
+
 function M.init()
   local ap = require("nvim-autopairs")
   local Rule = require("nvim-autopairs.rule")
@@ -13,7 +17,7 @@ function M.init()
   ap.add_rules({
     Rule("{", "}", "c")
       :replace_endpair(function(opts)
-        local keywords = { "struct", "enum" }
+        local keywords = { "struct", "enum", "union" }
         for _, kw in ipairs(keywords) do
           if opts.line:match("^%s*" .. kw .. ".*") then
             return "};"
@@ -21,12 +25,13 @@ function M.init()
         end
         return "}"
       end)
+      :use_key("{")
       :with_del(cond.done())
       :with_move(cond.done()),
 
     Rule("{", "}", "cpp")
       :replace_endpair(function(opts)
-        local keywords = { "class", "struct", "enum" }
+        local keywords = { "class", "struct", "enum", "union", "requires" }
         for _, kw in ipairs(keywords) do
           if opts.line:match("^%s*" .. kw .. ".*") then
             return "};"
@@ -34,32 +39,61 @@ function M.init()
         end
         return "}"
       end)
+      :use_key("{")
       :with_del(cond.done())
       :with_move(cond.done()),
 
     Rule("<", ">", "cpp")
       :replace_endpair(function(opts) 
-        if opts.line:match(".*template%s*") then
+        local col = vim.fn.col(".")
+        local before = opts.line:sub(1, col-1)
+
+        if before:match(".*template%s*") then
           return ">"
-        elseif opts.line:match(".*%s+") then
+        elseif before:match("%s+$") then
           return ""
         else 
           return ">"
         end
       end)
+      :use_key("<")
       :with_del(cond.done())
-      :with_move(cond.done()),
+      :with_move(function(opts)
+        local col = vim.fn.col(".")
+        local next_char = opts.line:sub(col, col)
+        if next_char == ">" then
+          return true
+        else return false
+        end
+      end)
+      ,
 
     Rule("<", ">", "rust")
       :replace_endpair(function(opts)
-        if opts.line:match(".*%s+") then
+        local col = vim.fn.col(".")
+        local before = opts.line:sub(1, col)
+
+        if before:match("%s+$") then
           return ""
         else 
           return ">"
         end
       end)
+      :use_key("<")
       :with_del(cond.done())
-      :with_move(cond.done()),
+      :with_move(function(opts)
+        local col = vim.fn.col(".")
+        local prev_char = opts.line:sub(col-1, col-1)
+        if prev_char == "<" or prev_char == ">" then
+          return true
+        else return false
+        end
+      end),
+
+    Rule("$", "$", "typst")
+      :use_key("$")
+      :with_del(cond.done())
+      :with_move(cond.done())
   })
 
   -- add rules for add space between brackets.
@@ -103,6 +137,21 @@ function M.init()
         :replace_map_cr(function(_) return '<C-c>2xi<CR><C-c>O' end)
     }
   end
+
+  -- add rule for html files
+  ap.add_rules({
+    Rule(">", "", "html")
+      :use_key(">")
+      :replace_endpair(function(opts)
+        local before = opts.line:sub(1, vim.fn.col(".")-1)
+        local _, _, tag = before:find(".*<(.-)$")
+        assert(tag)
+        -- vim.cmd(string.format("echoerr '%s'", tag))
+        return string.format("</%s>", tag)
+      end)
+      :with_del(cond.done())
+      :with_move(cond.done())
+  })
 end
 
 return M
