@@ -50,7 +50,8 @@ function M.init()
 
         if before:match(".*template%s*") then
           return ">"
-        elseif before:match("%s+$") then
+        -- to avoid auto-pairing < and << symbols.
+        elseif before:match("%s+<*$") then
           return ""
         else 
           return ">"
@@ -144,6 +145,10 @@ function M.init()
       :use_key(">")
       :replace_endpair(function(opts)
         local before = opts.line:sub(1, vim.fn.col(".")-1)
+        if before:match(".*<(.*)/%s*$") then
+          return ""
+        end
+
         local _, _, tag = before:find(".*<(.-)$")
         assert(tag)
         -- vim.cmd(string.format("echoerr '%s'", tag))
