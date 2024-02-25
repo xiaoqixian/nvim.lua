@@ -9,8 +9,6 @@ highlights = {
   'hi TabLineSel ctermfg=225 ctermbg=none',
   'hi TabLine ctermfg=255 ctermbg=none cterm=none',
   'hi! SignColumn ctermbg=none',
-  'hi CursorLine ctermfg=0 ctermbg=111',
-  'hi CursorLineNr ctermfg=0 ctermbg=111',
   'hi ErrorMsg ctermfg=224 ctermbg=204'
 }
 
@@ -41,4 +39,3 @@ local function python_hl()
   vim.cmd("syn keyword Number False")
   vim.api.nvim_set_hl(0, "Self", { ctermfg = 3, italic = true })
 end
-

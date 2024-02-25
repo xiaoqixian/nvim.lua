@@ -1,4 +1,4 @@
-local utils = require("config.utils")
+local utils = require("utils")
 local opts = utils.keymap_opts
 
 -- set mapleader to ,
@@ -16,7 +16,7 @@ vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', opts("copy to clipboard"))
 vim.keymap.set("n", "H", "<C-w>h", opts("go to upper window"))
 vim.keymap.set("n", "J", "<C-w>j", opts("go to under window"))
 vim.keymap.set("n", "K", "<C-w>k", opts("go to right window"))
-vim.keymap.set("n", "L", "<C-w>l", opts("to to left  window"))
+vim.keymap.set("n", "L", "<C-w>l", opts("go to left  window"))
 
 vim.keymap.set("n", "<Leader>w", ":write<CR>", opts("write"))
 
@@ -41,3 +41,11 @@ vim.keymap.set("n", "<leader><leader>", vim.diagnostic.goto_prev, opts("goto pre
 vim.keymap.set("n", "<leader>.", vim.diagnostic.goto_next, opts("goto next error"))
 
 vim.keymap.set("t", "<S-Space>", "<Space>", opts("tmap S-space to space"))
+vim.keymap.set("t", "<S-Backspace>", "<Backspace>", opts("tmap S-Backspace to Backspace"))
+
+vim.keymap.set("n", "<Enter>", "0v$%$", opts("v-select a code block"))
+
+vim.keymap.set("n", "<leader>aa", function()
+  local config_path = vim.fn.stdpath("config") .. "/lua"
+  vim.cmd("tabnew " .. config_path)
+end, opts("fast way to open nvim config"))

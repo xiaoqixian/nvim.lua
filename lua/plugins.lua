@@ -72,6 +72,44 @@ require("lazy").setup({
     },
     lazy = false,
     init = require("plugins/telescope").init
+  },
+
+  {
+    "kaarmu/typst.vim",
+    ft = "typst"
+  },
+
+  {
+    "rust-lang/rust.vim",
+    ft = "rust"
+  },
+
+  {
+    "kawre/leetcode.nvim",
+    build = ":TSUpdate html",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim", -- required by telescope
+      "MunifTanjim/nui.nvim",
+
+      -- optional
+      "nvim-treesitter/nvim-treesitter",
+      "rcarriga/nvim-notify",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      -- configuration goes here
+    },
+    init = require("plugins/leetcode").init,
+    cmd = "Leet",
+    enabled = false
+  },
+
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = true,
+    init = require("plugins/gruvbox").init
   }
 })
 

@@ -1,14 +1,49 @@
 -- config for lualine plugin
 local M = {}
+local utils = require("utils")
+
+local function get_theme() 
+  local theme_by_profile = {
+    solid = "material",
+    gruvbox = "gruvbox_dark"
+  }
+  local customizations = {
+    solid = {
+      insert = {
+        a = { bg = "#fed58f" }
+      }
+    },
+    gruvbox = {
+      insert = {
+        a = { bg = "#f9bc2f" }
+      },
+      normal = {
+        a = { bg = "#8ebf7b" }
+      },
+      command = {
+        a = { bg = "#d2859a" }
+      }
+    }
+  }
+
+  local profile = os.getenv("ITERM_PROFILE")
+  local theme = theme_by_profile[profile] or "material"
+  local lualine_theme = require("lualine.themes." .. theme)
+  utils.deep_merge(lualine_theme, customizations[profile])
+
+  return lualine_theme
+end
 
 function M.init()
   local customed_material = require("lualine.themes.material")
   customed_material.insert.a.bg = "#fed58f"
 
+  local theme = get_theme()
+
   require('lualine').setup {
     options = {
       icons_enabled = true,
-      theme = customed_material,
+      theme = theme,
       component_separators = { left = '', right = ''},
       section_separators = { left = '', right = ''},
       disabled_filetypes = {

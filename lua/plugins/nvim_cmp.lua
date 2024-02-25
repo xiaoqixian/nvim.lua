@@ -15,10 +15,33 @@ local function lsp_config()
     {"│", "FloatBorder"},
   }
 
+  local signs = { Error = "", Warn = "", Hint = "󰌵", Info = "" }
+  for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  end
+
+  -- config vim.diagnostic
+  vim.diagnostic.config({
+    virtual_text = false,
+    underline = true,
+    signs = {
+      active = signs
+    },
+    float = {
+      header = false,
+      border = "rounded",
+      focusable = false
+    }
+  })
+
+  -- show diagnostic after cursor 
+  -- holding for 500ms.
+  vim.opt.updatetime = 500
 
   -- LSP settings (for overriding per client)
   local handlers =  {
-    ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
+    ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
     ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
   }
 
@@ -57,10 +80,6 @@ function M.init()
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
     },
-    window = {
-      -- completion = cmp.config.window.bordered(),
-      -- documentation = cmp.config.window.bordered(),
-    },
     mapping = cmp.mapping.preset.insert({
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -71,8 +90,8 @@ function M.init()
       ['<Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
+        --[[ elseif luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump() ]]
         --elseif vim.fn["vsnip#jumpable"](1) then
           --vim.fn["vsnip#vsnip-jump-next"]()
         else
@@ -95,7 +114,7 @@ function M.init()
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
       --{ name = 'vsnip' }, -- For vsnip users.
-       { name = 'luasnip' }, -- For luasnip users.
+      { name = 'luasnip' }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
     }, {

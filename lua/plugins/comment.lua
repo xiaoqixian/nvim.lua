@@ -3,14 +3,20 @@ local M = {}
 
 function M.init()
   require("Comment").setup({
+    toggler = {
+      line = "<leader>cc",
+      block = nil
+    },
+    opleader = {
+      line = "<leader>cc",
+      block = nil
+    },
     mappings = {
-      basic = false,
+      basic = true,
       extra = false
     },
   })
-  local api = require('Comment.api')
-  vim.keymap.set("n", "<leader>cc", api.call("comment.linewise", "g@$"), { desc = "toggle comment current line", expr = true })
-  vim.keymap.set("n", "<leader>cu", api.call("uncomment.linewise", "g@$"), { desc = "uncomment line", expr = true })
+
 end
 
 return M

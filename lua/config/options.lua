@@ -15,3 +15,11 @@ vim.opt.guicursor = ""
 
 -- set line break
 vim.opt.lbr = true
+
+-- set no signcolumn
+vim.opt.signcolumn = "no"
+
+-- set timeout duration
+vim.opt.timeoutlen = 500
+
+vim.opt.mouse = ""

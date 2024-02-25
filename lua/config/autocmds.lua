@@ -1,4 +1,4 @@
-local utils = require("config.utils")
+local utils = require("utils")
 
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*",
@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 -- Tabwidth by file
 -- default by 4
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "lua", "json", "vim", "xml", "css", "typst" },
+  pattern = { "lua", "json", "vim", "xml", "html", "css", "typst" },
   callback = function()
     vim.opt.shiftwidth = 2
     vim.opt.tabstop = 2
@@ -47,5 +47,17 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "cpp" },
   callback = function()
     vim.keymap.set("i", ":", utils.stop_cpp_access_indent, utils.keymap_opts("stop c++ access specifier indent", { buffer = 0 }))
+  end
+})
+
+vim.api.nvim_create_autocmd("BufWinLeave", {
+  pattern = "?*",
+  callback = function()
+    vim.cmd("mkview")
+  end
+})
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  callback = function()
+    vim.cmd("silent! loadview")
   end
 })

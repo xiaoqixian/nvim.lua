@@ -4,6 +4,25 @@ function M.echoerr(msg)
   vim.cmd(string.format("echoerr '%s'", msg))
 end
 
+function M.deep_merge(t1, t2)
+  function deep_merge_impl(t1, t2)
+    for k, v in pairs(t2) do 
+      if type(v) == "table" and t1[k] ~= nil then 
+        deep_merge_impl(t1[k], v)
+      else 
+        t1[k] = v
+      end
+    end
+  end
+
+  if type(t2) ~= "table" then 
+    return
+  end
+
+  assert(type(t1) == "table")
+  deep_merge_impl(t1, t2)
+end
+
 local function index(list, target) 
   for i, elem in ipairs(list) do
     if elem == target then
@@ -18,14 +37,16 @@ local function contains(list, target)
 end
 
 local function set_most_file_header(extension) 
+  local ft = vim.bo.filetype
   local cmt_syb_table = {
     py = "#",
     sh = "#",
     lua = "--",
     vim = '"',
+    cmake = "#"
   }
 
-  local cmt_syb = cmt_syb_table[extension] or "//"
+  local cmt_syb = cmt_syb_table[extension] or cmt_syb_table[ft] or "//"
 
   local header_lines = {
     cmt_syb .. " Date:   " .. vim.fn.strftime("%a %b %d %X %Y"),
@@ -42,6 +63,7 @@ local function set_most_file_header(extension)
 
 end
 
+-- set C-family header file header
 local function set_cheader_header(extension)
   local macro_name = string.format("_%s_%s", 
     string.upper(vim.fn.expand("%:t:r")),

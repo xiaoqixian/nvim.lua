@@ -40,4 +40,6 @@ function M.init()
   })
 end
 
+vim.cmd("source ~/.config/nvim/lua/config/indent.vim")
+
 return M

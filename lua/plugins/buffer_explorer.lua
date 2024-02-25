@@ -2,14 +2,11 @@
 -- Mail: lunar_ubuntu@qq.com
 -- Author: https://github.com/xiaoqixian
 
-local be = nil
-local utils = nil
-
 local M = {}
 
 function M.init()
-  be = require("buffer_explorer")
-  utils = require("buffer_explorer.utils")
+  local be = require("buffer_explorer")
+  local utils = require("buffer_explorer.utils")
 
   local menu = {
     config = {
@@ -45,6 +42,14 @@ function M.init()
         ["e"] = {
           op = utils.toggle_buf_name,
           desc = "toggle buffer name"
+        },
+        ["i"] = {
+          op = utils.sp_buffer,
+          desc = "open buffer in a horizontal window"
+        },
+        ["s"] = {
+          op = utils.vs_buffer,
+          desc = "open buffer in a vertical window"
         }
       },
 
