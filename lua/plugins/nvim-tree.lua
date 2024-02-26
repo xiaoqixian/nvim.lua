@@ -43,26 +43,27 @@ local function on_attach(bufnr)
 
   -- overwrite the api.tree.open function here.
   vim.keymap.set("n", "<leader>e", api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
-  vim.keymap.set("n", "?", api.tree.toggle_help, opts("help"))
-  vim.keymap.set('n', 't', api.node.open.tab, opts('open in new tab'))
-  vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts('toggle or focus'))
+  vim.keymap.set("n", "q", api.tree.toggle, opts("nvim-tree: close"))
+  vim.keymap.set("n", "?", api.tree.toggle_help, opts("nvim-tree: help"))
+  vim.keymap.set('n', 't', api.node.open.tab, opts("nvim-tree: open in new tab"))
+  vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts("nvim-tree: toggle or focus"))
 
-  vim.keymap.set("n", "<CR>", api.node.open.no_window_picker, opts("just open it"))
-  vim.keymap.set("n", "<S-CR>", api.node.open.edit, opts("edit with window picker"))
+  vim.keymap.set("n", "<CR>", api.node.open.no_window_picker, opts("nvim-tree: edit"))
+  vim.keymap.set("n", "<S-CR>", api.node.open.edit, opts("nvim-tree: edit with window picker"))
 
   vim.keymap.set("n", "s", api.node.open.vertical, opts("nvim-tree: vertical split view"))
   vim.keymap.set("n", "i", api.node.open.horizontal, opts("nvim-tree: horizontal split view"))
 
-  vim.keymap.set("n", ">", api.tree.change_root_to_node, opts("change root to node"))
-  vim.keymap.set("n", "<", api.tree.change_root_to_parent, opts("change root to node"))
+  vim.keymap.set("n", ">", api.tree.change_root_to_node, opts("nvim-tree: change root to node"))
+  vim.keymap.set("n", "<", api.tree.change_root_to_parent, opts("nvim-tree: change root to node"))
 
-  vim.keymap.set("n", "a", api.fs.create, opts("fs.create"))
-  vim.keymap.set("n", "y", api.fs.copy.node, opts("copy node"))
-  vim.keymap.set("n", "p", api.fs.paste, opts("paste node"))
-  vim.keymap.set("n", "d", api.fs.trash, opts("move file to trash"))
-  vim.keymap.set("n", "D", api.fs.remove, opts("rm file"))
-  vim.keymap.set("n", "c", api.fs.cut, opts("cur node"))
-  vim.keymap.set("n", "r", api.fs.rename, opts("rename node"))
+  vim.keymap.set("n", "a", api.fs.create, opts("nvim-tree: fs.create"))
+  vim.keymap.set("n", "y", api.fs.copy.node, opts("nvim-tree: copy node"))
+  vim.keymap.set("n", "p", api.fs.paste, opts("nvim-tree: paste node"))
+  vim.keymap.set("n", "d", api.fs.trash, opts("nvim-tree: move file to trash"))
+  vim.keymap.set("n", "D", api.fs.remove, opts("nvim-tree: rm file"))
+  vim.keymap.set("n", "c", api.fs.cut, opts("nvim-tree: cut node"))
+  vim.keymap.set("n", "r", api.fs.rename, opts("nvim-tree: rename node"))
 end
 
 local function get_float_view_config()
