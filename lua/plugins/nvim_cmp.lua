@@ -1,65 +1,6 @@
 -- nvim-cmp config file
 local M = {}
 
-local function lsp_config()
-  local lspconfig = require('lspconfig')
-
-  local border = {
-    {"╭", "FloatBorder"},
-    {"─", "FloatBorder"},
-    {"╮", "FloatBorder"},
-    {"│", "FloatBorder"},
-    {"╯", "FloatBorder"},
-    {"─", "FloatBorder"},
-    {"╰", "FloatBorder"},
-    {"│", "FloatBorder"},
-  }
-
-  local signs = { Error = "", Warn = "", Hint = "󰌵", Info = "" }
-  for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-  end
-
-  -- config vim.diagnostic
-  vim.diagnostic.config({
-    virtual_text = false,
-    underline = true,
-    signs = {
-      active = signs
-    },
-    float = {
-      header = false,
-      border = "rounded",
-      focusable = false
-    }
-  })
-
-  -- show diagnostic after cursor 
-  -- holding for 500ms.
-  vim.opt.updatetime = 500
-
-  -- LSP settings (for overriding per client)
-  local handlers =  {
-    ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
-    ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
-  }
-
-  local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
-
-  for _, lsp in ipairs(servers) do
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    if lsp == "clangd" then
-      capabilities.semanticTokensProvider = nil
-    end
-    lspconfig[lsp].setup {
-      -- on_attach = my_custom_on_attach,
-      capabilities = capabilities,
-      handlers = handlers
-    }
-  end
-end
-
 function M.init() 
   vim.g.nvim_cmp_exists = true
 
@@ -67,8 +8,6 @@ function M.init()
   local lspkind = require("lspkind")
   local luasnip = require("luasnip")
   --local vsnip = require("vsnip")
-
-  lsp_config()
 
   cmp.setup({
     snippet = {

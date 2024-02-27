@@ -1,55 +1,60 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- This file can be loaded by calling `lua require("plugins")` from your init.vim
 
 require("lazy").setup({
   {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = true,
     init = require("plugins/nvim-tree").init,
     -- enabled = false
   },
 
   {
-    'numToStr/Comment.nvim',
+    "numToStr/Comment.nvim",
     lazy = false,
     init = require("plugins/comment").init,
     -- enabled = false
   },
 
   {
-    'numToStr/FTerm.nvim',
+    "numToStr/FTerm.nvim",
     lazy = true,
     init = require("plugins/fterm").init,
     -- enabled = false
   },
 
   {
-    'hrsh7th/nvim-cmp',
+    "neovim/nvim-lspconfig",
+    init = require("plugins/lsp_config").init
+  }
+
+  {
+    "hrsh7th/nvim-cmp",
     dependencies = {
-      'neovim/nvim-lspconfig',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'onsails/lspkind.nvim',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip'
-      --'hrsh7th/cmp-vsnip',
-      --'hrsh7th/vim-vsnip',
+      "neovim/nvim-lspconfig",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "onsails/lspkind.nvim",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip"
+      --"hrsh7th/cmp-vsnip",
+      --"hrsh7th/vim-vsnip",
     },
     lazy = false,
     init = require("plugins/nvim_cmp").init,
   },
 
   {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
     init = require("plugins/lualine").init
   },
   
   {
-    'windwp/nvim-autopairs',
+    "windwp/nvim-autopairs",
     event = "InsertEnter",
     lazy = false,
     init = require("plugins/autopairs").init
@@ -110,6 +115,19 @@ require("lazy").setup({
     priority = 1000,
     config = true,
     init = require("plugins/gruvbox").init
+  },
+
+  {
+    "folke/neodev.nvim",
+    init = require("plugins/neodev").init
+  }
+}, {
+  install = {
+    missing = true,
+    colorscheme = {}
+  },
+  ui = {
+    border = "rounded"
   }
 })
 
