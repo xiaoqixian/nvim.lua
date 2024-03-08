@@ -10,7 +10,9 @@ function M.init()
   local cond = require("nvim-autopairs.conds")
   local utils = require("nvim-autopairs.utils")
 
-  ap.setup()
+  ap.setup({
+    enable_abbr = true
+  })
   
   ap.get_rules("{")[1].not_filetypes = { "cpp", "c" }
   
@@ -31,7 +33,12 @@ function M.init()
 
     Rule("{", "}", "cpp")
       :replace_endpair(function(opts)
-        local keywords = { "class", "struct", "enum", "union", "requires" }
+        local _, _, ns = opts.line:find("^%s*namespace (%a+)")
+        if ns then
+          return "} // namespace " .. ns
+        end
+
+        local keywords = { "class", "struct", "enum", "union", "concept" }
         for _, kw in ipairs(keywords) do
           if opts.line:match("^%s*" .. kw .. ".*") then
             return "};"
@@ -102,17 +109,25 @@ function M.init()
   ap.add_rules {
     -- Rule for a pair with left-side ' ' and right side ' '
     Rule(' ', ' ')
-      -- Pair will only occur if the conditional function returns true
-      :with_pair(function(opts)
-        -- We are checking if we are inserting a space in (), [], or {}
-        local pair = opts.line:sub(opts.col - 1, opts.col)
-        return vim.tbl_contains({
-          brackets[1][1] .. brackets[1][2],
-          brackets[2][1] .. brackets[2][2],
-          brackets[3][1] .. brackets[3][2]
-        }, pair)
+      :with_pair(cond.done())
+      :replace_endpair(function(opts)
+          local pair = opts.line:sub(opts.col - 1, opts.col)
+          if vim.tbl_contains({ "()", "{}", "[]" }, pair) then
+              return " " -- it return space here
+          end
+          return ""-- return empty
       end)
-      :with_move(cond.none())
+      -- Pair will only occur if the conditional function returns true
+      -- :with_pair(function(opts)
+      --   -- We are checking if we are inserting a space in (), [], or {}
+      --   local pair = opts.line:sub(opts.col - 1, opts.col)
+      --   return vim.tbl_contains({
+      --     brackets[1][1] .. brackets[1][2],
+      --     brackets[2][1] .. brackets[2][2],
+      --     brackets[3][1] .. brackets[3][2]
+      --   }, pair)
+      -- end)
+      :with_move(cond.done())
       :with_cr(cond.none())
       -- We only want to delete the pair of spaces when the cursor is as such: ( | )
       :with_del(function(opts)
