@@ -12,8 +12,8 @@ local cursor_line_color = {
 }
 
 local color = cursor_line_color[profile] or {
-  ctermfg = "111",
-  ctermbg = "0"
+  ctermbg = "111",
+  ctermfg = "0"
 }
 
 local color_str = string.format("ctermbg=%s ctermfg=%s", color.ctermbg, color.ctermfg)

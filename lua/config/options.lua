@@ -19,7 +19,8 @@ vim.opt.lbr = true
 -- set no signcolumn
 vim.opt.signcolumn = "no"
 
--- set timeout duration
 vim.opt.timeoutlen = 500
+
+vim.opt.updatetime = 500
 
 vim.opt.mouse = ""

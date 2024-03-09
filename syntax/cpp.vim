@@ -758,6 +758,7 @@ syntax keyword cppSTLtype unary_negate
 syntax keyword cppSTLtype valarray
 syntax keyword cppSTLtype value_compare
 syntax keyword cppSTLtype value_type
+syntax keyword cppSTLtype element_type
 syntax keyword cppSTLtype vector
 syntax keyword cppSTLtype wfilebuf
 syntax keyword cppSTLtype wfstream
@@ -2101,6 +2102,18 @@ if !exists("cpp_no_cpp20")
     syntax keyword cppSTLbool is_pointer_interconvertible_base_of_v
     syntax keyword cppSTLtype has_strong_structural_equality
     syntax keyword cppSTLbool has_strong_structural_equality_v
+
+
+    " TODO: coroutine support
+    syntax keyword cppSTLtype coroutine_handle
+    syntax keyword cppSTLtype promise_type
+
+    syntax keyword cppSTLfunction get_return_object
+    syntax keyword cppSTLfunction initial_suspend
+    syntax keyword cppSTLfunction return_void
+    syntax keyword cppSTLfunction return_value
+    syntax keyword cppSTLfunction final_suspend
+    syntax keyword cppSTLfunction unhandled_exception
 
     " version
     " TODO

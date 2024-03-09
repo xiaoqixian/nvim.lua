@@ -54,7 +54,11 @@ local function on_attach(bufnr)
   vim.keymap.set("n", "s", api.node.open.vertical, opts("nvim-tree: vertical split view"))
   vim.keymap.set("n", "i", api.node.open.horizontal, opts("nvim-tree: horizontal split view"))
 
-  vim.keymap.set("n", ">", api.tree.change_root_to_node, opts("nvim-tree: change root to node"))
+  vim.keymap.set("n", ">", function() 
+    api.tree.change_root_to_node()
+    vim.api.nvim_win_set_cursor(0, { 1, 0 })
+  end, opts("nvim-tree: change root to node"))
+
   vim.keymap.set("n", "<", api.tree.change_root_to_parent, opts("nvim-tree: change root to node"))
 
   vim.keymap.set("n", "a", api.fs.create, opts("nvim-tree: fs.create"))

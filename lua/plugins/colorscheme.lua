@@ -4,10 +4,10 @@
 
 local M = {}
 
-function M.init() 
+function M.init(colorscheme) 
   local profile = os.getenv("ITERM_RPOFILE")
-  if profile == "gruvbox" then
-    vim.cmd("colorscheme gruvbox")
+  if profile == colorscheme then
+    vim.cmd("colorscheme " .. colorscheme)
   end
 end
 

@@ -44,19 +44,27 @@ function M.init()
     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
   }
 
-  local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
+  local servers = { 'rust_analyzer', 'pyright', 'tsserver' }
 
+  local capabilities = require("cmp_nvim_lsp").default_capabilities()
   for _, lsp in ipairs(servers) do
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    if lsp == "clangd" then
-      capabilities.semanticTokensProvider = nil
-    end
     lspconfig[lsp].setup {
       -- on_attach = my_custom_on_attach,
       capabilities = capabilities,
       handlers = handlers
     }
   end
+
+  capabilities.semanticTokensProvider = nil
+
+  lspconfig.clangd.setup {
+    capabilities = capabilities,
+    -- cmd = {
+    --   "clangd",
+    --   "compile-commands-dir=/Users/lunar/.config/nvim"
+    -- },
+    handlers = handlers
+  }
 
 end
 

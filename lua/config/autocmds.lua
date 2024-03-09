@@ -57,7 +57,44 @@ vim.api.nvim_create_autocmd("BufWinLeave", {
   end
 })
 vim.api.nvim_create_autocmd("BufWinEnter", {
+  pattern = "?*",
   callback = function()
     vim.cmd("silent! loadview")
   end
 })
+
+-- set iab for cmake files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cmake",
+  callback = function()
+    local function iab(from, to) 
+      vim.cmd(string.format("iab <buffer> %s %s", from, to))
+    end
+
+    local keywords = {
+      "on", "off", "not",
+      "public", "private", "interface",
+      "shared", "static",
+      "source", "target", "build", "type",
+      "required",
+      "version", "languages",
+      "build_shared_libs", "build_interface", "install_interface",
+      "cmake_cxx_standard", "cmake_c_standard",
+      "cmake_cxx_standard_required", "cmake_c_standard_required",
+      "cmake_c_compiler", "cmake_c_compiler_id", "cmake_c_compiler_version",
+      "cmake_cxx_compiler", "cmake_cxx_compiler_id", "cmake_cxx_compiler_version",
+      "cmake_system_name",
+      "project_name",
+      "glob",
+      "win32", 
+      "git_repository", "git_tag",
+      "configure_command", "install_command", "build_command",
+    }
+
+    for _, k in ipairs(keywords) do 
+      iab(k, k:upper())
+    end
+
+  end
+})
+

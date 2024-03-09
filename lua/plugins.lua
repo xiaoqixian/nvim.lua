@@ -25,8 +25,9 @@ require("lazy").setup({
 
   {
     "neovim/nvim-lspconfig",
-    init = require("plugins/lsp_config").init
-  }
+    init = require("plugins/lsp_config").init,
+    -- enabled = false
+  },
 
   {
     "hrsh7th/nvim-cmp",
@@ -44,20 +45,23 @@ require("lazy").setup({
     },
     lazy = false,
     init = require("plugins/nvim_cmp").init,
+    -- enabled = false
   },
 
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
-    init = require("plugins/lualine").init
+    init = require("plugins/lualine").init,
+    -- enabled = false
   },
   
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     lazy = false,
-    init = require("plugins/autopairs").init
+    init = require("plugins/autopairs").init,
+    -- enabled = false
   },
 
   {
@@ -67,7 +71,8 @@ require("lazy").setup({
       "nvim-tree/nvim-web-devicons"
     },
     lazy = false,
-    init = require("plugins/buffer_explorer").init
+    init = require("plugins/buffer_explorer").init,
+    -- enabled = false
   },
 
   {
@@ -76,7 +81,8 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim"
     },
     lazy = false,
-    init = require("plugins/telescope").init
+    init = require("plugins/telescope").init,
+    -- enabled = false
   },
 
   {
@@ -114,12 +120,31 @@ require("lazy").setup({
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = true,
-    init = require("plugins/gruvbox").init
+    init = function()
+      require("plugins/colorscheme").init("gruvbox")
+    end
   },
 
   {
     "folke/neodev.nvim",
-    init = require("plugins/neodev").init
+    init = require("plugins/neodev").init,
+    -- enabled = false
+  },
+
+  {
+    "Mofiqul/dracula.nvim",
+    priority = 1000,
+    config = true,
+    init = function()
+      require("plugins/colorscheme").init("dracula")
+    end
+  },
+
+  {
+    "simrat39/symbols-outline.nvim",
+    init = function()
+      require("symbols-outline").setup()
+    end
   }
 }, {
   install = {

@@ -43,7 +43,7 @@ vim.keymap.set("n", "<leader>.", vim.diagnostic.goto_next, opts("goto next error
 vim.keymap.set("t", "<S-Space>", "<Space>", opts("tmap S-space to space"))
 vim.keymap.set("t", "<S-Backspace>", "<Backspace>", opts("tmap S-Backspace to Backspace"))
 
-vim.keymap.set("n", "<Enter>", "0v$%$", opts("v-select a code block"))
+-- vim.keymap.set("n", "<Enter>", "0v$%$", opts("v-select a code block"))
 
 vim.keymap.set("n", "<leader>aa", function()
   local config_path = vim.fn.stdpath("config") .. "/lua"
