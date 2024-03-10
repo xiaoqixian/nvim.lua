@@ -9,7 +9,7 @@ vim.keymap.set("i", "jj", "<ESC>", opts("escape insert"))
 vim.keymap.set("n", "<space>", "<C-w>w", opts("jump between windows"))
 
 -- map <leader>c to copying things into the clipboard.
-vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', opts("copy to clipboard"))
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts("copy to clipboard"))
 
 -- map cursor moving between windows to 
 -- the coresspoding uppercase letters.
@@ -18,7 +18,11 @@ vim.keymap.set("n", "J", "<C-w>j", opts("go to under window"))
 vim.keymap.set("n", "K", "<C-w>k", opts("go to right window"))
 vim.keymap.set("n", "L", "<C-w>l", opts("go to left  window"))
 
-vim.keymap.set("n", "<Leader>w", ":write<CR>", opts("write"))
+-- swap v and V
+vim.keymap.set("n", "v", "V", opts("visual line"))
+vim.keymap.set("n", "V", "v", opts("visual"))
+
+vim.keymap.set("n", "<leader>w", ":write<CR>", opts("write"))
 
 vim.keymap.set("n", "<leader>nh", ":nohl<CR>", opts("cancel highlights"))
 
