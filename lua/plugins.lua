@@ -30,6 +30,11 @@ require("lazy").setup({
   },
 
   {
+    "hrsh7th/vim-vsnip",
+    "hrsh7th/vim-vsnip-integ"
+  },
+
+  {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "neovim/nvim-lspconfig",
@@ -38,10 +43,10 @@ require("lazy").setup({
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "onsails/lspkind.nvim",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip"
-      --"hrsh7th/cmp-vsnip",
-      --"hrsh7th/vim-vsnip",
+      -- "L3MON4D3/LuaSnip",
+      -- "saadparwaiz1/cmp_luasnip"
+      "hrsh7th/cmp-vsnip",
+      "hrsh7th/vim-vsnip",
     },
     lazy = false,
     init = require("plugins/nvim_cmp").init,
@@ -120,8 +125,24 @@ require("lazy").setup({
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = true,
+    enabled = function()
+      return os.getenv("ITERM_PROFILE") == "gruvbox"
+    end,
     init = function()
-      require("plugins/colorscheme").init("gruvbox")
+      vim.cmd("colorscheme gruvbox")
+    end
+  },
+
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    enabled = function()
+      return os.getenv("ITERM_PROFILE") == "catppuccin-mocha"
+    end,
+    lazy = false,
+    init = function()
+      vim.cmd("colorscheme catppuccin-mocha")
     end
   },
 
@@ -145,6 +166,13 @@ require("lazy").setup({
     init = function()
       require("symbols-outline").setup()
     end
+  },
+
+  {
+    "krivahtoo/silicon.nvim",
+    build = "./install.sh",
+    init = require("plugins/silicon").init,
+    enabled = false
   }
 }, {
   install = {

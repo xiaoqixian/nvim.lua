@@ -3,12 +3,16 @@
 -- Author: https://github.com/xiaoqixian
 
 local M = {}
+local profile = os.getenv("ITERM_RPOFILE")
 
 function M.init(colorscheme) 
-  local profile = os.getenv("ITERM_RPOFILE")
   if profile == colorscheme then
     vim.cmd("colorscheme " .. colorscheme)
   end
+end
+
+function M.enable(colorscheme)
+  return profile == colorscheme
 end
 
 return M

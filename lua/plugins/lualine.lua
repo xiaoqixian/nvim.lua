@@ -5,7 +5,8 @@ local utils = require("utils")
 local function get_theme() 
   local theme_by_profile = {
     solid = "material",
-    gruvbox = "gruvbox_dark"
+    gruvbox = "gruvbox_dark",
+    ["catppuccin-mocha"] = "catppuccin"
   }
   local customizations = {
     solid = {
