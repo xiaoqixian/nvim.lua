@@ -114,6 +114,10 @@ function M.init()
     on_attach = on_attach,
     view = {
       float = float_view
+    },
+    git = {
+      enable = true,
+      ignore = false
     }
   })
 
