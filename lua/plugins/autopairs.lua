@@ -34,7 +34,7 @@ function M.init()
     Rule("{", "}", "cpp")
       :replace_endpair(function(opts)
         -- autopairing for cpp namespace comments
-        local _, _, ns = opts.line:find("^%s*namespace (%a+)")
+        local _, _, ns = opts.line:find("^%s*namespace (%S+)")
         if ns then
           return "} // namespace " .. ns
         end
