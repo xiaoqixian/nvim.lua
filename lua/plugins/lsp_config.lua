@@ -59,10 +59,10 @@ function M.init()
 
   lspconfig.clangd.setup {
     capabilities = capabilities,
-    -- cmd = {
-    --   "clangd",
-    --   "compile-commands-dir=/Users/lunar/.config/nvim"
-    -- },
+    cmd = {
+      "clangd",
+      "--compile-commands-dir=/Users/lunar/.config/nvim"
+    },
     handlers = handlers
   }
 
