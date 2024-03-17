@@ -12,7 +12,7 @@ local function add_space_between()
     return
   end
 
-  local sub = line:sub(col-1, 2)
+  local sub = line:sub(col-1, col)
 
   local brackets = { "{}", "()", "[]"}
   for _, b in ipairs(brackets) do
