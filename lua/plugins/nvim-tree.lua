@@ -66,7 +66,7 @@ local function on_attach(bufnr)
   vim.keymap.set("n", "p", api.fs.paste, opts("nvim-tree: paste node"))
   vim.keymap.set("n", "d", api.fs.trash, opts("nvim-tree: move file to trash"))
   vim.keymap.set("n", "D", api.fs.remove, opts("nvim-tree: rm file"))
-  vim.keymap.set("n", "c", api.fs.cut, opts("nvim-tree: cut node"))
+  vim.keymap.set("n", "x", api.fs.cut, opts("nvim-tree: cut file"))
   vim.keymap.set("n", "r", api.fs.rename, opts("nvim-tree: rename node"))
 end
 
@@ -118,6 +118,10 @@ function M.init()
     git = {
       enable = true,
       ignore = false
+    },
+    update_focused_file = {
+      enable = true,
+      update_root = true
     }
   })
 
