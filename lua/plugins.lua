@@ -62,7 +62,8 @@ require("lazy").setup({
   },
   
   {
-    "windwp/nvim-autopairs",
+    -- This is my own fork of nvim-autopairs.
+    "xiaoqixian/nvim-autopairs",
     event = "InsertEnter",
     lazy = false,
     init = require("plugins/autopairs").init,
