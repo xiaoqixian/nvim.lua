@@ -78,6 +78,8 @@ function M.init()
 
         if before:match(".*template%s*") then
           return ">"
+        elseif before:match(".*operator<*$") then
+          return ""
         -- to avoid auto-pairing < and << symbols.
         elseif before:match("%s+<*$") then
           return ""
