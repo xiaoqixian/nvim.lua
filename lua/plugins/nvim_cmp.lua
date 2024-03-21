@@ -1,65 +1,6 @@
 -- nvim-cmp config file
 local M = {}
 
-local function lsp_config()
-  local lspconfig = require('lspconfig')
-
-  local border = {
-    {"╭", "FloatBorder"},
-    {"─", "FloatBorder"},
-    {"╮", "FloatBorder"},
-    {"│", "FloatBorder"},
-    {"╯", "FloatBorder"},
-    {"─", "FloatBorder"},
-    {"╰", "FloatBorder"},
-    {"│", "FloatBorder"},
-  }
-
-  local signs = { Error = "", Warn = "", Hint = "󰌵", Info = "" }
-  for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-  end
-
-  -- config vim.diagnostic
-  vim.diagnostic.config({
-    virtual_text = false,
-    underline = true,
-    signs = {
-      active = signs
-    },
-    float = {
-      header = false,
-      border = "rounded",
-      focusable = false
-    }
-  })
-
-  -- show diagnostic after cursor 
-  -- holding for 500ms.
-  vim.opt.updatetime = 500
-
-  -- LSP settings (for overriding per client)
-  local handlers =  {
-    ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
-    ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
-  }
-
-  local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
-
-  for _, lsp in ipairs(servers) do
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    if lsp == "clangd" then
-      capabilities.semanticTokensProvider = nil
-    end
-    lspconfig[lsp].setup {
-      -- on_attach = my_custom_on_attach,
-      capabilities = capabilities,
-      handlers = handlers
-    }
-  end
-end
-
 local has_words_before = function()
   unpack = unpack or table.unpack
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -77,8 +18,6 @@ function M.init()
   local lspkind = require("lspkind")
   -- local luasnip = require("luasnip")
   --local vsnip = require("vsnip")
-
-  lsp_config()
 
   cmp.setup({
     snippet = {
@@ -139,9 +78,12 @@ function M.init()
 
     window = {
       completion = cmp.config.window.bordered({
-        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
+        -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
+        winhighlight = "CursorLine:PmenuSel"
       }),
-      documentation = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered({
+        -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
+      }),
     },
 
     formatting = {
@@ -171,6 +113,12 @@ function M.init()
       { name = 'buffer' }
     }
   })
+
+  -- cmp.setup.filetype("cmake", {
+  --   sources = {
+  --     { "REQUIRED" }
+  --   }
+  -- })
 
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
   cmp.setup.cmdline(':', {
