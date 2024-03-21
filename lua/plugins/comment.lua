@@ -8,7 +8,7 @@ function M.init()
       block = nil
     },
     opleader = {
-      line = "<leader>cc",
+      line = "<leader>c",
       block = nil
     },
     mappings = {
