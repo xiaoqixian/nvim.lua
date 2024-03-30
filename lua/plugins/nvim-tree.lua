@@ -1,5 +1,7 @@
 local M = {}
 
+local toggle_key = "E"
+
 local function smart_toggle()
   if not vim.g.is_nvim_tree_exists then
     return
@@ -42,7 +44,7 @@ local function on_attach(bufnr)
   local api = require("nvim-tree.api")
 
   -- overwrite the api.tree.open function here.
-  vim.keymap.set("n", "<leader>e", api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
+  vim.keymap.set("n", toggle_key, api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
   vim.keymap.set("n", "q", api.tree.toggle, opts("nvim-tree: close"))
   vim.keymap.set("n", "?", api.tree.toggle_help, opts("nvim-tree: help"))
   vim.keymap.set('n', 't', api.node.open.tab, opts("nvim-tree: open in new tab"))
@@ -121,13 +123,13 @@ function M.init()
     },
     update_focused_file = {
       enable = true,
-      update_root = true
+      update_root = false
     }
   })
 
   vim.g.is_nvim_tree_exists = true
   vim.g.is_nvim_tree_open = false
-  vim.keymap.set("n", "<leader>e", require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
+  vim.keymap.set("n", toggle_key, require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
   
   -- auto adjust window width to select 
   -- open aside or open float.
