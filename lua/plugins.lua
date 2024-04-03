@@ -72,7 +72,7 @@ require("lazy").setup({
 
   {
     "xiaoqixian/buffer-explorer.nvim",
-    dependencies = { 
+    dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons"
     },
@@ -164,9 +164,8 @@ require("lazy").setup({
 
   {
     "simrat39/symbols-outline.nvim",
-    init = function()
-      require("symbols-outline").setup()
-    end
+    init = require("plugins/symbols_outline").init,
+    lazy = true
   },
 
   {
