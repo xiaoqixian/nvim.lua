@@ -140,7 +140,9 @@ local function set_typst_header()
       '#text(font: "Kai", weight: "bold")[#it.term]',
       '#h(1em)',
       '#it.description',
-    ']'
+    ']',
+    '',
+    '#let term(content) = text(font: ("Kefa", "Kai"), style: "italic")[#content]'
   }
 
   local btm_line = vim.fn.line("$")
