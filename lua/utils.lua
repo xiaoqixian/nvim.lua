@@ -142,6 +142,20 @@ local function set_typst_header()
       '#it.description',
     ']',
     '',
+    '#let abstract(content) = {',
+    '  return align(center)[',
+    '    #block(outset: 20pt, width: 80%)[',
+    '      #text(16pt, weight: "bold")[Abstract]',
+    '',
+    '      #set text(10pt)',
+    '      #set align(left)',
+    '      #h(2em)',
+    '      #content',
+    '    ]',
+    '    #v(2em)',
+    '  ]',
+    '}',
+    '',
     '#let term(content) = text(font: ("Kefa", "Kai"), style: "italic")[#content]'
   }
 
