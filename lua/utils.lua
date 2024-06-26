@@ -43,7 +43,8 @@ local function set_most_file_header(extension)
     sh = "#",
     lua = "--",
     vim = '"',
-    cmake = "#"
+    cmake = "#",
+    haskell = "--"
   }
 
   local cmt_syb = cmt_syb_table[extension] or cmt_syb_table[ft] or "//"
@@ -135,6 +136,8 @@ local function set_typst_header()
     '#set list(indent: 20pt)',
     '#set enum(indent: 20pt)',
     '#set math.equation(numbering: "(1)")',
+    '#show par: set block(spacing: 1.5em)',
+    '#set par(leading: 1em)',
     '',
     '#show terms.item: it => [',
       '#text(font: "Kai", weight: "bold")[#it.term]',
