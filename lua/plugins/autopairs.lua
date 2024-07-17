@@ -114,8 +114,8 @@ function M.init()
       :with_del(cond.done())
       :with_move(function(opts)
         local col = vim.fn.col(".")
-        local prev_char = opts.line:sub(col-1, col-1)
-        if prev_char == "<" or prev_char == ">" then
+        local next_char = opts.line:sub(col, col)
+        if next_char == ">" then
           return true
         else return false
         end
@@ -124,58 +124,63 @@ function M.init()
     Rule("$", "$", "typst")
       :use_key("$")
       :with_del(cond.done())
+      :with_move(cond.done()),
+
+    Rule("```", "```", "typst")
+      :use_key("`")
+      :with_del(cond.done())
       :with_move(cond.done())
   })
 
   -- add rules for add space between brackets.
-  -- local brackets = { { '(', ')' }, { '[', ']' }, { '{', '}' } }
-  -- ap.add_rules {
-  --   -- Rule for a pair with left-side ' ' and right side ' '
-  --   Rule(' ', ' ')
-  --     :with_pair(cond.done())
-  --     :replace_endpair(function(opts)
-  --         local pair = opts.line:sub(opts.col - 1, opts.col)
-  --         if vim.tbl_contains({ "()", "{}", "[]" }, pair) then
-  --             return " " -- it return space here
-  --         end
-  --         return ""-- return empty
-  --     end)
-  --     -- Pair will only occur if the conditional function returns true
-  --     -- :with_pair(function(opts)
-  --     --   -- We are checking if we are inserting a space in (), [], or {}
-  --     --   local pair = opts.line:sub(opts.col - 1, opts.col)
-  --     --   return vim.tbl_contains({
-  --     --     brackets[1][1] .. brackets[1][2],
-  --     --     brackets[2][1] .. brackets[2][2],
-  --     --     brackets[3][1] .. brackets[3][2]
-  --     --   }, pair)
-  --     -- end)
-  --     :with_move(cond.done())
-  --     :with_cr(cond.none())
-  --     -- We only want to delete the pair of spaces when the cursor is as such: ( | )
-  --     :with_del(function(opts)
-  --       local col = vim.api.nvim_win_get_cursor(0)[2]
-  --       local context = opts.line:sub(col - 1, col + 2)
-  --       return vim.tbl_contains({
-  --         brackets[1][1] .. '  ' .. brackets[1][2],
-  --         brackets[2][1] .. '  ' .. brackets[2][2],
-  --         brackets[3][1] .. '  ' .. brackets[3][2]
-  --       }, context)
-  --     end)
-  -- }
-  -- -- For each pair of brackets we will add another rule
-  -- for _, bracket in pairs(brackets) do
-  --   ap.add_rules {
-  --     -- Each of these rules is for a pair with left-side '( ' and right-side ' )' for each bracket type
-  --     Rule(bracket[1] .. ' ', ' ' .. bracket[2])
-  --       :with_pair(cond.none())
-  --       :with_move(function(opts) return opts.char == bracket[2] end)
-  --       :with_del(cond.none())
-  --       :use_key(bracket[2])
-  --       -- Removes the trailing whitespace that can occur without this
-  --       :replace_map_cr(function(_) return '<C-c>2xi<CR><C-c>O' end)
-  --   }
-  -- end
+  local brackets = { { '(', ')' }, { '[', ']' }, { '{', '}' } }
+  ap.add_rules {
+    -- Rule for a pair with left-side ' ' and right side ' '
+    Rule(' ', ' ')
+      :with_pair(cond.done())
+      :replace_endpair(function(opts)
+          local pair = opts.line:sub(opts.col - 1, opts.col)
+          if vim.tbl_contains({ "()", "{}", "[]" }, pair) then
+              return " " -- it return space here
+          end
+          return ""-- return empty
+      end)
+      -- Pair will only occur if the conditional function returns true
+      -- :with_pair(function(opts)
+      --   -- We are checking if we are inserting a space in (), [], or {}
+      --   local pair = opts.line:sub(opts.col - 1, opts.col)
+      --   return vim.tbl_contains({
+      --     brackets[1][1] .. brackets[1][2],
+      --     brackets[2][1] .. brackets[2][2],
+      --     brackets[3][1] .. brackets[3][2]
+      --   }, pair)
+      -- end)
+      :with_move(cond.done())
+      :with_cr(cond.none())
+      -- We only want to delete the pair of spaces when the cursor is as such: ( | )
+      :with_del(function(opts)
+        local col = vim.api.nvim_win_get_cursor(0)[2]
+        local context = opts.line:sub(col - 1, col + 2)
+        return vim.tbl_contains({
+          brackets[1][1] .. '  ' .. brackets[1][2],
+          brackets[2][1] .. '  ' .. brackets[2][2],
+          brackets[3][1] .. '  ' .. brackets[3][2]
+        }, context)
+      end)
+  }
+  -- For each pair of brackets we will add another rule
+  for _, bracket in pairs(brackets) do
+    ap.add_rules {
+      -- Each of these rules is for a pair with left-side '( ' and right-side ' )' for each bracket type
+      Rule(bracket[1] .. ' ', ' ' .. bracket[2])
+        :with_pair(cond.none())
+        :with_move(function(opts) return opts.char == bracket[2] end)
+        :with_del(cond.none())
+        :use_key(bracket[2])
+        -- Removes the trailing whitespace that can occur without this
+        :replace_map_cr(function(_) return '<C-c>2xi<CR><C-c>O' end)
+    }
+  end
   --
   -- add rule for html files
   ap.add_rules({
@@ -187,7 +192,7 @@ function M.init()
           return ""
         end
 
-        local _, _, tag = before:find(".*<(.-)$")
+        local _, _, tag = before:find(".*<(%S+)[^<]*$")
         assert(tag)
         -- vim.cmd(string.format("echoerr '%s'", tag))
         return string.format("</%s>", tag)
@@ -196,7 +201,7 @@ function M.init()
       :with_move(cond.done())
   })
 
-  vim.keymap.set("i", " ", add_space_between, opts("add space between brackets"))
+  -- vim.keymap.set("i", " ", add_space_between, opts("add space between brackets"))
 end
 
 return M
