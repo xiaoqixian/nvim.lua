@@ -1,40 +1,37 @@
 local M = {}
-local opts = require("utils").keymap_opts
-local echoerr = require("utils").echoerr
 
-local function add_space_between()
-  local col = vim.fn.col(".")
-  local line = vim.api.nvim_get_current_line()
-
-  vim.api.nvim_put({" "}, "c", false, true)
-
-  if col == 1 then
-    return
-  end
-
-  local sub = line:sub(col-1, col)
-
-  local brackets = { "{}", "()", "[]"}
-  for _, b in ipairs(brackets) do
-    if sub == b then
-      vim.api.nvim_put({" "}, "c", false, false)
-    end
-  end
-
-end
+-- local function add_space_between()
+--   local col = vim.fn.col(".")
+--   local line = vim.api.nvim_get_current_line()
+--
+--   vim.api.nvim_put({" "}, "c", false, true)
+--
+--   if col == 1 then
+--     return
+--   end
+--
+--   local sub = line:sub(col-1, col)
+--
+--   local brackets = { "{}", "()", "[]"}
+--   for _, b in ipairs(brackets) do
+--     if sub == b then
+--       vim.api.nvim_put({" "}, "c", false, false)
+--     end
+--   end
+--
+-- end
 
 function M.init()
   local ap = require("nvim-autopairs")
   local Rule = require("nvim-autopairs.rule")
   local cond = require("nvim-autopairs.conds")
-  local utils = require("nvim-autopairs.utils")
 
   ap.setup({
     enable_abbr = true
   })
-  
+
   ap.get_rules("{")[1].not_filetypes = { "cpp", "c" }
-  
+
   ap.add_rules({
     Rule("{", "}", "c")
       :replace_endpair(function(opts)
@@ -72,7 +69,7 @@ function M.init()
     ,
 
     Rule("<", ">", "cpp")
-      :replace_endpair(function(opts) 
+      :replace_endpair(function(opts)
         local col = vim.fn.col(".")
         local before = opts.line:sub(1, col-1)
 
@@ -83,7 +80,7 @@ function M.init()
         -- to avoid auto-pairing < and << symbols.
         elseif before:match("%s+<*$") then
           return ""
-        else 
+        else
           return ">"
         end
       end)
@@ -106,7 +103,7 @@ function M.init()
 
         if before:match("%s+$") then
           return ""
-        else 
+        else
           return ">"
         end
       end)
@@ -120,6 +117,19 @@ function M.init()
         else return false
         end
       end),
+
+    Rule("{", "}", "rust")
+      :replace_endpair(function(opts)
+        local _, _, cap = opts.line:find("^%s*use%s+([^{]+)[^;]$")
+        if cap then
+          return "};"
+        else return "}"
+        end
+      end)
+      :use_key("{")
+      :with_del(cond.done())
+      :with_move(cond.done())
+    ,
 
     Rule("$", "$", "typst")
       :use_key("$")
