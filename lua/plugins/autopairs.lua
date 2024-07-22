@@ -101,7 +101,7 @@ function M.init()
         local col = vim.fn.col(".")
         local before = opts.line:sub(1, col)
 
-        if before:match("%s+$") then
+        if before:match("%s+$") or before:match("<$") then
           return ""
         else
           return ">"
