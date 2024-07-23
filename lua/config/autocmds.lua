@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 -- Tabwidth by file
 -- default by 4
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "lua", "json", "vim", "xml", "html", "css", "typst" },
+  pattern = { "lua", "json", "vim", "xml", "html", "css", "typst", "haskell" },
   callback = function()
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2
@@ -53,7 +53,9 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWinLeave", {
   pattern = "?*",
   callback = function()
-    vim.cmd("mkview")
+    if vim.fn.expand("%") ~= "" then
+      vim.cmd("mkview")
+    end
   end
 })
 vim.api.nvim_create_autocmd("BufWinEnter", {
