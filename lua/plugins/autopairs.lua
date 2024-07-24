@@ -131,7 +131,17 @@ function M.init()
       :with_move(cond.done())
     ,
 
-    Rule("'", "", "rust"),
+    Rule("'", "", "rust")
+      :use_key("'")
+      :with_del(cond.none())
+      :with_move(cond.none())
+    ,
+
+    Rule("|", "|", "rust")
+      :use_key("|")
+      :with_del(cond.done())
+      :with_move(cond.done())
+    ,
 
     Rule("$", "$", "typst")
       :use_key("$")
