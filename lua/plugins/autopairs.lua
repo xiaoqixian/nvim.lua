@@ -1,4 +1,5 @@
 local M = {}
+local utils = require("utils")
 
 -- local function add_space_between()
 --   local col = vim.fn.col(".")
@@ -120,11 +121,25 @@ function M.init()
 
     Rule("{", "}", "rust")
       :replace_endpair(function(opts)
-        local _, _, cap = opts.line:find("^%s*use%s+([^{]+)[^;]$")
-        if cap then
-          return "};"
-        else return "}"
+        local ret_to_pats = {
+          ["};"] = {
+            -- match `};` for the outermost brace of the use expression,
+            -- i.e., use std::{io, fmt};
+            "^%s*use%s+([^{]+)[^;]$",
+            -- match `};` for the lambda function declaration,
+            -- i.e., let noop = || {};
+            "^%s*let%s+([_a-z][_a-z0-9]*)%s*=%s*|.*|[^{]*"
+          }
+        }
+
+        for ret, pats in pairs(ret_to_pats) do
+          for _, pat in ipairs(pats) do
+            if opts.line:find(pat) ~= nil then
+              return ret
+            end
+          end
         end
+        return "}"
       end)
       :use_key("{")
       :with_del(cond.done())
