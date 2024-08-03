@@ -23,6 +23,7 @@ local highlights_by_profile = {
     'hi TabLine ctermfg=7 ctermbg=none cterm=none',
     'hi! SignColumn ctermbg=none',
     'hi Comment ctermfg=101',
+    'hi FloatBorder ctermbg=none'
   }
 }
 
