@@ -130,7 +130,7 @@ function M.init()
   vim.g.is_nvim_tree_exists = true
   vim.g.is_nvim_tree_open = false
   vim.keymap.set("n", toggle_key, require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
-  
+ 
   -- auto adjust window width to select 
   -- open aside or open float.
   vim.api.nvim_create_autocmd("VimResized", {
@@ -143,4 +143,3 @@ function M.init()
 end
 
 return M
-

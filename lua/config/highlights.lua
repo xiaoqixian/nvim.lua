@@ -40,17 +40,13 @@ if vim.g.nvim_cmp_exists then
   vim.cmd('hi CmpItemKindTest ctermfg=3 ctermbg=none')
 end
 
--- filetype wise highlighting
-local ft = string.lower(vim.bo.filetype)
-if ft == "python" then
-  python_hl()
-end
 
-local function python_hl()
-  -- Self is a new hl group
-  vim.cmd("syn keyword Self self")
-  vim.cmd("syn keyword Number None")
-  vim.cmd("syn keyword Number True")
-  vim.cmd("syn keyword Number False")
-  vim.api.nvim_set_hl(0, "Self", { ctermfg = 3, italic = true })
-end
+-- local function python_hl()
+--   -- Self is a new hl group
+-- end
+-- -- filetype wise highlighting
+-- local ft = string.lower(vim.bo.filetype)
+-- if ft == "python" then
+--   fuck()
+--   python_hl()
+-- end

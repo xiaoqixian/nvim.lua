@@ -1,6 +1,7 @@
 -- nvim-cmp config file
 local M = {}
 
+
 local has_words_before = function()
   unpack = unpack or table.unpack
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -94,7 +95,8 @@ function M.init()
         ellipsis_char = "...",
         show_labelDetails = true
       })
-    }
+    },
+    preselect = cmp.PreselectMode.None
   })
 
   -- Set configuration for specific filetype.

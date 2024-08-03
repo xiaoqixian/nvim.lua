@@ -26,6 +26,8 @@
         "/Users/lunar/.local/share/nvim/lazy/FTerm.nvim/lua",
         "/Users/lunar/.local/share/nvim/lazy/nvim-cmp/lua",
         "/Users/lunar/.config/nvim/lua",
+        "${3rd}/luv/library",
         "${3rd}/luv/library"
-    ]
+    ],
+    "workspace.checkThirdParty": false
 }

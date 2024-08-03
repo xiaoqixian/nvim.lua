@@ -47,13 +47,36 @@ function M.init()
   local servers = { 'rust_analyzer', 'pyright', 'tsserver', "cmake" }
  
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
-  for _, lsp in ipairs(servers) do
-    lspconfig[lsp].setup {
+  for _, lang in ipairs(servers) do
+    lspconfig[lang].setup {
       -- on_attach = my_custom_on_attach,
       capabilities = capabilities,
       handlers = handlers
     }
   end
+
+  --- set gopls
+  lspconfig['gopls'].setup{
+    cmd = {'gopls'},
+    -- on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+      gopls = {
+        experimentalPostfixCompletions = true,
+        analyses = {
+          unusedparams = true,
+          shadow = true,
+        },
+        staticcheck = true,
+      },
+    },
+    init_options = {
+      usePlaceholders = true,
+    },
+    handlers = handlers
+  }
+
+  -- set clangd
 
   capabilities.semanticTokensProvider = nil
 
@@ -72,6 +95,7 @@ function M.init()
   -- vim.cmd(("echoerr '%s'"):format(root_dir))
 
   if is_single_file then
+    vim.cmd(("echo '%s'"):format("you are in single file mode"))
     lspconfig.clangd.setup {
       capabilities = capabilities,
       cmd = {
@@ -82,6 +106,7 @@ function M.init()
       single_file_support = true
     }
   else 
+    vim.cmd(("echo '%s'"):format(("you are in work space mode, root_dir = %s"):format(root_dir)))
     lspconfig.clangd.setup {
       capabilities = capabilities,
       handlers = handlers,

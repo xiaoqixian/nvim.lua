@@ -17,7 +17,7 @@ require("lazy").setup({
   },
 
   {
-    "numToStr/FTerm.nvim",
+    "xiaoqixian/fterm.nvim",
     lazy = true,
     init = require("plugins/fterm").init,
     -- enabled = false
@@ -192,6 +192,21 @@ require("lazy").setup({
 
   {
     "charlespascoe/vim-go-syntax"
+  },
+ 
+  {
+    'mrcjkb/haskell-tools.nvim',
+    version = '^3', -- Recommended
+    lazy = false, -- This plugin is already lazy
+  },
+
+  {
+    'numirias/semshi',
+    ft = { "python" },
+    config = function()
+      vim.cmd("UpdateRemotePlugins")
+    end,
+    enabled = false
   }
 }, {
   install = {
