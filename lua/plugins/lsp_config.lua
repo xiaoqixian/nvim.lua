@@ -41,11 +41,12 @@ function M.init()
   -- LSP settings (for overriding per client)
   local handlers =  {
     ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
+    -- ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
   }
 
   local servers = { 'rust_analyzer', 'pyright', 'tsserver', "cmake" }
- 
+
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
   for _, lang in ipairs(servers) do
     lspconfig[lang].setup {
@@ -95,7 +96,7 @@ function M.init()
   -- vim.cmd(("echoerr '%s'"):format(root_dir))
 
   if is_single_file then
-    vim.cmd(("echo '%s'"):format("you are in single file mode"))
+    -- vim.cmd(("echo '%s'"):format("you are in single file mode"))
     lspconfig.clangd.setup {
       capabilities = capabilities,
       cmd = {
@@ -105,8 +106,8 @@ function M.init()
       handlers = handlers,
       single_file_support = true
     }
-  else 
-    vim.cmd(("echo '%s'"):format(("you are in work space mode, root_dir = %s"):format(root_dir)))
+  else
+    -- vim.cmd(("echo '%s'"):format(("you are in work space mode, root_dir = %s"):format(root_dir)))
     lspconfig.clangd.setup {
       capabilities = capabilities,
       handlers = handlers,
