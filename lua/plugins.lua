@@ -10,6 +10,18 @@ require("lazy").setup({
   },
 
   {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      local configs = require("nvim-treesitter.configs")
+      configs.setup({
+        ensure_installed = { "rust", "markdown" },
+        highlight = { enable = true }
+      })
+    end
+  },
+
+  {
     "numToStr/Comment.nvim",
     lazy = false,
     init = require("plugins/comment").init,
@@ -193,7 +205,7 @@ require("lazy").setup({
   {
     "charlespascoe/vim-go-syntax"
   },
- 
+
   {
     'mrcjkb/haskell-tools.nvim',
     version = '^3', -- Recommended
