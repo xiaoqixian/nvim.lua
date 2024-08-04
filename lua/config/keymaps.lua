@@ -13,6 +13,7 @@ vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts("copy to clipboard"))
 
 vim.keymap.set("", "<ScrollWheelUp>", "2k", opts("move cursor up with mouse scroll"))
 vim.keymap.set("", "<ScrollWheelDown>", "2j", opts("move cursor down with mouse scroll"))
+vim.keymap.set("i", "<LeftMouse>", "<Nop>", opts("disable mouse left click in insert mode"))
 
 -- map cursor moving between windows to 
 -- the coresspoding uppercase letters.
