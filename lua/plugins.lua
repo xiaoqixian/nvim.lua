@@ -21,7 +21,8 @@ require("lazy").setup({
           "go", "cpp", "c", "lua", "python", "java",
           "javascript", "typescript", "typst", "zig"
         },
-        highlight = { enable = true }
+        highlight = { enable = true },
+        disable = { "vue" }
       })
     end
   },
