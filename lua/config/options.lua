@@ -23,4 +23,4 @@ vim.opt.timeoutlen = 500
 
 vim.opt.updatetime = 500
 
-vim.opt.mouse = ""
+vim.opt.mouse = "nvic"
