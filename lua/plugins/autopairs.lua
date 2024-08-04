@@ -221,7 +221,7 @@ function M.init()
   --
   -- add rule for html files
   ap.add_rules({
-    Rule(">", "", "html")
+    Rule(">", "", {"html", "vue"})
       :use_key(">")
       :replace_endpair(function(opts)
         local before = opts.line:sub(1, vim.fn.col(".")-1)
