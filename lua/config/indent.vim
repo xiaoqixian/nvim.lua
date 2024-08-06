@@ -49,8 +49,8 @@ function! CustomTypstIndent()
   let l:pline = getline(l:pline_num)
   let l:pindent = indent(l:pline_num)
 
-  if l:pline =~# '^.*[[({]$'
-    if l:cline =~# '^.*[])}]$'
+  if l:pline =~# '[[({]$'
+    if l:cline =~# '[])}]$'
       return l:pindent
     else 
       return l:pindent + &shiftwidth
@@ -58,9 +58,32 @@ function! CustomTypstIndent()
   else
     return l:pindent
   endif
-
 endfunction
 
-autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
+function! CustomPythonIndent()
+  let l:cline_num = line('.')
+  let l:cline = getline(l:cline_num)
+  let l:pline_num = prevnonblank(l:cline_num - 1)
+  let l:pline = getline(l:pline_num)
+  let l:pindent = indent(l:pline_num)
 
+  " if the last line is an open parenthesis 
+  " or brackets
+  if l:pline =~# '[[({]$'
+    if l:cline =~# '[])}]$'
+      return l:pindent
+    else 
+      return l:pindent + &shiftwidth
+    endif
+  " if the last line ends with :
+  elseif l:pline =~# ':$'
+    return l:pindent + &shiftwidth
+  else
+    return l:pindent
+  endif
+endfunction
+
+" I tried to use au FileType, but it's not triggered.
+autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
 autocmd BufEnter *.typ setlocal indentexpr=CustomTypstIndent()
+autocmd BufEnter *.py setlocal indentexpr=CustomPythonIndent()
