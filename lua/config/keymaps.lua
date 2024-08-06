@@ -8,6 +8,8 @@ vim.keymap.set("i", "jj", "<ESC>", opts("escape insert"))
 
 vim.keymap.set("n", "<space>", "<C-w>w", opts("jump between windows"))
 
+vim.keymap.set("n", "U", "<C-r>", opts("map U to undo undo"))
+
 -- map <leader>c to copying things into the clipboard.
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts("copy to clipboard"))
 
