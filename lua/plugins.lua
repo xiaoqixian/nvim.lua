@@ -23,7 +23,7 @@ require("lazy").setup({
         },
         highlight = {
          enable = true,
-         disable = { "vue" }
+         disable = { "vue", "json", "css", "html" }
         },
       })
     end

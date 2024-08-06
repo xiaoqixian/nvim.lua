@@ -230,9 +230,11 @@ function M.init()
         end
 
         local _, _, tag = before:find(".*<(%S+)[^<]*$")
-        assert(tag)
-        -- vim.cmd(string.format("echoerr '%s'", tag))
-        return string.format("</%s>", tag)
+        if tag ~= nil then
+          return string.format("</%s>", tag)
+        else
+          return ""
+        end
       end)
       :with_del(cond.done())
       :with_move(cond.done())
