@@ -76,8 +76,18 @@ function! CustomPythonIndent()
       return l:pindent + &shiftwidth
     endif
   " if the last line ends with :
-  elseif l:pline =~# ':$'
+  elseif l:pline =~# ':\s*$'
     return l:pindent + &shiftwidth
+  elseif l:pline =~# 'pass\s*$'
+    return max([0, l:pindent - &shiftwidth])
+  elseif l:pline =~# 'continue\s*$'
+    return max([0, l:pindent - &shiftwidth])
+  elseif l:pline =~# 'break\s*$'
+    return max([0, l:pindent - &shiftwidth])
+  elseif l:pline =~# '^\s\+return[^\S]*'
+    return max([0, l:pindent - &shiftwidth])
+  elseif l:pline =~# '^\s\+raise\s\+'
+    return max([0, l:pindent - &shiftwidth])
   else
     return l:pindent
   endif

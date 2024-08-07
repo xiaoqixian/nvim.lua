@@ -159,11 +159,16 @@ require("lazy").setup({
     name = "catppuccin",
     priority = 1000,
     enabled = function()
-      return os.getenv("ITERM_PROFILE") == "catppuccin-mocha"
+      local profile = os.getenv("ITERM_PROFILE")
+      if profile == nil then
+        return false
+      end
+      local i = profile:find("catppuccin")
+      return i ~= nil
     end,
     lazy = false,
     init = function()
-      vim.cmd("colorscheme catppuccin-mocha")
+      vim.cmd(("colorscheme %s"):format(os.getenv("ITERM_PROFILE")))
     end
   },
 

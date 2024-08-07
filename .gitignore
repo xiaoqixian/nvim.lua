@@ -7,3 +7,5 @@ foo.*
 *.log
 data
 lazy-lock.json
+compile_flags.txt
+.DS_Store
