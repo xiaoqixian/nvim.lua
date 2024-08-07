@@ -6,7 +6,8 @@ local function get_theme()
   local theme_by_profile = {
     solid = "material",
     gruvbox = "gruvbox_dark",
-    ["catppuccin-mocha"] = "catppuccin"
+    ["catppuccin-mocha"] = "catppuccin",
+    latte = "ayu_light"
   }
   local customizations = {
     solid = {
@@ -24,11 +25,16 @@ local function get_theme()
       command = {
         a = { bg = "#d2859a" }
       }
+    },
+    latte = {
+      normal = {
+        a = { bg = "#87afff" }
+      }
     }
   }
 
   local profile = os.getenv("ITERM_PROFILE")
-  local theme = theme_by_profile[profile] or "material"
+  local theme = profile and theme_by_profile[profile] or "material"
   local lualine_theme = require("lualine.themes." .. theme)
   utils.deep_merge(lualine_theme, customizations[profile])
 
