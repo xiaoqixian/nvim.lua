@@ -188,6 +188,14 @@ require("lazy").setup({
   },
 
   {
+    'brenoprata10/nvim-highlight-colors',
+    init = function()
+      require('nvim-highlight-colors').setup({})
+    end,
+    enabled = false
+  },
+
+  {
     "simrat39/symbols-outline.nvim",
     init = require("plugins/symbols_outline").init,
     lazy = true
