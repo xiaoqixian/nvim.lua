@@ -70,6 +70,15 @@ local function on_attach(bufnr)
   vim.keymap.set("n", "D", api.fs.remove, opts("nvim-tree: rm file"))
   vim.keymap.set("n", "x", api.fs.cut, opts("nvim-tree: cut file"))
   vim.keymap.set("n", "r", api.fs.rename, opts("nvim-tree: rename node"))
+
+  -- macOS only
+  if vim.loop.os_uname().sysname == "Darwin" then
+    vim.keymap.set("n", "o", function(node, ...)
+      local lib = require("nvim-tree.lib")
+      node = node or lib.get_node_at_cursor()
+      vim.fn.jobstart({"open", node.absolute_path}, {detach = true})
+    end, opts("nvim-tree: open a node using macOS built-in open cmd"))
+  end
 end
 
 local function get_float_view_config()
