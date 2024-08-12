@@ -13,7 +13,6 @@ local highlights_by_profile = {
     'hi TabLineSel ctermfg=225 ctermbg=none',
     'hi TabLine ctermfg=255 ctermbg=none cterm=none',
     'hi! SignColumn ctermbg=none',
-    'hi ErrorMsg ctermfg=224 ctermbg=204',
     'hi CursorLine ctermfg=0 ctermbg=111'
   },
   gruvbox = {
@@ -41,6 +40,9 @@ local highlights_by_profile = {
     'hi Folded ctermfg=255 ctermbg=243'
   }
 }
+
+-- universal ErrorMsg highlight
+vim.cmd("hi ErrorMsg ctermfg=231 ctermbg=204")
 
 local highlights = highlights_by_profile[profile] or {}
 for _, hl in ipairs(highlights) do
