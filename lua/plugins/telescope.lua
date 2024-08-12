@@ -25,10 +25,12 @@ local function set_keymaps()
 
   map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", opts("telescope find files"))
 
-  map("n", "<leader>lg", "<cmd>Telescope live_grep<CR>", opts("telescope live grep"))
+  map("n", "F", "<cmd>Telescope live_grep<CR>", opts("telescope live grep"))
+
+  map("n", "f", builtin.resume, opts("resume telescope window"))
 end
 
-function M.init() 
+function M.init()
   local actions = require("telescope.actions")
 
   require("telescope").setup({
