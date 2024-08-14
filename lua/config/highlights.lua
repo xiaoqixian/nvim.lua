@@ -37,7 +37,8 @@ local highlights_by_profile = {
     'hi Comment ctermfg=249 ctermbg=none',
     'hi MatchParen ctermfg=255 ctermbg=103',
     'hi Visual ctermfg=none ctermbg=253',
-    'hi Folded ctermfg=255 ctermbg=243'
+    'hi Folded ctermfg=255 ctermbg=243',
+    'hi NormalFloat ctermbg=none'
   }
 }
 
