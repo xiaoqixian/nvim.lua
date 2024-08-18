@@ -44,6 +44,7 @@ local highlights_by_profile = {
 
 -- universal ErrorMsg highlight
 vim.cmd("hi ErrorMsg ctermfg=231 ctermbg=204")
+vim.cmd("hi FloatBorder ctermbg=none")
 
 local highlights = highlights_by_profile[profile] or {}
 for _, hl in ipairs(highlights) do
