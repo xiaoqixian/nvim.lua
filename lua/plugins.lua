@@ -240,6 +240,13 @@ require("lazy").setup({
       vim.cmd("UpdateRemotePlugins")
     end,
     enabled = false
+  },
+
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = "markdown",
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
+    init = require("plugins/render-markdown").init
   }
 }, {
   install = {
