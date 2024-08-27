@@ -11,7 +11,7 @@ vim.opt.wrap = true
 -- use number of spaces to insert a <Tab>
 vim.opt.expandtab = true
 
-vim.opt.guicursor = ""
+vim.opt.guicursor = "n-v-c-i:block"
 
 -- set line break
 vim.opt.lbr = true
