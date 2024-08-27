@@ -5,17 +5,17 @@ function M.echoerr(msg)
 end
 
 function M.deep_merge(t1, t2)
-  function deep_merge_impl(t1, t2)
-    for k, v in pairs(t2) do 
-      if type(v) == "table" and t1[k] ~= nil then 
-        deep_merge_impl(t1[k], v)
-      else 
-        t1[k] = v
+  local function deep_merge_impl(ot1, ot2)
+    for k, v in pairs(ot2) do
+      if type(v) == "table" and ot1[k] ~= nil then
+        deep_merge_impl(ot1[k], v)
+      else
+        ot1[k] = v
       end
     end
   end
 
-  if type(t2) ~= "table" then 
+  if type(t2) ~= "table" then
     return
   end
 
@@ -23,7 +23,7 @@ function M.deep_merge(t1, t2)
   deep_merge_impl(t1, t2)
 end
 
-local function index(list, target) 
+local function index(list, target)
   for i, elem in ipairs(list) do
     if elem == target then
       return i
@@ -32,11 +32,11 @@ local function index(list, target)
   return 0
 end
 
-local function contains(list, target) 
+local function contains(list, target)
   return index(list, target) > 0
 end
 
-local function set_most_file_header(extension) 
+local function set_most_file_header(extension)
   local ft = vim.bo.filetype
   local cmt_syb_table = {
     py = "#",
@@ -66,7 +66,7 @@ end
 
 -- set C-family header file header
 local function set_cheader_header(extension)
-  local macro_name = string.format("_%s_%s", 
+  local macro_name = string.format("_%s_%s",
     string.upper(vim.fn.expand("%:t:r")),
     string.upper(extension))
 
@@ -84,7 +84,7 @@ local function set_cheader_header(extension)
   vim.cmd.normal("Gkk")
 end
 
-local function set_typst_header() 
+local function set_typst_header()
   local lines = {
     '#let title(content) = {',
     '  return align(center)[',
@@ -168,7 +168,7 @@ end
 
 function M.set_file_header()
   local extension = vim.fn.expand("%:e")
-  local escape_extensions = { 
+  local escape_extensions = {
     "", "md", "json", "css", "html", "txt", "toml", "yml", "xml", "yaml",
   }
 
@@ -206,14 +206,14 @@ function M.stop_cpp_access_indent()
 
   if not flag then
     vim.api.nvim_put({ ":" }, "c", false, true)
-  else 
+  else
     local new_line, _ = curr_line:gsub(" ", "", vim.bo.shiftwidth)
     vim.api.nvim_set_current_line(new_line)
   end
 
 end
 
-function M.keymap_opts(desc, extra_opts) 
+function M.keymap_opts(desc, extra_opts)
   local opts = {
     desc = desc,
     noremap = true,
@@ -222,12 +222,34 @@ function M.keymap_opts(desc, extra_opts)
   }
 
   if type(extra_opts) == "table" then
-    for k, v in pairs(extra_opts) do 
+    for k, v in pairs(extra_opts) do
       opts[k] = v
     end
   end
 
   return opts
+end
+
+---@return string
+function M.colorscheme_by_profile()
+  local profile = os.getenv("ITERM_PROFILE")
+  if profile == nil then
+    return "default"
+  end
+
+  local profile_theme = {
+    gruvbox = "gruvbox",
+    ["catppuccin-mocha"] = "catppuccin-mocha",
+    latte = "rose-pine"
+  }
+
+  return profile_theme[profile] or "default"
+end
+
+---@param colorscheme string
+---@return boolean
+function M.enable_colorscheme(colorscheme)
+  return M.colorscheme_by_profile() == colorscheme
 end
 
 return M

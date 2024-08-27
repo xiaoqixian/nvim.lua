@@ -1,12 +1,8 @@
 -- This file can be loaded by calling `lua require("plugins")` from your init.vim
 
-local profile = os.getenv("ITERM_PROFILE")
-local profile_theme = {
-  gruvbox = "gruvbox",
-  ["catppuccin-mocha"] = "catppuccin-mocha",
-  latte = "rose-pine"
-}
-local lazy_colorscheme = profile_theme[profile] or "default"
+local utils = require("utils")
+
+local lazy_colorscheme = utils.colorscheme_by_profile()
 
 require("lazy").setup({
   {
@@ -154,30 +150,16 @@ require("lazy").setup({
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = true,
-    enabled = function()
-      return os.getenv("ITERM_PROFILE") == "gruvbox"
-    end,
-    init = function()
-      vim.cmd("colorscheme gruvbox")
-    end
+    enabled = utils.enable_colorscheme("gruvbox"),
+    init = require("plugins.gruvbox").init
   },
 
   {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
-    enabled = function()
-      local profile = os.getenv("ITERM_PROFILE")
-      if profile == nil then
-        return false
-      end
-      local i = profile:find("catppuccin")
-      return i ~= nil
-    end,
-    lazy = false,
-    init = function()
-      vim.cmd(("colorscheme %s"):format(os.getenv("ITERM_PROFILE")))
-    end
+    enabled = utils.enable_colorscheme("catppuccin-mocha"),
+    init = require("plugins.catppuccin").init
   },
 
   {
@@ -190,8 +172,8 @@ require("lazy").setup({
     "Mofiqul/dracula.nvim",
     priority = 1000,
     config = true,
+    enabled = false,
     init = function()
-      require("plugins/colorscheme").init("dracula")
     end
   },
 
