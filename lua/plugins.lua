@@ -1,5 +1,13 @@
 -- This file can be loaded by calling `lua require("plugins")` from your init.vim
 
+local profile = os.getenv("ITERM_PROFILE")
+local profile_theme = {
+  gruvbox = "gruvbox",
+  ["catppuccin-mocha"] = "catppuccin-mocha",
+  latte = "rose-pine"
+}
+local lazy_colorscheme = profile_theme[profile] or "default"
+
 require("lazy").setup({
   {
     "nvim-tree/nvim-tree.lua",
@@ -254,9 +262,9 @@ require("lazy").setup({
     init = require("plugins/material").init,
     enabled = false
   },
-  
+
   {
-    { 
+    {
       "rose-pine/neovim",
       name = "rose-pine",
       init = require("plugins/rose-pine").init
@@ -265,7 +273,7 @@ require("lazy").setup({
 }, {
   install = {
     missing = true,
-    colorscheme = {}
+    colorscheme = { lazy_colorscheme }
   },
   ui = {
     border = "rounded"
