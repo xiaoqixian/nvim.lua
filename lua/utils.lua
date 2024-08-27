@@ -169,7 +169,7 @@ end
 function M.set_file_header()
   local extension = vim.fn.expand("%:e")
   local escape_extensions = { 
-    "", "md", "json", "css", "html", "txt", "toml", "yml", "xml" 
+    "", "md", "json", "css", "html", "txt", "toml", "yml", "xml", "yaml",
   }
 
   if contains(escape_extensions, extension) then
