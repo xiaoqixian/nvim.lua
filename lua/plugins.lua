@@ -247,6 +247,20 @@ require("lazy").setup({
     ft = "markdown",
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
     init = require("plugins/render-markdown").init
+  },
+
+  {
+    "marko-cerovac/material.nvim",
+    init = require("plugins/material").init,
+    enabled = false
+  },
+  
+  {
+    { 
+      "rose-pine/neovim",
+      name = "rose-pine",
+      init = require("plugins/rose-pine").init
+    }
   }
 }, {
   install = {
