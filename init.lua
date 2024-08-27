@@ -20,6 +20,7 @@ vim.opt.rtp:prepend(lazypath)
 require("config/keymaps")
 require("config/autocmds")
 require("config/indent")
+require("config/options")
 
 require("plugins")
 
@@ -27,4 +28,3 @@ require("plugins")
 
 require("config/highlights")
 require("config/machine_specific")
-require("config/options")
