@@ -24,7 +24,7 @@ function M.init()
 
       styles = {
           bold = true,
-          italic = true,
+          italic = false,
           transparency = false,
       },
 
@@ -66,16 +66,51 @@ function M.init()
           --     overlay = '#363738',
           -- },
           dawn = {
-            base = "#f7f8f2"
+            base = "#f7f8f2", -- cream white
+            love = "#c94952", -- red
+            pine = "#3364ec", -- blue
+            foam = "#759f50", -- green
           }
       },
+
+    -- 'hi PMenuSel ctermfg=255 ctermbg=103',
+    -- 'hi TabLine ctermfg=0 ctermbg=none cterm=none',
+    -- 'hi TabLineSel ctermfg=1',
+    -- 'hi TabLineFill ctermfg=none ctermbg=none cterm=none',
+    -- 'hi Search ctermfg=255 ctermbg=104',
+    -- 'hi CursorLine ctermfg=255 ctermbg=240',
+    -- 'hi CursorLineNr ctermfg=none ctermbg=188',
+    -- 'hi Comment ctermfg=249 ctermbg=none',
+    -- 'hi MatchParen ctermfg=255 ctermbg=103',
+    -- 'hi Visual ctermfg=none ctermbg=253',
+    -- 'hi Folded ctermfg=255 ctermbg=243',
+    -- 'hi NormalFloat ctermbg=none'
 
       highlight_groups = {
           -- Comment = { fg = "foam" },
           -- VertSplit = { fg = "muted", bg = "muted" },
+          String = { fg = "love" },
+          Keyword = { fg = "rose" },
+
+          ["@function"] = { fg = "pine" },
+          ["@function.method"] = { fg = "pine" },
+          ["@function.method.call"] = { fg = "pine" },
+          ["@function.macro"] = { fg = "pine" },
+
+          ["@type"] = { fg = "gold" },
+          ["@type.builtin"] = { fg = "gold", bold = false },
+          ["@module"] = { fg = "#db7cc6" }, -- magenta
+          ["@variable.builtin"] = { bold = false },
+          TabLineSel = {
+            fg = "rose",
+            bg = "none",
+            bold = true
+          },
+          Folded = { bg = "#e4e4e4" },
+          Comment = { fg = "#b2b2b2" }
       },
 
-      before_highlight = function(group, highlight, palette)
+      -- before_highlight = function(group, highlight, palette)
           -- Disable all undercurls
           -- if highlight.undercurl then
           --     highlight.undercurl = false
@@ -85,7 +120,7 @@ function M.init()
           -- if highlight.fg == palette.pine then
           --     highlight.fg = palette.foam
           -- end
-      end,
+      -- end,
   })
 
   vim.cmd("colorscheme rose-pine")

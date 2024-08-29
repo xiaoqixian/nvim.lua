@@ -27,18 +27,6 @@ local highlights_by_profile = {
   },
 
   latte = {
-    'hi PMenuSel ctermfg=255 ctermbg=103',
-    'hi TabLine ctermfg=0 ctermbg=none cterm=none',
-    'hi TabLineSel ctermfg=1',
-    'hi TabLineFill ctermfg=none ctermbg=none cterm=none',
-    'hi Search ctermfg=255 ctermbg=104',
-    'hi CursorLine ctermfg=255 ctermbg=240',
-    'hi CursorLineNr ctermfg=none ctermbg=188',
-    'hi Comment ctermfg=249 ctermbg=none',
-    'hi MatchParen ctermfg=255 ctermbg=103',
-    'hi Visual ctermfg=none ctermbg=253',
-    'hi Folded ctermfg=255 ctermbg=243',
-    'hi NormalFloat ctermbg=none'
   }
 }
 

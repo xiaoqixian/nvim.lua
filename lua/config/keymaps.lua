@@ -17,6 +17,9 @@ vim.keymap.set("", "<ScrollWheelUp>", "2k", opts("move cursor up with mouse scro
 vim.keymap.set("", "<ScrollWheelDown>", "2j", opts("move cursor down with mouse scroll"))
 vim.keymap.set("i", "<LeftMouse>", "<Nop>", opts("disable mouse left click in insert mode"))
 
+-- temporary
+vim.keymap.set("n", "I", ":Inspect<CR>", opts("check hl group under cursor"))
+
 -- map cursor moving between windows to 
 -- the coresspoding uppercase letters.
 vim.keymap.set("n", "H", "<C-w>h", opts("go to upper window"))
