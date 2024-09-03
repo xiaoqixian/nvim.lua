@@ -97,7 +97,7 @@ function M.init()
       end)
       ,
 
-    Rule("<", ">", "rust")
+    Rule("<", ">", {"rust", "typescript"})
       :replace_endpair(function(opts)
         local col = vim.fn.col(".")
         local before = opts.line:sub(1, col)
