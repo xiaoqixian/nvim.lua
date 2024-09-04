@@ -100,7 +100,7 @@ function M.init()
     Rule("<", ">", {"rust", "typescript"})
       :replace_endpair(function(opts)
         local col = vim.fn.col(".")
-        local before = opts.line:sub(1, col)
+        local before = opts.line:sub(1, col-1)
 
         if before:match("%s+$") or before:match("<$") then
           return ""
