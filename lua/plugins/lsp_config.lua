@@ -79,46 +79,46 @@ function M.init()
 
   -- set clangd
 
-  capabilities.semanticTokensProvider = nil
-  lspconfig.clangd.setup({
-    capabilities = capabilities,
-    handlers = handlers,
-    single_file_support = true
-  })
+  -- capabilities.semanticTokensProvider = nil
+  -- lspconfig.clangd.setup({
+  --   capabilities = capabilities,
+  --   handlers = handlers,
+  --   single_file_support = true
+  -- })
 
-  -- local root_files = {
-  --   '.clangd',
-  --   '.clang-tidy',
-  --   '.clang-format',
-  --   'compile_commands.json',
-  --   'compile_flags.txt',
-  --   'configure.ac', -- AutoTools
-  -- }
-  -- local util = require("lspconfig.util")
-  -- local fname = vim.api.nvim_buf_get_name(vim.fn.bufnr())
-  -- local root_dir = util.root_pattern(unpack(root_files))(fname)
-  -- local is_single_file = root_dir == nil
-  -- -- vim.cmd(("echoerr '%s'"):format(root_dir))
-  --
-  -- if is_single_file then
-  --   -- vim.cmd(("echo '%s'"):format("you are in single file mode"))
-  --   lspconfig.clangd.setup {
-  --     capabilities = capabilities,
-  --     cmd = {
-  --       "clangd",
-  --       "--compile-commands-dir=/Users/lunar/.config/nvim"
-  --     },
-  --     handlers = handlers,
-  --     single_file_support = true
-  --   }
-  -- else
-  --   -- vim.cmd(("echo '%s'"):format(("you are in work space mode, root_dir = %s"):format(root_dir)))
-  --   lspconfig.clangd.setup {
-  --     capabilities = capabilities,
-  --     handlers = handlers,
-  --     single_file_support = true
-  --   }
-  -- end
+  local root_files = {
+    '.clangd',
+    '.clang-tidy',
+    '.clang-format',
+    'compile_commands.json',
+    'compile_flags.txt',
+    'configure.ac', -- AutoTools
+  }
+  local util = require("lspconfig.util")
+  local fname = vim.api.nvim_buf_get_name(vim.fn.bufnr())
+  local root_dir = util.root_pattern(unpack(root_files))(fname)
+  local is_single_file = root_dir == nil
+  -- vim.cmd(("echoerr '%s'"):format(root_dir))
+
+  if is_single_file then
+    -- vim.cmd(("echo '%s'"):format("you are in single file mode"))
+    lspconfig.clangd.setup {
+      capabilities = capabilities,
+      cmd = {
+        "clangd",
+        "--compile-commands-dir=/Users/lunar/.config/nvim"
+      },
+      handlers = handlers,
+      single_file_support = true
+    }
+  else
+    -- vim.cmd(("echo '%s'"):format(("you are in work space mode, root_dir = %s"):format(root_dir)))
+    lspconfig.clangd.setup {
+      capabilities = capabilities,
+      handlers = handlers,
+      single_file_support = true
+    }
+  end
 
 end
 
