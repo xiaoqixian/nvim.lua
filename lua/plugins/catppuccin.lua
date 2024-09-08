@@ -8,6 +8,7 @@ function M.init()
   require("catppuccin").setup({
     custom_highlights = function(colors)
       return {
+        TabLine = { bg = "none" },
         TabLineFill = { bg = "none" },
         TabLineSel = {
           fg = colors.flamingo,

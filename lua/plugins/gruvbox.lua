@@ -7,6 +7,7 @@ local M = {}
 function M.init()
   require("gruvbox").setup({
     overrides = {
+      TabLine = { bg = "none" },
       TabLineFill = { bg = "none" },
       TabLineSel = {
         fg = "#f0bf4f",
