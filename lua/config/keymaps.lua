@@ -50,8 +50,8 @@ vim.keymap.set("n", "<leader>sh", utils.set_file_header, opts("set file header")
 
 vim.keymap.set("t", "jj", "<C-\\><C-n>", opts("escape terminal mode"))
 
-vim.keymap.set("n", "<leader><leader>", vim.diagnostic.goto_prev, opts("goto prev error"))
-vim.keymap.set("n", "<leader>.", vim.diagnostic.goto_next, opts("goto next error"))
+vim.keymap.set("n", "[", vim.diagnostic.goto_prev, opts("goto prev error"))
+vim.keymap.set("n", "]", vim.diagnostic.goto_next, opts("goto next error"))
 
 vim.keymap.set("t", "<S-Space>", "<Space>", opts("tmap S-space to space"))
 vim.keymap.set("t", "<S-Backspace>", "<Backspace>", opts("tmap S-Backspace to Backspace"))
