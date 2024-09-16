@@ -2,6 +2,17 @@ local M = {}
 
 local toggle_key = "E"
 
+-- close nvim-tree after action if nvim-tree is in 
+-- float view.
+local function float_wrap(f)
+  return function()
+    f()
+    if vim.g.is_nvim_tree_float then
+      require("nvim-tree.api").tree.close()
+    end
+  end
+end
+
 local function toggle_or_focus()
   local api = require("nvim-tree.api")
   local currentBuf = vim.api.nvim_get_current_buf()
@@ -32,14 +43,14 @@ local function on_attach(bufnr)
   vim.keymap.set("n", toggle_key, api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
   vim.keymap.set("n", "q", api.tree.toggle, opts("nvim-tree: close"))
   vim.keymap.set("n", "?", api.tree.toggle_help, opts("nvim-tree: help"))
-  vim.keymap.set('n', 't', api.node.open.tab, opts("nvim-tree: open in new tab"))
+  vim.keymap.set('n', 't', float_wrap(api.node.open.tab), opts("nvim-tree: open in new tab"))
   vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts("nvim-tree: toggle or focus"))
 
-  vim.keymap.set("n", "<CR>", api.node.open.no_window_picker, opts("nvim-tree: edit"))
-  vim.keymap.set("n", "<S-CR>", api.node.open.edit, opts("nvim-tree: edit with window picker"))
+  vim.keymap.set("n", "<CR>", float_wrap(api.node.open.no_window_picker), opts("nvim-tree: edit"))
+  vim.keymap.set("n", "<S-CR>", float_wrap(api.node.open.edit), opts("nvim-tree: edit with window picker"))
 
-  vim.keymap.set("n", "s", api.node.open.vertical, opts("nvim-tree: vertical split view"))
-  vim.keymap.set("n", "i", api.node.open.horizontal, opts("nvim-tree: horizontal split view"))
+  vim.keymap.set("n", "s", float_wrap(api.node.open.vertical), opts("nvim-tree: vertical split view"))
+  vim.keymap.set("n", "i", float_wrap(api.node.open.horizontal), opts("nvim-tree: horizontal split view"))
 
   vim.keymap.set("n", ">", function()
     api.tree.change_root_to_node()
@@ -123,6 +134,8 @@ function M.init()
 
   vim.g.is_nvim_tree_exists = true
   vim.g.is_nvim_tree_open = false
+  vim.g.is_nvim_tree_float = float_view.enable
+
   vim.keymap.set("n", toggle_key, require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
 
   -- auto adjust window width to select 
@@ -132,6 +145,7 @@ function M.init()
       local view = require("nvim-tree.view")
       local new_screen_width = vim.opt.columns:get()
       view.View.float.enable = new_screen_width <= 100
+      vim.g.is_nvim_tree_float = view.View.float.enable
     end
   })
 
