@@ -27,11 +27,7 @@ require("lazy").setup({
         },
         highlight = {
          enable = true,
-<<<<<<< HEAD
-         disable = { "vue", "json", "css", "html", "cmake" }
-=======
-         disable = { "vue", "json", "css", "html", "typst" }
->>>>>>> 21d8533 (disable typst in treesitter)
+         disable = { "vue", "json", "css", "html", "cmake", "typst" }
         },
       })
     end
