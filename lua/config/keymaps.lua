@@ -17,6 +17,10 @@ vim.keymap.set("", "<ScrollWheelUp>", "2k", opts("move cursor up with mouse scro
 vim.keymap.set("", "<ScrollWheelDown>", "2j", opts("move cursor down with mouse scroll"))
 vim.keymap.set("i", "<LeftMouse>", "<Nop>", opts("disable mouse left click in insert mode"))
 
+-- disable default goto diagnostics keymap
+vim.cmd(":unmap [d")
+vim.cmd(":unmap ]d")
+
 -- temporary
 vim.keymap.set("n", "I", ":Inspect<CR>", opts("check hl group under cursor"))
 

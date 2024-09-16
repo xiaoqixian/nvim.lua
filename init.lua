@@ -23,8 +23,14 @@ require("config/indent")
 require("config/options")
 
 require("plugins")
+-- the following map is set by the builtin plugin matchit,
+-- so I have to move the unmap command here, so the plugin 
+-- is actually loaded.
+vim.cmd(":unmap [%")
+vim.cmd(":unmap ]%")
 
 -- vim.cmd("colorscheme default")
 
 require("config/highlights")
 require("config/machine_specific")
+
