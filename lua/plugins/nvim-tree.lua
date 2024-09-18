@@ -41,31 +41,31 @@ local function on_attach(bufnr)
 
   -- overwrite the api.tree.open function here.
   vim.keymap.set("n", toggle_key, api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
-  vim.keymap.set("n", "q", api.tree.toggle, opts("nvim-tree: close"))
-  vim.keymap.set("n", "?", api.tree.toggle_help, opts("nvim-tree: help"))
-  vim.keymap.set('n', 't', float_wrap(api.node.open.tab), opts("nvim-tree: open in new tab"))
-  vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts("nvim-tree: toggle or focus"))
+  vim.keymap.set("n", "q", api.tree.toggle, opts("close"))
+  vim.keymap.set("n", "?", api.tree.toggle_help, opts("help"))
+  vim.keymap.set('n', 't', api.node.open.tab, opts("open in new tab"))
+  vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts("toggle or focus"))
 
-  vim.keymap.set("n", "<CR>", float_wrap(api.node.open.no_window_picker), opts("nvim-tree: edit"))
-  vim.keymap.set("n", "<S-CR>", float_wrap(api.node.open.edit), opts("nvim-tree: edit with window picker"))
+  vim.keymap.set("n", "<CR>", float_wrap(api.node.open.no_window_picker), opts("edit"))
+  vim.keymap.set("n", "<S-CR>", float_wrap(api.node.open.edit), opts("edit with window picker"))
 
-  vim.keymap.set("n", "s", float_wrap(api.node.open.vertical), opts("nvim-tree: vertical split view"))
-  vim.keymap.set("n", "i", float_wrap(api.node.open.horizontal), opts("nvim-tree: horizontal split view"))
+  vim.keymap.set("n", "s", float_wrap(api.node.open.vertical), opts("vertical split view"))
+  vim.keymap.set("n", "i", float_wrap(api.node.open.horizontal), opts("horizontal split view"))
 
   vim.keymap.set("n", ">", function()
     api.tree.change_root_to_node()
     vim.api.nvim_win_set_cursor(0, { 1, 0 })
-  end, opts("nvim-tree: change root to node"))
+  end, opts("change root to node"))
 
-  vim.keymap.set("n", "<", api.tree.change_root_to_parent, opts("nvim-tree: change root to node"))
+  vim.keymap.set("n", "<", api.tree.change_root_to_parent, opts("change root to node"))
 
-  vim.keymap.set("n", "a", api.fs.create, opts("nvim-tree: fs.create"))
-  vim.keymap.set("n", "y", api.fs.copy.node, opts("nvim-tree: copy node"))
-  vim.keymap.set("n", "p", api.fs.paste, opts("nvim-tree: paste node"))
-  vim.keymap.set("n", "d", api.fs.trash, opts("nvim-tree: move file to trash"))
-  vim.keymap.set("n", "D", api.fs.remove, opts("nvim-tree: rm file"))
-  vim.keymap.set("n", "x", api.fs.cut, opts("nvim-tree: cut file"))
-  vim.keymap.set("n", "r", api.fs.rename, opts("nvim-tree: rename node"))
+  vim.keymap.set("n", "a", api.fs.create, opts("fs.create"))
+  vim.keymap.set("n", "y", api.fs.copy.node, opts("copy node"))
+  vim.keymap.set("n", "p", api.fs.paste, opts("paste node"))
+  vim.keymap.set("n", "d", api.fs.trash, opts("move file to trash"))
+  vim.keymap.set("n", "D", api.fs.remove, opts("rm file"))
+  vim.keymap.set("n", "x", api.fs.cut, opts("cut file"))
+  vim.keymap.set("n", "r", api.fs.rename, opts("rename node"))
 
   -- macOS only
   if vim.loop.os_uname().sysname == "Darwin" then
@@ -73,7 +73,7 @@ local function on_attach(bufnr)
       local lib = require("nvim-tree.lib")
       node = node or lib.get_node_at_cursor()
       vim.fn.jobstart({"open", node.absolute_path}, {detach = true})
-    end, opts("nvim-tree: open a node using macOS built-in open cmd"))
+    end, opts("open a node using macOS built-in open cmd"))
   end
 end
 
