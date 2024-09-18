@@ -6,8 +6,10 @@ local toggle_key = "E"
 -- float view.
 local function float_wrap(f)
   return function()
+    local node = require("nvim-tree.lib").get_node_at_cursor()
+    local isdir = node and vim.fn.isdirectory(node.absolute_path) or true
     f()
-    if vim.g.is_nvim_tree_float then
+    if vim.g.is_nvim_tree_float and not isdir then
       require("nvim-tree.api").tree.close()
     end
   end
