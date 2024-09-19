@@ -117,7 +117,12 @@ require("lazy").setup({
 
   {
     "kaarmu/typst.vim",
-    ft = "typst"
+    ft = "typst",
+    init = function()
+      -- I don't want these mappings
+      vim.cmd(":nunmap <buffer> [[")
+      vim.cmd(":nunmap <buffer> ]]")
+    end
   },
 
   {
