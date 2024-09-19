@@ -118,16 +118,24 @@ require("lazy").setup({
   {
     "kaarmu/typst.vim",
     ft = "typst",
+<<<<<<< HEAD
     init = function()
       -- I don't want these mappings
       vim.cmd(":nunmap <buffer> [[")
       vim.cmd(":nunmap <buffer> ]]")
     end
+=======
+>>>>>>> ff9929d (remove rust.vim mappings)
   },
 
   {
     "rust-lang/rust.vim",
-    ft = "rust"
+    ft = "rust",
+    config = function()
+      -- I don't want these mappings
+      vim.cmd(":nunmap <buffer> [[")
+      vim.cmd(":nunmap <buffer> ]]")
+    end
   },
 
   {
