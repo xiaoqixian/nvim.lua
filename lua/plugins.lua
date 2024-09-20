@@ -84,13 +84,14 @@ require("lazy").setup({
     init = require("plugins/lualine").init,
     -- enabled = false
   },
-  
+
   {
     -- This is my own fork of nvim-autopairs.
     "xiaoqixian/nvim-autopairs",
     event = "InsertEnter",
     lazy = false,
     init = require("plugins/autopairs").init,
+    pin = true
     -- enabled = false
   },
 
@@ -118,14 +119,6 @@ require("lazy").setup({
   {
     "kaarmu/typst.vim",
     ft = "typst",
-<<<<<<< HEAD
-    init = function()
-      -- I don't want these mappings
-      vim.cmd(":nunmap <buffer> [[")
-      vim.cmd(":nunmap <buffer> ]]")
-    end
-=======
->>>>>>> ff9929d (remove rust.vim mappings)
   },
 
   {
