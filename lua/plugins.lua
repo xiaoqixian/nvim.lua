@@ -124,11 +124,7 @@ require("lazy").setup({
   {
     "rust-lang/rust.vim",
     ft = "rust",
-    config = function()
-      -- I don't want these mappings
-      vim.cmd(":nunmap <buffer> [[")
-      vim.cmd(":nunmap <buffer> ]]")
-    end
+    pin = true
   },
 
   {
