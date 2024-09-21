@@ -45,7 +45,7 @@ function M.init()
     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
   }
 
-  local servers = { 'rust_analyzer', 'pyright', 'ts_ls', "cmake"}
+  local servers = { 'rust_analyzer', 'pyright', 'ts_ls', "cmake", "clangd"}
 
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
   for _, lang in ipairs(servers) do
@@ -79,31 +79,32 @@ function M.init()
   }
 
   -- set clangd
-  capabilities.semanticTokensProvider = nil
-
-  local root_files = {
-    '.clangd',
-    '.clang-tidy',
-    '.clang-format',
-    'compile_commands.json',
-    'compile_flags.txt',
-    'configure.ac', -- AutoTools
-  }
-  local util = require("lspconfig.util")
-  local fname = vim.api.nvim_buf_get_name(vim.fn.bufnr())
-  local root_dir = util.root_pattern(unpack(root_files))(fname)
-  local ext = fname:match("^.+%.(.+)%/")
-
-  local cmd = { "clangd" }
-
-  if root_dir == nil and ext ~= "c" then
-    cmd = table.insert(cmd, ("--compile-commands-dir=%s/.config/nvim"):format(vim.fn.getenv("HOME")))
-  end
-  lspconfig.clangd.setup {
-    capabilities = capabilities,
-    cmd = cmd,
-    handlers = handlers
-  }
+  -- capabilities.semanticTokensProvider = nil
+  --
+  -- local root_files = {
+  --   '.clangd',
+  --   '.clang-tidy',
+  --   '.clang-format',
+  --   'compile_commands.json',
+  --   'compile_flags.txt',
+  --   'configure.ac', -- AutoTools
+  -- }
+  -- local util = require("lspconfig.util")
+  -- local fname = vim.api.nvim_buf_get_name(vim.fn.bufnr())
+  -- local root_dir = util.root_pattern(unpack(root_files))(fname)
+  -- local ext = fname:match(".*%.([^%.]+)$")
+  --
+  -- local cmd = { "clangd" }
+  --
+  -- if root_dir == nil and ext ~= "c" then
+  --   vim.notify(("root_dir = %s, ext = %s"):format(root_dir, ext))
+  --   table.insert(cmd, ("--compile-commands-dir=%s/.config/nvim"):format(vim.fn.getenv("HOME")))
+  -- end
+  -- lspconfig.clangd.setup {
+  --   capabilities = capabilities,
+  --   cmd = cmd,
+  --   handlers = handlers
+  -- }
 
 end
 
