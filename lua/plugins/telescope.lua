@@ -5,7 +5,7 @@
 local M = {}
 
 local function set_keymaps()
-  local function opts(desc) 
+  local function opts(desc)
     return {
       desc = desc,
       noremap = true,
@@ -18,20 +18,24 @@ local function set_keymaps()
   local builtin = require("telescope.builtin")
 
   map("n", "<leader>tb", builtin.buffers, opts("telescope buffers"))
-  map("n", "<leader>ss", builtin.lsp_document_symbols, opts("telescope lsp_document_symbols"))
   map("n", "<leader>td", builtin.diagnostics, opts("telescope diagnostics"))
 
   map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts("telescope goto definitions"))
+  map("n", "gr", "<cmd>Telescope lsp_references<CR>", opts("telescope goto references"))
 
   map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", opts("telescope find files"))
 
   map("n", "F", "<cmd>Telescope live_grep<CR>", opts("telescope live grep"))
 
   map("n", "f", builtin.resume, opts("resume telescope window"))
+
+  map("n", "S", "<cmd>Telescope lsp_document_symbols<CR>", opts("telescope show document symbols"))
 end
 
 function M.init()
   local actions = require("telescope.actions")
+
+  local screen_width = vim.opt.columns:get()
 
   require("telescope").setup({
     defaults = {
@@ -43,7 +47,7 @@ function M.init()
         }
       },
 
-      layout_strategy = "vertical",
+      layout_strategy = screen_width < 120 and "vertical" or "horizontal",
       layout_config = {
         vertical = {
           height = 0.9,
@@ -53,7 +57,7 @@ function M.init()
         },
         horizontal = {
           height = 0.9,
-          preview_cutoff = 0.6,
+          preview_width = 0.6,
           prompt_position = "bottom",
           width = 0.8
         }
