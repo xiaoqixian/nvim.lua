@@ -24,6 +24,9 @@ vim.cmd(":unmap ]d")
 -- temporary
 vim.keymap.set("n", "I", ":Inspect<CR>", opts("check hl group under cursor"))
 
+-- Code Action
+vim.keymap.set("n", "CA", ":lua vim.lsp.buf.code_action()<CR>", opts("invoke a code action"))
+
 -- map cursor moving between windows to 
 -- the coresspoding uppercase letters.
 vim.keymap.set("n", "H", "<C-w>h", opts("go to upper window"))
