@@ -100,3 +100,17 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
+-- unmap unwanted keymaps
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    vim.cmd(":nunmap <buffer> [M")
+    vim.cmd(":nunmap <buffer> [m")
+    vim.cmd(":nunmap <buffer> []")
+    vim.cmd(":nunmap <buffer> [[")
+    vim.cmd(":nunmap <buffer> ]M")
+    vim.cmd(":nunmap <buffer> ]m")
+    vim.cmd(":nunmap <buffer> ][")
+    vim.cmd(":nunmap <buffer> ]]")
+  end
+})
