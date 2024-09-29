@@ -29,7 +29,17 @@ local function set_keymaps()
 
   map("n", "f", builtin.resume, opts("resume telescope window"))
 
-  map("n", "S", "<cmd>Telescope lsp_document_symbols<CR>", opts("telescope show document symbols"))
+  map("n", "S", function()
+    builtin.lsp_document_symbols({ignore_symbols = {"field"}})
+  end, opts("telescope show document symbols"))
+
+  map("n", "sf", function()
+   builtin.lsp_document_symbols({symbols={"method", "function", "constructor"}})
+  end, opts("telescope show document functions and methods"))
+
+  map("n", "ss", function()
+   builtin.lsp_document_symbols({symbols={"struct", "class", "enum"}})
+  end, opts("telescope show document struct, class and enum..."))
 end
 
 function M.init()
