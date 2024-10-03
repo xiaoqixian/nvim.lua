@@ -128,7 +128,8 @@ function M.init()
             "^%s*use%s+([^{]+)[^;]$",
             -- match `};` for the lambda function declaration,
             -- i.e., let noop = || {};
-            "^%s*let%s+([_a-z][_a-z0-9]*)%s*=%s*|.*|[^{]*"
+            -- "^%s*let%s+([_a-z][_a-z0-9]*)%s*=%s*|.*|[^{]*"
+            "^%s*let%s+([_a-z][_a-z0-9]*)%s*=[^{]*"
           }
         }
 
