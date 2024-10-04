@@ -1,5 +1,40 @@
 local M = {}
-local utils = require("utils")
+
+local function content_before_cursor(line)
+  local col = vim.fn.col(".")
+  return line:sub(1, col-1)
+end
+
+local function cpp_pairing(line)
+  local keywords = { "class", "struct", "enum", "union", "concept" }
+  for _, kw in ipairs(keywords) do
+    if line:match("^%s*" .. kw .. ".*") then
+      return "};"
+    end
+  end
+
+  local before = content_before_cursor(line)
+  if before:match("%[.*%]%(.*%)[^%{]*") then
+    return "};"
+  end
+
+  return "}"
+end
+
+local function rust_pairing(line)
+  local before = content_before_cursor(line)
+  local pats = {
+    "^%s*use%s+([^{]+)[^;]$",
+    "^%s*let%s+([_a-z][_a-z0-9]*)%s*=[^{]*"
+  }
+
+  for _, pat in ipairs(pats) do
+    if before:match(pat) then
+      return "};"
+    end
+  end
+  return "}"
+end
 
 -- local function add_space_between()
 --   local col = vim.fn.col(".")
@@ -49,18 +84,14 @@ function M.init()
       :with_move(cond.done()),
 
     Rule("{", "}", "cpp")
+      :with_pair(function(opts)
+        return cpp_pairing(opts.line) == "}"
+      end)
       :replace_endpair(function(opts)
         -- autopairing for cpp namespace comments
         local _, _, ns = opts.line:find("^%s*namespace (%S+)")
         if ns then
           return "} // namespace " .. ns
-        end
-
-        local keywords = { "class", "struct", "enum", "union", "concept" }
-        for _, kw in ipairs(keywords) do
-          if opts.line:match("^%s*" .. kw .. ".*") then
-            return "};"
-          end
         end
         return "}"
       end)
@@ -69,21 +100,35 @@ function M.init()
       :with_move(cond.done())
     ,
 
+    Rule("{", "};", "cpp")
+      :with_pair(function(opts)
+        return cpp_pairing(opts.line) == "};"
+      end)
+      :use_key("{")
+      :with_del(cond.done())
+      :with_move(cond.done())
+    ,
+
     Rule("<", ">", "cpp")
       :replace_endpair(function(opts)
-        local col = vim.fn.col(".")
-        local before = opts.line:sub(1, col-1)
+        -- local col = vim.fn.col(".")
+        -- local before = opts.line:sub(1, col-1)
+        local before = content_before_cursor(opts.line)
 
         if before:match(".*template%s*") then
           return ">"
         elseif before:match(".*operator<*$") then
           return ""
-        -- to avoid auto-pairing < and << symbols.
-        elseif before:match("%s+<*$") then
-          return ""
-        else
+        elseif before:match("%w$") then
           return ">"
+        else
+          return ""
         end
+        -- elseif before:match("%s+<*$") then
+        --   return ""
+        -- else
+        --   return ">"
+        -- end
       end)
       :use_key("<")
       :with_del(cond.done())
@@ -102,11 +147,16 @@ function M.init()
         local col = vim.fn.col(".")
         local before = opts.line:sub(1, col-1)
 
-        if before:match("%s+$") or before:match("<$") then
-          return ""
-        else
+        if before:match("%w$") then
           return ">"
+        else
+          return ""
         end
+        -- if before:match("%s+$") or before:match("<$") then
+        --   return ""
+        -- else
+        --   return ">"
+        -- end
       end)
       :use_key("<")
       :with_del(cond.done())
@@ -120,27 +170,17 @@ function M.init()
       end),
 
     Rule("{", "}", "rust")
-      :replace_endpair(function(opts)
-        local ret_to_pats = {
-          ["};"] = {
-            -- match `};` for the outermost brace of the use expression,
-            -- i.e., use std::{io, fmt};
-            "^%s*use%s+([^{]+)[^;]$",
-            -- match `};` for the lambda function declaration,
-            -- i.e., let noop = || {};
-            -- "^%s*let%s+([_a-z][_a-z0-9]*)%s*=%s*|.*|[^{]*"
-            "^%s*let%s+([_a-z][_a-z0-9]*)%s*=[^{]*"
-          }
-        }
+      :with_pair(function(opts)
+        return rust_pairing(opts.line) == "}"
+      end)
+      :use_key("{")
+      :with_del(cond.done())
+      :with_move(cond.done())
+    ,
 
-        for ret, pats in pairs(ret_to_pats) do
-          for _, pat in ipairs(pats) do
-            if opts.line:find(pat) ~= nil then
-              return ret
-            end
-          end
-        end
-        return "}"
+    Rule("{", "};", "rust")
+      :with_pair(function(opts)
+        return rust_pairing(opts.line) == "};"
       end)
       :use_key("{")
       :with_del(cond.done())
