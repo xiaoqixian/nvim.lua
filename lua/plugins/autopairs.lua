@@ -5,7 +5,7 @@ local function content_before_cursor(line)
   return line:sub(1, col-1)
 end
 
-local function cpp_pairing(line)
+local function cpp_curly_pairing(line)
   local keywords = { "class", "struct", "enum", "union", "concept" }
   for _, kw in ipairs(keywords) do
     if line:match("^%s*" .. kw .. ".*") then
@@ -21,7 +21,29 @@ local function cpp_pairing(line)
   return "}"
 end
 
-local function rust_pairing(line)
+local function cpp_angle_pairing(line)
+  local before = content_before_cursor(line)
+  if before:match("template%s*$") then
+    return ">"
+  elseif before:match("operator<*$") then
+    return ""
+  elseif before:match("%w$") then
+    return ">"
+  else
+    return ""
+  end
+end
+
+local function regular_angle_pairing(line)
+  local before = content_before_cursor(line)
+  if before:match("%w$") then
+    return ">"
+  else
+    return ""
+  end
+end
+
+local function rust_curly_pairing(line)
   local before = content_before_cursor(line)
   local pats = {
     "^%s*use%s+([^{]+)[^;]$",
@@ -69,23 +91,9 @@ function M.init()
   ap.get_rules("{")[1].not_filetypes = { "cpp", "c" }
 
   ap.add_rules({
-    Rule("{", "}", "c")
-      :replace_endpair(function(opts)
-        local keywords = { "struct", "enum", "union" }
-        for _, kw in ipairs(keywords) do
-          if opts.line:match("^%s*" .. kw .. ".*") then
-            return "};"
-          end
-        end
-        return "}"
-      end)
-      :use_key("{")
-      :with_del(cond.done())
-      :with_move(cond.done()),
-
-    Rule("{", "}", "cpp")
+    Rule("{", "}", {"c", "cpp"})
       :with_pair(function(opts)
-        return cpp_pairing(opts.line) == "}"
+        return cpp_curly_pairing(opts.line) == "}"
       end)
       :replace_endpair(function(opts)
         -- autopairing for cpp namespace comments
@@ -100,9 +108,9 @@ function M.init()
       :with_move(cond.done())
     ,
 
-    Rule("{", "};", "cpp")
+    Rule("{", "};", {"c", "cpp"})
       :with_pair(function(opts)
-        return cpp_pairing(opts.line) == "};"
+        return cpp_curly_pairing(opts.line) == "};"
       end)
       :use_key("{")
       :with_del(cond.done())
@@ -110,68 +118,26 @@ function M.init()
     ,
 
     Rule("<", ">", "cpp")
-      :replace_endpair(function(opts)
-        -- local col = vim.fn.col(".")
-        -- local before = opts.line:sub(1, col-1)
-        local before = content_before_cursor(opts.line)
-
-        if before:match(".*template%s*") then
-          return ">"
-        elseif before:match(".*operator<*$") then
-          return ""
-        elseif before:match("%w$") then
-          return ">"
-        else
-          return ""
-        end
-        -- elseif before:match("%s+<*$") then
-        --   return ""
-        -- else
-        --   return ">"
-        -- end
+      :with_pair(function(opts)
+        return cpp_angle_pairing(opts.line) == ">"
       end)
       :use_key("<")
       :with_del(cond.done())
-      :with_move(function(opts)
-        local col = vim.fn.col(".")
-        local next_char = opts.line:sub(col, col)
-        if next_char == ">" then
-          return true
-        else return false
-        end
-      end)
-      ,
+      :with_move(cond.done())
+    ,
 
     Rule("<", ">", {"rust", "typescript"})
-      :replace_endpair(function(opts)
-        local col = vim.fn.col(".")
-        local before = opts.line:sub(1, col-1)
-
-        if before:match("%w$") then
-          return ">"
-        else
-          return ""
-        end
-        -- if before:match("%s+$") or before:match("<$") then
-        --   return ""
-        -- else
-        --   return ">"
-        -- end
+      :with_pair(function(opts)
+        return regular_angle_pairing(opts.line) == ">"
       end)
       :use_key("<")
       :with_del(cond.done())
-      :with_move(function(opts)
-        local col = vim.fn.col(".")
-        local next_char = opts.line:sub(col, col)
-        if next_char == ">" then
-          return true
-        else return false
-        end
-      end),
+      :with_move(cond.done())
+    ,
 
     Rule("{", "}", "rust")
       :with_pair(function(opts)
-        return rust_pairing(opts.line) == "}"
+        return rust_curly_pairing(opts.line) == "}"
       end)
       :use_key("{")
       :with_del(cond.done())
@@ -180,7 +146,7 @@ function M.init()
 
     Rule("{", "};", "rust")
       :with_pair(function(opts)
-        return rust_pairing(opts.line) == "};"
+        return rust_curly_pairing(opts.line) == "};"
       end)
       :use_key("{")
       :with_del(cond.done())
