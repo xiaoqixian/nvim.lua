@@ -4,7 +4,7 @@ local utils = require("utils")
 
 local lazy_colorscheme = utils.colorscheme_by_profile()
 
-require("lazy").setup({
+local plugins = {
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -149,34 +149,9 @@ require("lazy").setup({
   },
 
   {
-    "ellisonleao/gruvbox.nvim",
-    priority = 1000,
-    config = true,
-    enabled = utils.enable_colorscheme("gruvbox"),
-    init = require("plugins.gruvbox").init
-  },
-
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    enabled = utils.enable_colorscheme("catppuccin-mocha"),
-    init = require("plugins.catppuccin").init
-  },
-
-  {
     "folke/neodev.nvim",
     init = require("plugins/neodev").init,
     -- enabled = false
-  },
-
-  {
-    "Mofiqul/dracula.nvim",
-    priority = 1000,
-    config = true,
-    enabled = false,
-    init = function()
-    end
   },
 
   {
@@ -245,16 +220,15 @@ require("lazy").setup({
     "marko-cerovac/material.nvim",
     init = require("plugins/material").init,
     enabled = false
-  },
-
-  {
-    {
-      "rose-pine/neovim",
-      name = "rose-pine",
-      init = require("plugins/rose-pine").init
-    }
   }
-}, {
+}
+
+local theme_plugins = require("colorschemes")
+for _, theme in ipairs(theme_plugins) do
+  table.insert(plugins, theme)
+end
+
+require("lazy").setup(plugins, {
   install = {
     missing = true,
     colorscheme = { lazy_colorscheme }
@@ -263,4 +237,3 @@ require("lazy").setup({
     border = "rounded"
   }
 })
-

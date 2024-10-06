@@ -191,7 +191,6 @@ function M.set_file_header()
 end
 
 function M.stop_cpp_access_indent()
-  local line_num = vim.fn.line(".")
   local curr_line = vim.fn.getline(".") .. ":"
   local access_specifier_list = {
     "public", "private", "protected"
@@ -249,7 +248,8 @@ end
 ---@param colorscheme string
 ---@return boolean
 function M.enable_colorscheme(colorscheme)
-  return M.colorscheme_by_profile() == colorscheme
+  local profile = os.getenv("ITERM_PROFILE")
+  return M.colorscheme_by_profile() == colorscheme or profile == colorscheme
 end
 
 return M

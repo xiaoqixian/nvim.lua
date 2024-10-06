@@ -1,15 +1,10 @@
--- Date:   Tue Aug 27 14:32:17 2024
+-- Date:   Sun Oct 06 15:12:44 2024
 -- Mail:   lunar_ubuntu@qq.com
 -- Author: https://github.com/xiaoqixian
 
-local M = {}
+local utils = require("utils")
 
-function M.init()
-    local profile = os.getenv("ITERM_PROFILE")
-    if profile ~= "latte" then
-      return
-    end
-
+local function rose_pine_init()
     require("rose-pine").setup({
       variant = "dawn", -- auto, main, moon, or dawn
       dark_variant = "dawn", -- main, moon, or dawn
@@ -73,19 +68,6 @@ function M.init()
           }
       },
 
-    -- 'hi PMenuSel ctermfg=255 ctermbg=103',
-    -- 'hi TabLine ctermfg=0 ctermbg=none cterm=none',
-    -- 'hi TabLineSel ctermfg=1',
-    -- 'hi TabLineFill ctermfg=none ctermbg=none cterm=none',
-    -- 'hi Search ctermfg=255 ctermbg=104',
-    -- 'hi CursorLine ctermfg=255 ctermbg=240',
-    -- 'hi CursorLineNr ctermfg=none ctermbg=188',
-    -- 'hi Comment ctermfg=249 ctermbg=none',
-    -- 'hi MatchParen ctermfg=255 ctermbg=103',
-    -- 'hi Visual ctermfg=none ctermbg=253',
-    -- 'hi Folded ctermfg=255 ctermbg=243',
-    -- 'hi NormalFloat ctermbg=none'
-
       highlight_groups = {
           -- Comment = { fg = "foam" },
           -- VertSplit = { fg = "muted", bg = "muted" },
@@ -109,24 +91,81 @@ function M.init()
           Folded = { bg = "#e4e4e4" },
           Comment = { fg = "#b2b2b2" }
       },
-
-      -- before_highlight = function(group, highlight, palette)
-          -- Disable all undercurls
-          -- if highlight.undercurl then
-          --     highlight.undercurl = false
-          -- end
-          --
-          -- Change palette colour
-          -- if highlight.fg == palette.pine then
-          --     highlight.fg = palette.foam
-          -- end
-      -- end,
   })
 
   vim.cmd("colorscheme rose-pine")
-  -- vim.cmd("colorscheme rose-pine-main")
-  -- vim.cmd("colorscheme rose-pine-moon")
-  -- vim.cmd("colorscheme rose-pine-dawn")
+end
+
+local M = {
+  {
+    "ellisonleao/gruvbox.nvim",
+    name = "gruvbox",
+    priority = 1000,
+    config = function()
+      require("gruvbox").setup({
+        overrides = {
+          TabLine = { bg = "none" },
+          TabLineFill = { bg = "none" },
+          TabLineSel = {
+            fg = "#f0bf4f",
+            bg = "none",
+            bold = true
+          }
+        }
+      })
+
+      vim.cmd("colorscheme gruvbox")
+    end
+  },
+
+  {
+    "catppuccin/nvim",
+    name = "catppuccin-mocha",
+    priority = 1000,
+    config = function()
+      require("catppuccin").setup({
+        custom_highlights = function(colors)
+          return {
+            TabLine = { bg = "none" },
+            TabLineFill = { bg = "none" },
+            TabLineSel = {
+              fg = colors.flamingo,
+              bg = "none",
+              bold = true
+            }
+          }
+        end
+      })
+      vim.cmd("colorscheme catppuccin-mocha")
+    end
+  },
+
+  {
+    "Shatur/neovim-ayu",
+    name = "ayu-mirage",
+    config = function()
+      local success, lualine = pcall(require, "lualine")
+      if success then
+        lualine.setup({
+          options = {
+            theme = "ayu"
+          }
+        })
+      end
+
+      vim.cmd("colorscheme ayu-mirage")
+    end
+  },
+
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    config = rose_pine_init
+  }
+}
+
+for _, theme in ipairs(M) do
+  theme.cond = utils.enable_colorscheme(theme.name)
 end
 
 return M
