@@ -9,18 +9,16 @@ local highlights_by_profile = {
     'hi PMenuSel ctermfg=111 ctermbg=none',
     'hi Comment ctermfg=104 ctermbg=none',
     'hi Search ctermfg=0 ctermbg=111',
-    'hi TabLineFill ctermfg=none ctermbg=none cterm=none',
-    'hi TabLineSel ctermfg=225 ctermbg=none',
-    'hi TabLine ctermfg=255 ctermbg=none cterm=none',
+    'hi TabLineSel ctermfg=225',
+    'hi TabLine ctermfg=255',
     'hi! SignColumn ctermbg=none',
     'hi CursorLine ctermfg=0 ctermbg=111'
   },
   gruvbox = {
     'hi PMenu ctermfg=7 ctermbg=none',
     'hi PMenuSel ctermfg=1 ctermbg=6',
-    'hi TabLineFill ctermfg=none ctermbg=none cterm=none',
-    'hi TabLineSel ctermfg=1 ctermbg=none',
-    'hi TabLine ctermfg=7 ctermbg=none cterm=none',
+    'hi TabLineSel ctermfg=1',
+    'hi TabLine ctermfg=7',
     'hi! SignColumn ctermbg=none',
     'hi Comment ctermfg=101',
     'hi CursorLine ctermfg=0 ctermbg=222',
@@ -33,6 +31,9 @@ local highlights_by_profile = {
 -- universal ErrorMsg highlight
 vim.cmd("hi ErrorMsg ctermfg=231 ctermbg=204")
 vim.cmd("hi FloatBorder ctermbg=none")
+vim.cmd("hi TabLine guibg=none")
+vim.cmd("hi TabLineFill guibg=none")
+vim.cmd("hi TabLineSel guibg=none")
 
 local highlights = highlights_by_profile[profile] or {}
 for _, hl in ipairs(highlights) do
