@@ -53,7 +53,10 @@ function M.init()
 
       mappings = {
         n = {
-          ["q"] = actions.close
+          q = actions.close,
+          s = actions.select_vertical,
+          I = actions.select_horizontal,
+          t = actions.select_tab
         }
       },
 
