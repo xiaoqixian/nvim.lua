@@ -12,20 +12,20 @@ local feedkey = function(key, mode)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
-function M.init() 
+function M.init()
   vim.g.nvim_cmp_exists = true
 
   local cmp = require("cmp")
   local lspkind = require("lspkind")
-  -- local luasnip = require("luasnip")
+  local luasnip = require("luasnip")
   --local vsnip = require("vsnip")
 
   cmp.setup({
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-         -- luasnip.lsp_expand(args.body) -- For `luasnip` users.
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+         luasnip.lsp_expand(args.body) -- For `luasnip` users.
         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
@@ -35,42 +35,77 @@ function M.init()
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm(),
 
-      ['<Tab>'] = cmp.mapping(function(fallback)
+      ['<CR>'] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+            if luasnip.expandable() then
+                luasnip.expand()
+            else
+                cmp.confirm({
+                    select = false,
+                })
+            end
+        else
+            fallback()
+        end
+      end),
+
+      ["<Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
-        elseif vim.fn["vsnip#available"](1) == 1 then
-          feedkey("<Plug>(vsnip-expand-or-jump)", "")
-        elseif has_words_before() then
-          cmp.complete()
-        --[[ elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump() ]]
-        --elseif vim.fn["vsnip#jumpable"](1) then
-          --vim.fn["vsnip#vsnip-jump-next"]()
+        elseif luasnip.locally_jumpable(1) then
+          luasnip.jump(1)
         else
           fallback()
         end
-      end, { 'i', 's' }),
+      end, { "i", "s" }),
 
-      ['<S-Tab>'] = cmp.mapping(function(fallback)
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
-        elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-          feedkey("<Plug>(vsnip-jump-prev)", "")
-        -- elseif luasnip.jumpable(-1) then
-        --   luasnip.jump(-1)
-        --elseif vim.fn["vsnip#jumpable"](-1) then
-          --vim.fn["vsnip#vsnip-jump-prev"]()
+        elseif luasnip.locally_jumpable(-1) then
+          luasnip.jump(-1)
         else
           fallback()
         end
-      end, { 'i', 's' }),
+      end, { "i", "s" }),
+
+      -- ['<Tab>'] = cmp.mapping(function(fallback)
+      --   if cmp.visible() then
+      --     cmp.select_next_item()
+      --   elseif luasnip.expand_or_jumpable() then
+      --     luasnip.expand_or_jump()
+      --   elseif has_words_before() then
+      --     cmp.complete()
+      --   -- elseif vim.fn["vsnip#available"](1) == 1 then
+      --   --   feedkey("<Plug>(vsnip-expand-or-jump)", "")
+      --   --[[ elseif luasnip.expand_or_jumpable() then
+      --     luasnip.expand_or_jump() ]]
+      --   --elseif vim.fn["vsnip#jumpable"](1) then
+      --     --vim.fn["vsnip#vsnip-jump-next"]()
+      --   else
+      --     fallback()
+      --   end
+      -- end, { 'i', 's' }),
+      --
+      -- ['<S-Tab>'] = cmp.mapping(function(fallback)
+      --   if cmp.visible() then
+      --     cmp.select_prev_item()
+      --   elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+      --     feedkey("<Plug>(vsnip-jump-prev)", "")
+      --   -- elseif luasnip.jumpable(-1) then
+      --   --   luasnip.jump(-1)
+      --   --elseif vim.fn["vsnip#jumpable"](-1) then
+      --     --vim.fn["vsnip#vsnip-jump-prev"]()
+      --   else
+      --     fallback()
+      --   end
+      -- end, { 'i', 's' }),
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'vsnip' }, -- For vsnip users.
+      { name = 'luasnip' }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
     }, {
@@ -88,15 +123,15 @@ function M.init()
       }),
     },
 
-    formatting = {
-      format = lspkind.cmp_format({
-        with_text = true,
-        mode = "symbol",
-        maxwidth = 50,
-        ellipsis_char = "...",
-        show_labelDetails = true
-      })
-    },
+    -- formatting = {
+    --   format = lspkind.cmp_format({
+    --     with_text = true,
+    --     mode = "symbol",
+    --     maxwidth = 50,
+    --     ellipsis_char = "...",
+    --     show_labelDetails = true
+    --   })
+    -- },
     preselect = cmp.PreselectMode.None
   })
 
@@ -143,7 +178,7 @@ function M.init()
 
   vim.keymap.set("n", "M", vim.lsp.buf.hover)
   vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-  
+
 end
 
 return M

@@ -53,9 +53,16 @@ local plugins = {
     -- enabled = false
   },
 
+  -- {
+  --   "hrsh7th/vim-vsnip",
+  --   "hrsh7th/vim-vsnip-integ"
+  -- },
   {
-    "hrsh7th/vim-vsnip",
-    "hrsh7th/vim-vsnip-integ"
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp"
   },
 
   {
@@ -67,10 +74,10 @@ local plugins = {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "onsails/lspkind.nvim",
-      -- "L3MON4D3/LuaSnip",
+      "L3MON4D3/LuaSnip",
       -- "saadparwaiz1/cmp_luasnip"
       "hrsh7th/cmp-vsnip",
-      "hrsh7th/vim-vsnip",
+      -- "hrsh7th/vim-vsnip",
     },
     lazy = false,
     init = require("plugins/nvim_cmp").init,
