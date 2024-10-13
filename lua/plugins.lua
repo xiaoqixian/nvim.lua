@@ -227,6 +227,10 @@ local plugins = {
     "marko-cerovac/material.nvim",
     init = require("plugins/material").init,
     enabled = false
+  },
+
+  {
+    "hoblovski/perwindow-search.vim"
   }
 }
 
