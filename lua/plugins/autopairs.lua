@@ -34,6 +34,15 @@ local function cpp_angle_pairing(line)
   end
 end
 
+local function rust_angle_pairing(line)
+  local before = content_before_cursor(line)
+  if before:match("%w$") or before:match("::$") then
+    return ">"
+  else
+    return ""
+  end
+end
+
 local function regular_angle_pairing(line)
   local before = content_before_cursor(line)
   if before:match("%w$") then
@@ -126,7 +135,16 @@ function M.init()
       :with_move(cond.done())
     ,
 
-    Rule("<", ">", {"rust", "typescript"})
+    Rule("<", ">", "rust")
+      :with_pair(function(opts)
+        return rust_angle_pairing(opts.line) == ">"
+      end)
+      :use_key("<")
+      :with_del(cond.done())
+      :with_move(cond.done())
+    ,
+
+    Rule("<", ">", "typescript")
       :with_pair(function(opts)
         return regular_angle_pairing(opts.line) == ">"
       end)
