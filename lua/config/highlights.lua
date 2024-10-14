@@ -34,6 +34,7 @@ vim.cmd("hi FloatBorder ctermbg=none")
 vim.cmd("hi TabLine guibg=none")
 vim.cmd("hi TabLineFill guibg=none")
 vim.cmd("hi TabLineSel guibg=none")
+vim.cmd("hi SignColumn guibg=none")
 
 local highlights = highlights_by_profile[profile] or {}
 for _, hl in ipairs(highlights) do
