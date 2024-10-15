@@ -261,6 +261,7 @@ local plugins = {
           vim.keymap.del("n", "<Enter>")
           vim.keymap.del("n", "<<")
         end
+        dapui.toggle()
       end
 
       vim.keymap.set("n", "Q", dapui_toggle, opts("dap-ui: toggle"))
