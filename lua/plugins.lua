@@ -255,10 +255,15 @@ local plugins = {
           vim.keymap.set("n", ">>", dap.step_into, opts("nvim-dap: step into"))
           vim.keymap.set("n", "<Enter>", dap.step_over, opts("nvim-dap: step over"))
           vim.keymap.set("n", "<<", dap.step_out, opts("nvim-dap: step out"))
+        else
+          vim.keymap.del("n", "+")
+          vim.keymap.del("n", ">>")
+          vim.keymap.del("n", "<Enter>")
+          vim.keymap.del("n", "<<")
         end
       end
 
-      vim.keymap.set("n", "Q", dapui.toggle, opts("dap-ui: toggle"))
+      vim.keymap.set("n", "Q", dapui_toggle, opts("dap-ui: toggle"))
       -- dap.listeners.before.attach.dapui_config = function()
       --   dapui.open()
       -- end

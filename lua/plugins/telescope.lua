@@ -40,7 +40,11 @@ local function set_keymaps()
     })
   end, opts("telescope find files"))
 
-  map("n", "F", builtin.live_grep, opts("telescope live grep"))
+  map("n", "F", function()
+    builtin.live_grep({
+      cwd = get_root()
+    })
+  end, opts("telescope live grep"))
 
   map("n", "f", builtin.resume, opts("resume telescope window"))
 
