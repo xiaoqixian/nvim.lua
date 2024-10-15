@@ -4,6 +4,16 @@
 
 local M = {}
 
+local function get_root()
+  local path = vim.fn.expand("%:p")
+  -- if match a python lib path, set the lib path as root
+  if path:match("(.*/site%-packages/[^/]+)") then
+    return path:match("(.*/site%-packages/[^/]+)")
+  else
+    return vim.g.tlsc_ff_root
+  end
+end
+
 local function set_keymaps()
   local function opts(desc)
     return {
@@ -26,7 +36,7 @@ local function set_keymaps()
   map("n", "<leader>ff", function()
     builtin.find_files({
       path_display = { "truncate" },
-      cwd = vim.g.tlsc_ff_root
+      cwd = get_root()
     })
   end, opts("telescope find files"))
 
