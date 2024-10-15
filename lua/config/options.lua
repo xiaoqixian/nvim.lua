@@ -17,7 +17,7 @@ vim.opt.guicursor = "n-v-c-i:block"
 vim.opt.lbr = true
 
 -- set no signcolumn
-vim.opt.signcolumn = "auto:1"
+vim.opt.signcolumn = "yes:1"
 
 vim.opt.timeoutlen = 500
 
