@@ -20,12 +20,17 @@ local function set_keymaps()
   map("n", "<leader>tb", builtin.buffers, opts("telescope buffers"))
   map("n", "<leader>td", builtin.diagnostics, opts("telescope diagnostics"))
 
-  map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts("telescope goto definitions"))
-  map("n", "gr", "<cmd>Telescope lsp_references<CR>", opts("telescope goto references"))
+  map("n", "gd", builtin.lsp_definitions, opts("telescope goto definitions"))
+  map("n", "gr", builtin.lsp_references, opts("telescope goto references"))
 
-  map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", opts("telescope find files"))
+  map("n", "<leader>ff", function()
+    builtin.find_files({
+      path_display = { "truncate" },
+      cwd = vim.g.tlsc_ff_root
+    })
+  end, opts("telescope find files"))
 
-  map("n", "F", "<cmd>Telescope live_grep<CR>", opts("telescope live grep"))
+  map("n", "F", builtin.live_grep, opts("telescope live grep"))
 
   map("n", "f", builtin.resume, opts("resume telescope window"))
 
