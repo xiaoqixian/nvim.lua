@@ -69,3 +69,5 @@ vim.keymap.set("n", "<leader>aa", function()
   local config_path = vim.fn.stdpath("config") .. "/lua"
   vim.cmd("tabnew " .. config_path)
 end, opts("fast way to open nvim config"))
+
+vim.keymap.set("n", "{", utils.find_parent, opts("find parent of current line"))

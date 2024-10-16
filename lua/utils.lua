@@ -252,4 +252,59 @@ function M.enable_colorscheme(colorscheme)
   return M.colorscheme_by_profile() == colorscheme or profile == colorscheme
 end
 
+-- map { to find the closest function(method) or class(struct)
+function M.find_parent()
+  local function cmp_indent(cln, ln)
+    local curr_indent = vim.fn.indent(cln)
+    local line_indent = vim.fn.indent(ln)
+    return curr_indent <= line_indent
+  end
+
+  local resolve = {
+    python = {
+      "def.*:%s*$",
+      "class.*:%s*$"
+    },
+    rust = {
+      "fn ",
+      "^%s*impl ",
+      "^(%s*pub%s+)?struct ",
+      "^(%s*pub%s+)?enum ",
+    }
+  }
+
+  ---@return boolean
+  local function find()
+    local ft = vim.bo.filetype
+    if not resolve[ft] then
+      return false
+    end
+    local patterns = resolve[ft]
+    local linenr = vim.api.nvim_win_get_cursor(0)[1]
+
+    local lines_above_cursor = vim.api.nvim_buf_get_lines(0, 0, linenr, true)
+    for ln = linenr-1, 1, -1 do
+      if cmp_indent(linenr, ln) then
+        goto continue
+      end
+
+      local line = lines_above_cursor[ln]
+      for _, pat in ipairs(patterns) do
+        if line:match(pat) then
+          local col = vim.fn.col({ln, "$"}) - 1
+          vim.api.nvim_win_set_cursor(0, {ln, col})
+          return true
+        end
+      end
+        ::continue::
+    end
+    return false
+  end
+
+  -- fallback
+  if not find() then
+    vim.cmd("normal! {")
+  end
+end
+
 return M
