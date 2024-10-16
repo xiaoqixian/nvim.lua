@@ -4,11 +4,9 @@
 
 local M = {}
 
-function M.init()
+function M.config()
   -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
-  require("neodev").setup({
-    -- add any options here, or leave empty to use the default settings
-  })
+  require("neodev").setup({})
 
   -- then setup your lsp server as usual
   local lspconfig = require('lspconfig')
@@ -19,6 +17,9 @@ function M.init()
       Lua = {
         completion = {
           callSnippet = "Replace"
+        },
+        diagnostics = {
+          globals = { "vim" }
         }
       }
     }

@@ -1,7 +1,6 @@
 -- This file can be loaded by calling `lua require("plugins")` from your init.vim
 
 local utils = require("utils")
-local opts = utils.keymap_opts
 
 local lazy_colorscheme = utils.colorscheme_by_profile()
 
@@ -158,8 +157,7 @@ local plugins = {
 
   {
     "folke/neodev.nvim",
-    init = require("plugins/neodev").init,
-    -- enabled = false
+    config = require("plugins/neodev").config,
   },
 
   {
@@ -231,7 +229,8 @@ local plugins = {
   },
 
   {
-    "hoblovski/perwindow-search.vim"
+    "hoblovski/perwindow-search.vim",
+    enabled = false
   },
 
   {
@@ -242,42 +241,7 @@ local plugins = {
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
-    config = function()
-      local dap = require("dap")
-      local dapui = require("dapui")
-      dapui.setup()
-      vim.g.dapui_opened = false
-
-      local function dapui_toggle()
-        vim.g.dapui_opened = not vim.g.dapui_opened
-        if vim.g.dapui_opened then
-          vim.keymap.set("n", "+", dap.continue, opts("nvim-dap: continue"))
-          vim.keymap.set("n", ">>", dap.step_into, opts("nvim-dap: step into"))
-          vim.keymap.set("n", "<Enter>", dap.step_over, opts("nvim-dap: step over"))
-          vim.keymap.set("n", "<<", dap.step_out, opts("nvim-dap: step out"))
-        else
-          vim.keymap.del("n", "+")
-          vim.keymap.del("n", ">>")
-          vim.keymap.del("n", "<Enter>")
-          vim.keymap.del("n", "<<")
-        end
-        dapui.toggle()
-      end
-
-      vim.keymap.set("n", "Q", dapui_toggle, opts("dap-ui: toggle"))
-      -- dap.listeners.before.attach.dapui_config = function()
-      --   dapui.open()
-      -- end
-      -- dap.listeners.before.launch.dapui_config = function()
-      --   dapui.open()
-      -- end
-      -- dap.listeners.before.event_terminated.dapui_config = function()
-      --   dapui.close()
-      -- end
-      -- dap.listeners.before.event_exited.dapui_config = function()
-      --   dapui.close()
-      -- end
-    end
+    config = require("plugins/nvim-dap").ui_config
   },
 
   {
@@ -287,9 +251,7 @@ local plugins = {
       "mfussenegger/nvim-dap",
       "rcarriga/nvim-dap-ui"
     },
-    config = function()
-      require("dap-python").setup("python3")
-    end,
+    config = require("plugins/nvim-dap").python_config
   }
 }
 
