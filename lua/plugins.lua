@@ -252,6 +252,14 @@ local plugins = {
       "rcarriga/nvim-dap-ui"
     },
     config = require("plugins/nvim-dap").python_config
+  },
+
+  {
+    "nvim-telescope/telescope-dap.nvim",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      -- "rcarriga/nvim-dap-ui"
+    },
   }
 }
 
