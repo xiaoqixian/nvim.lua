@@ -10,8 +10,8 @@ function M.config()
   local dap_keymaps = {
     tb = "toggle_breakpoint",
     ["<leader>ct"] = "continue",
-    [">"] = "step_into",
-    ["<"] = "step_out",
+    [")"] = "step_into",
+    ["("] = "step_out",
     ["`"] = "step_over",
     ["<leader>dc"] = "run_to_cursor",
     -- ["<leader>ds"] = {
