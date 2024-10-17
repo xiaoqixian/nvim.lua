@@ -252,6 +252,25 @@ function M.enable_colorscheme(colorscheme)
   return M.colorscheme_by_profile() == colorscheme or profile == colorscheme
 end
 
+function M.os()
+  if package.config:sub(1,1) == '\\' then
+    return "Windows"
+  else
+    local handle = io.popen("uname -s")
+    assert(handle, "execute 'uname -s' failed")
+    local result = handle:read("*l")
+    handle:close()
+
+    if result == "Darwin" then
+      return "macOS"
+    elseif result == "Linux" then
+      return "Linux"
+    else
+      return nil
+    end
+  end
+end
+
 -- map { to find the closest function(method) or class(struct)
 function M.find_parent()
   local function cmp_indent(cln, ln)

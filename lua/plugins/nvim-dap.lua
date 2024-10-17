@@ -3,7 +3,8 @@
 -- Author: https://github.com/xiaoqixian
 
 local M = {}
-local opts = require("utils").keymap_opts
+local utils = require("utils")
+local opts = utils.keymap_opts
 
 function M.config()
   local dap = require("dap")
@@ -91,7 +92,7 @@ function M.python_config()
         elseif vim.fn.executable(cwd .. '/.venv/bin/python') == 1 then
           return cwd .. '/.venv/bin/python'
         else
-          return '/usr/bin/python3'
+          return utils.os() == "macOS" and "/usr/local/bin/python3" or "/usr/bin/python3"
         end
       end,
     },
