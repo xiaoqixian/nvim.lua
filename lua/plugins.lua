@@ -262,6 +262,13 @@ local plugins = {
       "mfussenegger/nvim-dap",
       -- "rcarriga/nvim-dap-ui"
     },
+  },
+
+  {
+    dir = "~/pros/winlocal-search.nvim",
+    config = function()
+      require("wl-search").setup()
+    end
   }
 }
 
