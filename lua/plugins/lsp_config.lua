@@ -48,8 +48,8 @@ function M.init()
   local servers = { 'rust_analyzer', 'pyright', 'ts_ls', "cmake", "clangd", "typst_lsp" }
 
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
-  for _, lang in ipairs(servers) do
-    lspconfig[lang].setup {
+  for _, server in ipairs(servers) do
+    lspconfig[server].setup {
       -- on_attach = my_custom_on_attach,
       capabilities = capabilities,
       handlers = handlers,
