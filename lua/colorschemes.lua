@@ -137,6 +137,7 @@ local M = {
         end
       })
       vim.cmd("colorscheme catppuccin-mocha")
+      vim.cmd("hi PMenuSel guifg=#1e1d2c guibg=#fc98a0")
     end
   },
 
