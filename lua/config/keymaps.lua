@@ -34,6 +34,10 @@ vim.keymap.set("n", "J", "<C-w>j", opts("go to under window"))
 vim.keymap.set("n", "K", "<C-w>k", opts("go to right window"))
 vim.keymap.set("n", "L", "<C-w>l", opts("go to left  window"))
 
+-- map Ctrl-j/k to move cursor faster
+vim.keymap.set({"n", "v"}, "<C-j>", "10j", opts("10j"))
+vim.keymap.set({"n", "v"}, "<C-k>", "10k", opts("10k"))
+
 -- swap v and V
 vim.keymap.set("n", "v", "V", opts("visual line"))
 vim.keymap.set("n", "V", "v", opts("visual"))
