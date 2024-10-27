@@ -326,4 +326,39 @@ function M.find_parent()
   end
 end
 
+function M.format_rs(fallback)
+
+  local function split_string(input, delimiter)
+    local result = {}
+    for match in (input .. delimiter):gmatch("%s*(.-)%s*" .. delimiter) do
+        table.insert(result, match)
+    end
+    return result
+  end
+
+  local line = vim.api.nvim_get_current_line()
+  local ln = vim.fn.line(".")
+  if line:match("^fn ") or line:match(" fn ") then
+    local indent = vim.fn.indent(".")
+    local pad = (" "):rep(indent)
+    local more_pad = (" "):rep(indent + vim.bo.shiftwidth)
+
+    local left, inside, right = line:match("(.-%()(.-)(%).*)")
+    assert(left and inside and right)
+
+    local lines = {}
+    table.insert(lines, left)
+
+    local args = split_string(inside, ",")
+    for _, arg in ipairs(args) do
+      table.insert(lines, more_pad .. arg .. ",")
+    end
+    table.insert(lines, pad .. right)
+
+    vim.api.nvim_buf_set_lines(0, ln-1, ln, false, lines)
+  else
+    fallback()
+  end
+end
+
 return M

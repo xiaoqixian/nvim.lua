@@ -75,3 +75,14 @@ vim.keymap.set("n", "<leader>aa", function()
 end, opts("fast way to open nvim config"))
 
 vim.keymap.set("n", "{", utils.find_parent, opts("find parent of current line"))
+
+vim.keymap.set("n", "==", function()
+  local ft = vim.bo.filetype
+  local fallback = function()
+    vim.cmd("norm! ==")
+  end
+
+  if ft == "rust" then
+    utils.format_rs(fallback)
+  end
+end, opts("extra format"))
