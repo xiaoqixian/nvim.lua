@@ -9,8 +9,10 @@ local plugins = {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = true,
-    init = require("plugins/nvim-tree").init,
-    -- enabled = false
+    keys = {
+      { "E", "<cmd>NvimTreeOpen<CR>", desc = "nvim-tree toggle" }
+    },
+    config = require("plugins/nvim-tree").init,
   },
 
   {
@@ -37,7 +39,6 @@ local plugins = {
     "numToStr/Comment.nvim",
     lazy = false,
     init = require("plugins/comment").init,
-    -- enabled = false
   },
 
   {
@@ -167,7 +168,7 @@ local plugins = {
     init = function()
       require('nvim-highlight-colors').setup({})
     end,
-    enabled = false
+    enabled = true
   },
 
   {

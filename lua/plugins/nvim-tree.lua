@@ -134,8 +134,6 @@ function M.init()
     }
   })
 
-  vim.g.is_nvim_tree_exists = true
-  vim.g.is_nvim_tree_open = false
   vim.g.is_nvim_tree_float = float_view.enable
 
   vim.keymap.set("n", toggle_key, require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
