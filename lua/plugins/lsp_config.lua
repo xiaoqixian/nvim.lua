@@ -45,7 +45,15 @@ function M.init()
     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
   }
 
-  local servers = { 'rust_analyzer', 'pyright', 'ts_ls', "cmake", "clangd", "typst_lsp" }
+  local servers = {
+    "rust_analyzer",
+    "pyright",
+    "ts_ls",
+    "cmake",
+    "clangd",
+    "typst_lsp",
+    "hls"
+  }
 
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
   for _, server in ipairs(servers) do
