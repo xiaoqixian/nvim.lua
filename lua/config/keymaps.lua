@@ -67,6 +67,9 @@ vim.keymap.set("n", "]", vim.diagnostic.goto_next, opts("goto next error"))
 vim.keymap.set("t", "<S-Space>", "<Space>", opts("tmap S-space to space"))
 vim.keymap.set("t", "<S-Backspace>", "<Backspace>", opts("tmap S-Backspace to Backspace"))
 
+-- paste and visual select the pasted content
+vim.keymap.set("n", "P", "p`[v`]", opts("paste and visual select"))
+
 -- vim.keymap.set("n", "<Enter>", "0v$%$", opts("v-select a code block"))
 
 vim.keymap.set("n", "<leader>aa", function()
