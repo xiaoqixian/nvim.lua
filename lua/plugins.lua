@@ -173,7 +173,10 @@ local plugins = {
 
   {
     "simrat39/symbols-outline.nvim",
-    init = require("plugins/symbols_outline").init,
+    config = require("plugins/symbols_outline").init,
+    keys = {
+      { "S", "<cmd>SymbolsOutlineOpen<CR>", desc = "symbols outline toggle" }
+    },
     lazy = true
   },
 
