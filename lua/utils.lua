@@ -37,17 +37,16 @@ local function contains(list, target)
 end
 
 local function set_most_file_header(extension)
-  local ft = vim.bo.filetype
   local cmt_syb_table = {
     py = "#",
     sh = "#",
     lua = "--",
     vim = '"',
     cmake = "#",
-    haskell = "--"
+    hs = "--", -- haskell
   }
 
-  local cmt_syb = cmt_syb_table[extension] or cmt_syb_table[ft] or "//"
+  local cmt_syb = cmt_syb_table[extension] or "//"
 
   local header_lines = {
     cmt_syb .. " Date:   " .. vim.fn.strftime("%a %b %d %X %Y"),
@@ -168,11 +167,13 @@ end
 
 function M.set_file_header()
   local extension = vim.fn.expand("%:e")
-  local escape_extensions = {
-    "", "md", "json", "css", "html", "txt", "toml", "yml", "xml", "yaml",
+  local valid_extensions = {
+    "c", "h", "hpp", "cpp", "cc",
+    "java", "py", "rs", "js", "ts",
+    "lua", "hs"
   }
 
-  if contains(escape_extensions, extension) then
+  if not contains(valid_extensions, extension) then
     return
   end
 
