@@ -53,40 +53,18 @@ local function regular_angle_pairing(line)
 end
 
 local function rust_curly_pairing(line)
-  local before = content_before_cursor(line)
   local pats = {
     "^%s*use%s+([^{]+)[^;]$",
-    "^%s*let%s+([_a-z][_a-z0-9]*)%s*=[^{]*"
+    "^%s*let%s+([_a-z][_a-z0-9]*)%s*=[^{]*[^;]$"
   }
 
   for _, pat in ipairs(pats) do
-    if before:match(pat) then
+    if line:match(pat) then
       return "};"
     end
   end
   return "}"
 end
-
--- local function add_space_between()
---   local col = vim.fn.col(".")
---   local line = vim.api.nvim_get_current_line()
---
---   vim.api.nvim_put({" "}, "c", false, true)
---
---   if col == 1 then
---     return
---   end
---
---   local sub = line:sub(col-1, col)
---
---   local brackets = { "{}", "()", "[]"}
---   for _, b in ipairs(brackets) do
---     if sub == b then
---       vim.api.nvim_put({" "}, "c", false, false)
---     end
---   end
---
--- end
 
 function M.init()
   local ap = require("nvim-autopairs")
