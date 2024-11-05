@@ -132,7 +132,7 @@ local plugins = {
   },
 
   {
-    "rust-lang/rust.vim",
+    "xiaoqixian/rust.vim",
     ft = "rust",
     pin = true
   },
