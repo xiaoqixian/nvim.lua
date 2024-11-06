@@ -3,7 +3,8 @@
 -- Author: https://github.com/xiaoqixian
 
 local M = {}
-local opts = require("utils").keymap_opts
+local utils = require("utils")
+local opts = utils.keymap_opts
 
 function M.init()
     require("symbols-outline").setup({
@@ -13,6 +14,9 @@ function M.init()
       auto_unfold_hover = false,
       wrap = true,
       keymaps = {
+        toggle_preview = "M",
+        fold_all = "D",
+        unfold_all = "U",
         hover_symbol = "<S-space>"
       },
       symbols = {
@@ -46,7 +50,11 @@ function M.init()
         Fragment = { icon = "", hl = "@constant" },
       }
     })
-    vim.keymap.set("n", "S", "<cmd>SymbolsOutline<CR>", opts("Toggle SymbolsOutline"))
+    -- vim.keymap.set("n", "S", "<cmd>SymbolsOutline<CR>", opts("Toggle SymbolsOutline"))
+    vim.keymap.set("n", "S",
+      utils.toggle_sidebar("symbols-outline", "SymbolsOutline", nil),
+      opts("Toggle SymbolsOutline")
+    )
 end
 
 return M

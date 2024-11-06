@@ -1,6 +1,5 @@
 local M = {}
-
-local toggle_key = "E"
+local utils = require("utils")
 
 -- close nvim-tree after action if nvim-tree is in 
 -- float view.
@@ -42,7 +41,8 @@ local function on_attach(bufnr)
   local api = require("nvim-tree.api")
 
   -- overwrite the api.tree.open function here.
-  vim.keymap.set("n", toggle_key, api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
+  -- vim.keymap.set("n", "E", api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
+  vim.keymap.set("n", "E", utils.toggle_sidebar("nvim-tree", api.tree.toggle, nil), { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
   vim.keymap.set("n", "q", api.tree.toggle, opts("close"))
   vim.keymap.set("n", "?", api.tree.toggle_help, opts("help"))
   vim.keymap.set('n', 't', api.node.open.tab, opts("open in new tab"))
@@ -135,8 +135,6 @@ function M.init()
   })
 
   vim.g.is_nvim_tree_float = float_view.enable
-
-  vim.keymap.set("n", toggle_key, require("nvim-tree.api").tree.open, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
 
   -- auto adjust window width to select 
   -- open aside or open float.

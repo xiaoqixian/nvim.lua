@@ -10,7 +10,8 @@ local plugins = {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = true,
     keys = {
-      { "E", "<cmd>NvimTreeOpen<CR>", desc = "nvim-tree toggle" }
+      -- { "E", "<cmd>NvimTree<CR>", desc = "nvim-tree toggle" }
+      { "E", utils.toggle_sidebar("nvim-tree", "NvimTreeOpen", nil), desc = "nvim-tree toggle" }
     },
     config = require("plugins/nvim-tree").init,
   },
@@ -175,7 +176,8 @@ local plugins = {
     "simrat39/symbols-outline.nvim",
     config = require("plugins/symbols_outline").init,
     keys = {
-      { "S", "<cmd>SymbolsOutlineOpen<CR>", desc = "symbols outline toggle" }
+      -- { "S", "<cmd>SymbolsOutlineOpen<CR>", desc = "symbols outline toggle" }
+      { "S", utils.toggle_sidebar("symbols-outline", "SymbolsOutlineOpen", nil), desc = "symbols outline toggle" }
     },
     lazy = true
   },

@@ -362,4 +362,45 @@ function M.format_rs(fallback)
   end
 end
 
+--- toggle sidebar plugins, I wish there's only one sidebar plugin 
+--- at a time, and I don't want to always close one before opening 
+--- another one. So I write this function to automatically close 
+--- the before sidebar plugin.
+--- If the close_cmd is nil, it means the close command is the same 
+--- as the open command.
+--- @param name string
+--- @param action string | function
+--- @param close string | function | nil
+--- @return function
+function M.toggle_sidebar(name, action, close)
+  local function invoke(h)
+    if type(h) == "string" then
+      vim.cmd(h)
+    elseif type(h) == "function" then
+      h()
+    else
+      error("invalid type: " .. type(h))
+    end
+  end
+
+  return function()
+    assert(action ~= nil, "action cannot be nil")
+    local before = vim.g.sidebar_plugin
+    if before ~= nil then
+      if before.name == name then
+        invoke(action)
+        vim.g.sidebar_plugin = nil
+        return
+      else
+        invoke(before.close)
+      end
+    end
+    vim.g.sidebar_plugin = {
+      name = name,
+      close = close or action
+    }
+    invoke(action)
+  end
+end
+
 return M
