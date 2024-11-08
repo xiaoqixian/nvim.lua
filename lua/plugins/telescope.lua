@@ -68,8 +68,6 @@ function M.init()
 
   require("telescope").setup({
     defaults = {
-      initial_mode = "normal",
-
       mappings = {
         n = {
           q = actions.close,
