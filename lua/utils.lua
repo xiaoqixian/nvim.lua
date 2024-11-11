@@ -362,6 +362,7 @@ function M.format_rs(fallback)
   end
 end
 
+M.sidebar_plugins = {}
 --- toggle sidebar plugins, I wish there's only one sidebar plugin 
 --- at a time, and I don't want to always close one before opening 
 --- another one. So I write this function to automatically close 
@@ -385,17 +386,18 @@ function M.toggle_sidebar(name, action, close)
 
   return function()
     assert(action ~= nil, "action cannot be nil")
-    local before = vim.g.sidebar_plugin
+    local tabnr = vim.fn.tabpagenr()
+    local before = M.sidebar_plugins[tabnr]
     if before ~= nil then
       if before.name == name then
         invoke(action)
-        vim.g.sidebar_plugin = nil
+        M.sidebar_plugins[tabnr] = nil
         return
       else
         invoke(before.close)
       end
     end
-    vim.g.sidebar_plugin = {
+    M.sidebar_plugins[tabnr] = {
       name = name,
       close = close or action
     }
