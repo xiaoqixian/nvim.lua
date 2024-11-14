@@ -174,7 +174,7 @@ local plugins = {
   },
 
   {
-    "hedyhli/outline.nvim",
+    "xiaoqixian/outline.nvim",
     config = require("plugins/outline").init,
     keys = {
       { "S", utils.toggle_sidebar("Outline", "Outline", nil), desc = "symbols outline toggle" }
