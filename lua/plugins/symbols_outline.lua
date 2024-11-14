@@ -52,7 +52,7 @@ function M.init()
     })
     -- vim.keymap.set("n", "S", "<cmd>SymbolsOutline<CR>", opts("Toggle SymbolsOutline"))
     vim.keymap.set("n", "S",
-      utils.toggle_sidebar("symbols-outline", "SymbolsOutline", nil),
+      utils.toggle_sidebar("Outline", "SymbolsOutline", nil),
       opts("Toggle SymbolsOutline")
     )
 end

@@ -42,7 +42,7 @@ local function on_attach(bufnr)
 
   -- overwrite the api.tree.open function here.
   -- vim.keymap.set("n", "E", api.tree.toggle, { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
-  vim.keymap.set("n", "E", utils.toggle_sidebar("nvim-tree", api.tree.toggle, nil), { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
+  vim.keymap.set("n", "E", utils.toggle_sidebar("NvimTree", api.tree.toggle, nil), { desc = "nvim-tree: toggle", noremap = true, silent = true, nowait = true })
   vim.keymap.set("n", "q", api.tree.toggle, opts("close"))
   vim.keymap.set("n", "?", api.tree.toggle_help, opts("help"))
   vim.keymap.set('n', 't', api.node.open.tab, opts("open in new tab"))

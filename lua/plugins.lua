@@ -12,7 +12,7 @@ local plugins = {
     lazy = true,
     keys = {
       -- { "E", "<cmd>NvimTree<CR>", desc = "nvim-tree toggle" }
-      { "E", utils.toggle_sidebar("nvim-tree", "NvimTreeOpen", nil), desc = "nvim-tree toggle" }
+      { "E", utils.toggle_sidebar("NvimTree", "NvimTreeOpen", nil), desc = "nvim-tree toggle" }
     },
     config = require("plugins/nvim-tree").init,
   },
@@ -178,7 +178,7 @@ local plugins = {
     config = require("plugins/symbols_outline").init,
     keys = {
       -- { "S", "<cmd>SymbolsOutlineOpen<CR>", desc = "symbols outline toggle" }
-      { "S", utils.toggle_sidebar("symbols-outline", "SymbolsOutlineOpen", nil), desc = "symbols outline toggle" }
+      { "S", utils.toggle_sidebar("Outline", "SymbolsOutlineOpen", nil), desc = "symbols outline toggle" }
     },
     lazy = true
   },

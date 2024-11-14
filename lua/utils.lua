@@ -369,7 +369,7 @@ M.sidebar_plugins = {}
 --- the before sidebar plugin.
 --- If the close_cmd is nil, it means the close command is the same 
 --- as the open command.
---- @param name string
+--- @param name string assume the plugin name is the same as the plugin buffer filetype
 --- @param action string | function
 --- @param close string | function | nil
 --- @return function
@@ -384,24 +384,39 @@ function M.toggle_sidebar(name, action, close)
     end
   end
 
-  return function()
-    assert(action ~= nil, "action cannot be nil")
-    local tabnr = tostring(vim.fn.tabpagenr())
-    local before = M.sidebar_plugins[tabnr]
-    if before ~= nil then
-      if before.name == name then
-        invoke(action)
-        M.sidebar_plugins[tabnr] = nil
-        return
-      else
-        invoke(before.close)
+  -- iterate all windows in the current tabpage, check if any filetype 
+  -- of the buffer in that window matches any of the registered sidebar plugins.
+  -- If does, returns the plugin's name.
+  -- Else returns nil.
+  function M.any_opened()
+    local tabnr = vim.fn.tabpagenr()
+    local windows = vim.api.nvim_tabpage_list_wins(tabnr)
+
+    for _, winnr in ipairs(windows) do
+      local bufnr = vim.api.nvim_win_get_buf(winnr)
+      local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+      if M.sidebar_plugins[ft] ~= nil then
+        return ft
       end
     end
-    M.sidebar_plugins[tabnr] = {
-      name = name,
-      close = close or action
-    }
-    invoke(action)
+    return nil
+  end
+
+  M.sidebar_plugins[name] = {
+    action = action,
+    close = close or action
+  }
+
+  return function()
+    local opend = M.any_opened()
+    if opend ~= nil then
+      local plugin = M.sidebar_plugins[opend]
+      invoke(plugin.close)
+    end
+
+    if opend ~= name then
+      invoke(action)
+    end
   end
 end
 
