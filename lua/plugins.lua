@@ -1,6 +1,7 @@
 -- This file can be loaded by calling `lua require("plugins")` from your init.vim
 
 local utils = require("utils")
+local opts = utils.keymap_opts
 
 local lazy_colorscheme = utils.colorscheme_by_profile()
 
@@ -274,6 +275,16 @@ local plugins = {
     dir = "~/pros/winlocal-search.nvim",
     config = function()
       require("wl-search").setup()
+    end
+  },
+
+  {
+    "ojroques/nvim-osc52",
+    config = function()
+      vim.keymap.set('n', '<leader>y', require('osc52').copy_operator,
+        opts("osc52: norm copy to clipboard", {expr = true}))
+      vim.keymap.set('v', '<leader>y', require('osc52').copy_visual,
+        opts("osc52: visiual copy to clipboard"))
     end
   }
 }
