@@ -386,7 +386,7 @@ function M.toggle_sidebar(name, action, close)
 
   return function()
     assert(action ~= nil, "action cannot be nil")
-    local tabnr = vim.fn.tabpagenr()
+    local tabnr = tostring(vim.fn.tabpagenr())
     local before = M.sidebar_plugins[tabnr]
     if before ~= nil then
       if before.name == name then
