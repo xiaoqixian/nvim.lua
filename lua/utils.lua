@@ -170,7 +170,7 @@ function M.set_file_header()
   local valid_extensions = {
     "c", "h", "hpp", "cpp", "cc",
     "java", "py", "rs", "js", "ts",
-    "lua", "hs"
+    "lua", "hs", "typ"
   }
 
   if not contains(valid_extensions, extension) then
