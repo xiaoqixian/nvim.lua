@@ -170,6 +170,11 @@ function M.init()
       :use_key("`")
       :with_del(cond.done())
       :with_move(cond.done())
+    ,
+    Rule("`", "`", "markdown")
+      :use_key("`")
+      :with_del(cond.done())
+      :with_move(cond.done())
   })
 
   -- add rules for add space between brackets.
