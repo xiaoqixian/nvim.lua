@@ -270,7 +270,7 @@ local plugins = {
   },
 
   {
-    dir = "~/pros/winlocal-search.nvim",
+    "xiaoqixian/winlocal-search.nvim",
     config = function()
       require("wl-search").setup()
     end
