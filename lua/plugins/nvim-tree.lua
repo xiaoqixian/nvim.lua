@@ -5,7 +5,9 @@ local utils = require("utils")
 -- float view.
 local function float_wrap(f)
   return function()
-    local node = require("nvim-tree.lib").get_node_at_cursor()
+    local explorer = require("nvim-tree.core").get_explorer()
+    assert(explorer, "nvim-tree api changed again, damn it!")
+    local node = explorer:get_node_at_cursor()
     local isdir = node and vim.fn.isdirectory(node.absolute_path) or true
     f()
     if vim.g.is_nvim_tree_float and not isdir then
