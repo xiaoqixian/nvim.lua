@@ -161,7 +161,7 @@ function M.init()
       :with_move(cond.done())
     ,
 
-    Rule("$", "$", "typst")
+    Rule("$", "$", {"typst", "markdown"})
       :use_key("$")
       :with_del(cond.done())
       :with_move(cond.done()),
