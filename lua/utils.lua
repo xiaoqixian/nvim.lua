@@ -173,11 +173,26 @@ function M.set_file_header()
     "lua", "hs", "typ"
   }
 
-  if not contains(valid_extensions, extension) then
+  local extra_check = function()
+    local filename = vim.fn.expand("%:t")
+    if filename == "CMakeLists.txt" then
+      return "cmake"
+    end
+    return nil
+  end
+
+  local kind = nil
+  if contains(valid_extensions, extension) then
+    kind = extension
+  else
+    kind = extra_check()
+  end
+
+  if kind == nil then
     return
   end
 
-  set_most_file_header(extension)
+  set_most_file_header(kind)
 
   local extra_feedings = {
     typ = set_typst_header,
@@ -185,8 +200,8 @@ function M.set_file_header()
     hpp = set_cheader_header
   }
 
-  if type(extra_feedings[extension]) == "function" then
-    extra_feedings[extension](extension)
+  if type(extra_feedings[kind]) == "function" then
+    extra_feedings[kind](extension)
   end
 
 end
