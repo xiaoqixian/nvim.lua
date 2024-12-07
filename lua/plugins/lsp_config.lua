@@ -51,7 +51,7 @@ function M.init()
     "ts_ls",
     "cmake",
     "clangd",
-    "typst_lsp",
+    "tinymist",
     "hls"
   }
 
