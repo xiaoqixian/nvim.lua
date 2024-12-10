@@ -114,11 +114,9 @@ function M.python_config()
 
       program = "${file}", -- This configuration will launch the current file if used.
       pythonPath = function()
-        local cwd = vim.fn.getcwd()
-        if vim.fn.executable(cwd .. '/venv/bin/python') == 1 then
-          return cwd .. '/venv/bin/python'
-        elseif vim.fn.executable(cwd .. '/.venv/bin/python') == 1 then
-          return cwd .. '/.venv/bin/python'
+        local venv = os.getenv("VIRTUAL_ENV")
+        if venv ~= "" then
+          return venv .. "/bin/python"
         else
           return "/usr/bin/python3"
         end
