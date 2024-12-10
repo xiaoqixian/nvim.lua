@@ -1,13 +1,17 @@
 local M = {}
 local utils = require("utils")
 
+local function get_node_at_cursor()
+  local explorer = require("nvim-tree.core").get_explorer()
+  assert(explorer, "nvim-tree api changed again, damn it!")
+  return explorer:get_node_at_cursor()
+end
+
 -- close nvim-tree after action if nvim-tree is in 
 -- float view.
 local function float_wrap(f)
   return function()
-    local explorer = require("nvim-tree.core").get_explorer()
-    assert(explorer, "nvim-tree api changed again, damn it!")
-    local node = explorer:get_node_at_cursor()
+    local node = get_node_at_cursor()
     local isdir = node and vim.fn.isdirectory(node.absolute_path) or true
     f()
     if vim.g.is_nvim_tree_float and not isdir then
@@ -74,8 +78,7 @@ local function on_attach(bufnr)
   -- macOS only
   if vim.loop.os_uname().sysname == "Darwin" then
     vim.keymap.set("n", "o", function(node)
-      local lib = require("nvim-tree.lib")
-      node = node or lib.get_node_at_cursor()
+      node = node or get_node_at_cursor()
       vim.fn.jobstart({"open", node.absolute_path}, {detach = true})
     end, opts("open a node using macOS built-in open cmd"))
   end
