@@ -48,9 +48,9 @@ function M.ui_config()
     layouts = {
       {
         elements = {
-          { id = "repl", size = 0.1 },
-          { id = "watches", size = 0.1 },
-          { id = "breakpoints", size = 0.4 },
+          { id = "repl", size = 0.2 },
+          { id = "watches", size = 0.2 },
+          { id = "breakpoints", size = 0.2 },
           { id = "stacks", size = 0.4 }
         },
         size = 40,
@@ -70,6 +70,18 @@ function M.ui_config()
   })
 
   vim.keymap.set("n", "Q", dapui.toggle, opts("dap-ui: toggle"))
+  vim.keymap.set("n", "<S-Space>", function()
+    local ft = vim.bo.filetype
+    local elem = ft:match("dapui_(%w+)")
+    if elem ~= nil then
+      dapui.float_element(elem, {
+        width = 120,
+        height = 40,
+        enter = true,
+        position = "center"
+      })
+    end
+  end, opts("dap-ui: float element"))
 end
 
 function M.python_config()
