@@ -153,11 +153,17 @@ local plugins = {
       "nvim-tree/nvim-web-devicons",
     },
     opts = {
-      -- configuration goes here
+      cn = {
+        enabled = true,
+        translator = false,
+        translate_problems = false
+      },
+      storage = {
+        home = os.getenv("HOME") .. "/won/leetcode",
+        cache = vim.fn.stdpath("cache") .. "/leetcode",
+      }
     },
-    init = require("plugins/leetcode").init,
     cmd = "Leet",
-    enabled = false
   },
 
   {
