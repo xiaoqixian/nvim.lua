@@ -140,8 +140,9 @@ local plugins = {
   },
 
   {
-    "kawre/leetcode.nvim",
+    "xiaoqixian/leetcode.nvim",
     build = ":TSUpdate html",
+    dir = "/Users/lunar/clones/leetcode.nvim",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
@@ -161,6 +162,11 @@ local plugins = {
       storage = {
         home = os.getenv("HOME") .. "/won/leetcode",
         cache = vim.fn.stdpath("cache") .. "/leetcode",
+      },
+      injector = {
+        cpp = {
+          before = utils.leetcode_cpp_injector_before
+        }
       }
     },
     cmd = "Leet",

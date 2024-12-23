@@ -430,4 +430,33 @@ function M.toggle_sidebar(name, action, close)
   end
 end
 
+--@param code string
+function M.leetcode_cpp_injector_before(code)
+  local find_string = false
+  local find_vector = false
+  for word in code:gmatch("%a+") do
+    if not find_string and word == "string" then
+      find_string = true
+    elseif not find_vector and word == "vector" then
+      find_vector = true
+    end
+  end
+
+  local res = {}
+  if find_string then
+    table.insert(res, "#include <string>")
+  end
+  if find_vector then
+    table.insert(res, "#include <vector>")
+  end
+  if find_string then
+    table.insert(res, "using std::string;")
+  end
+  if find_vector then
+    table.insert(res, "using std::vector;")
+  end
+
+  return res
+end
+
 return M
