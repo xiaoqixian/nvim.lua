@@ -2,7 +2,10 @@ local utils = require("utils")
 
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*",
-  callback = utils.set_file_header
+  callback = function()
+    utils.set_file_header()
+    vim.cmd.normal("G")
+  end
 })
 
 -- Tabwidth by file
@@ -69,7 +72,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "cmake",
   callback = function()
-    local function iab(from, to) 
+    local function iab(from, to)
       vim.cmd(string.format("iab <buffer> %s %s", from, to))
     end
 
@@ -88,12 +91,12 @@ vim.api.nvim_create_autocmd("FileType", {
       "cmake_system_name",
       "project_name",
       "glob",
-      "win32", 
+      "win32",
       "git_repository", "git_tag",
       "configure_command", "install_command", "build_command",
     }
 
-    for _, k in ipairs(keywords) do 
+    for _, k in ipairs(keywords) do
       iab(k, k:upper())
     end
 

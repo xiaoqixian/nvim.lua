@@ -55,12 +55,7 @@ local function set_most_file_header(extension)
     ""
   }
 
-  local cur_line = vim.fn.line(".") - 1
-
-  vim.api.nvim_buf_set_lines(0, cur_line, cur_line + #header_lines, false, header_lines)
-
-  vim.cmd.normal("G")
-
+  vim.api.nvim_buf_set_lines(0, 0, 0, false, header_lines)
 end
 
 -- set C-family header file header
@@ -170,7 +165,7 @@ function M.set_file_header()
   local valid_extensions = {
     "c", "h", "hpp", "cpp", "cc",
     "java", "py", "rs", "js", "ts",
-    "lua", "hs", "typ"
+    "lua", "hs", "typ", "go"
   }
 
   local extra_check = function()
