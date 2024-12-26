@@ -142,7 +142,6 @@ local plugins = {
   {
     "xiaoqixian/leetcode.nvim",
     build = ":TSUpdate html",
-    dir = "/Users/lunar/clones/leetcode.nvim",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
