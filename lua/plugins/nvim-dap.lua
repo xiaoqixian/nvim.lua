@@ -6,10 +6,30 @@ local M = {}
 local utils = require("utils")
 local opts = utils.keymap_opts
 
+-- a table of conditional breakpoints
+local cond_bps = {}
+
 function M.config()
   local dap = require("dap")
   local dap_keymaps = {
     tb = "toggle_breakpoint",
+    tcb = {
+      cb = function()
+        local input_args = {
+          prompt = "Breakpoint condition: "
+        }
+        local key = ("%s:%d"):format(vim.fn.expand("%:p"), vim.fn.line("."))
+        local bp_before = cond_bps[key]
+        if bp_before ~= nil then
+          input_args.default = bp_before
+        end
+        vim.ui.input(input_args, function(cond)
+          cond_bps[key] = cond
+          dap.set_breakpoint(cond)
+        end)
+      end,
+      desc = "set conditional breakpoint"
+    },
     ["<leader>ct"] = "continue",
     [")"] = "step_into",
     ["("] = "step_out",
@@ -70,9 +90,12 @@ function M.ui_config()
   })
 
   vim.keymap.set("n", "Q", dapui.toggle, opts("dap-ui: toggle"))
-  vim.keymap.set("n", "<S-Space>", function()
+  vim.keymap.set("n", "W", function()
     local ft = vim.bo.filetype
     local elem = ft:match("dapui_(%w+)")
+    if elem == nil and ft == "dap-repl" then
+      elem = "repl"
+    end
     if elem ~= nil then
       dapui.float_element(elem, {
         width = 120,
@@ -85,7 +108,7 @@ function M.ui_config()
 end
 
 function M.python_config()
-  local py_path = ("%s/.local/share/debugpy-venv/bin/python"):format(os.getenv("HOME"))
+  local py_path = ("%s/.local/share/venv/bin/python"):format(os.getenv("HOME"))
   -- require("dap-python").setup(py_path, {
   --   console = "integratedTerminal",
   -- })
