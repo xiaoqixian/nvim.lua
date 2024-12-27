@@ -157,6 +157,12 @@ function M.python_config()
         end
       end,
     },
+    {
+      type = "python",
+      request = "attach",
+      name = "Attach to remote IDA debugger",
+      port = 5678,
+    }
   }
 end
 
