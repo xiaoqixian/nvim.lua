@@ -146,7 +146,6 @@ function M.python_config()
       name = "Launch file",
       justMyCode = false,
       console = "integratedTerminal",
-
       program = "${file}", -- This configuration will launch the current file if used.
       pythonPath = function()
         local venv = os.getenv("VIRTUAL_ENV")
@@ -161,6 +160,7 @@ function M.python_config()
       type = "python",
       request = "attach",
       name = "Attach to remote IDA debugger",
+      justMyCode = false,
       port = 5678,
     }
   }
