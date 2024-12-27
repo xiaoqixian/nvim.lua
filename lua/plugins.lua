@@ -289,6 +289,9 @@ local plugins = {
 
   {
     "ojroques/nvim-osc52",
+    enabled = function()
+      return vim.g.distro ~= "Ubuntu"
+    end,
     config = function()
       vim.keymap.set('n', '<leader>y', require('osc52').copy_operator,
         opts("osc52: norm copy to clipboard", {expr = true}))

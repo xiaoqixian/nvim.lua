@@ -282,6 +282,26 @@ function M.os()
   end
 end
 
+function M.distro()
+  local os = M.os()
+  if os ~= "Linux" then
+    return os
+  end
+
+  local handle = io.popen("uname -a")
+  assert(handle, "execute 'uname -a' failed")
+  local result = handle:read("*l")
+  handle:close()
+
+  local candidates = {"Arch", "Ubuntu", "Debian"}
+  for _, distro in ipairs(candidates) do
+    if result:match(distro) then
+      return distro
+    end
+  end
+  return "Unknown"
+end
+
 -- map { to find the closest function(method) or class(struct)
 function M.find_parent()
   local function cmp_indent(cln, ln)

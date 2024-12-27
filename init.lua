@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 --     missing = true,
 --   }
 -- })
+vim.g.distro = require("utils").distro()
 
 require("config/keymaps")
 require("config/autocmds")

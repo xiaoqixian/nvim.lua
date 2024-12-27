@@ -10,9 +10,6 @@ vim.keymap.set("n", "<space>", "<C-w>w", opts("jump between windows"))
 
 vim.keymap.set("n", "U", "<C-r>", opts("map U to undo undo"))
 
--- map <leader>c to copying things into the clipboard.
--- vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts("copy to clipboard"))
-
 vim.keymap.set("", "<ScrollWheelUp>", "2k", opts("move cursor up with mouse scroll"))
 vim.keymap.set("", "<ScrollWheelDown>", "2j", opts("move cursor down with mouse scroll"))
 vim.keymap.set("i", "<LeftMouse>", "<Nop>", opts("disable mouse left click in insert mode"))
@@ -89,3 +86,8 @@ vim.keymap.set("n", "==", function()
     utils.format_rs(fallback)
   end
 end, opts("extra format"))
+
+if vim.g.distro == "Ubuntu" then
+  -- map <leader>c to copying things into the clipboard.
+  vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts("copy to clipboard"))
+end
