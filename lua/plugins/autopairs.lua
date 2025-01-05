@@ -13,8 +13,10 @@ local function cpp_curly_pairing(line)
     end
   end
 
-  local before = content_before_cursor(line)
-  if before:match("%[.*%]%(.*%)[^%{]*") then
+  local col = vim.fn.col(".")
+  local before = line:sub(1, col - 1)
+  local after = line:sub(col)
+  if before:match("%[.*%]%(.*%)[^%{]*") and after:match("^%s*$") then
     return "};"
   end
 
