@@ -419,7 +419,7 @@ function M.toggle_sidebar(name, action, close)
   -- If does, returns the plugin's name.
   -- Else returns nil.
   function M.any_opened()
-    local tabnr = vim.fn.tabpagenr()
+    local tabnr = vim.api.nvim_get_current_tabpage()
     local windows = vim.api.nvim_tabpage_list_wins(tabnr)
 
     for _, winnr in ipairs(windows) do

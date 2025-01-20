@@ -8,6 +8,7 @@ local opts = utils.keymap_opts
 
 -- a table of conditional breakpoints
 local cond_bps = {}
+vim.g.ida_port = 5678
 
 function M.config()
   local dap = require("dap")
@@ -108,7 +109,7 @@ function M.ui_config()
 end
 
 function M.python_config()
-  local py_path = ("%s/.local/share/venv/bin/python"):format(os.getenv("HOME"))
+  local py_path = ("%s/.local/share/debugpy-venv/bin/python"):format(os.getenv("HOME"))
   -- require("dap-python").setup(py_path, {
   --   console = "integratedTerminal",
   -- })
@@ -161,7 +162,7 @@ function M.python_config()
       request = "attach",
       name = "Attach to remote IDA debugger",
       justMyCode = false,
-      port = 5678,
+      port = vim.g.ida_port
     }
   }
 end
