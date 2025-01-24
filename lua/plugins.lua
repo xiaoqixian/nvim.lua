@@ -298,6 +298,14 @@ local plugins = {
       vim.keymap.set('v', '<leader>y', require('osc52').copy_visual,
         opts("osc52: visiual copy to clipboard"))
     end
+  },
+
+  {
+    "echasnovski/mini.align",
+    version = false,
+    config = function ()
+      require("mini.align").setup()
+    end
   }
 }
 
