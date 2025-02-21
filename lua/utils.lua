@@ -59,23 +59,14 @@ local function set_most_file_header(extension)
 end
 
 -- set C-family header file header
-local function set_cheader_header(extension)
-  local macro_name = string.format("_%s_%s",
-    string.upper(vim.fn.expand("%:t:r")),
-    string.upper(extension))
-
+local function set_cheader_header()
   local header_define = {
-    "#ifndef " .. macro_name,
-    "#define " .. macro_name,
-    "",
-    "",
-    "",
-    "#endif // " .. macro_name
+    "#pragma once"
   }
 
   local btm_line = vim.fn.line("$")
   vim.api.nvim_buf_set_lines(0, btm_line, btm_line + #header_define, false, header_define)
-  vim.cmd.normal("Gkk")
+  vim.cmd.normal("G")
 end
 
 local function set_typst_header()
@@ -191,12 +182,10 @@ function M.set_file_header()
 
   local extra_feedings = {
     typ = set_typst_header,
-    h = set_cheader_header,
-    hpp = set_cheader_header
   }
 
   if type(extra_feedings[kind]) == "function" then
-    extra_feedings[kind](extension)
+    extra_feedings[kind]()
   end
 
 end
