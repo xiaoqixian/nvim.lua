@@ -11,11 +11,11 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 -- Tabwidth by file
 -- default by 4
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "lua", "json", "vim", "xml", "html", "css", "typst", "haskell", "vue", "toml", "yaml" },
+  pattern = { "python" },
   callback = function()
-    vim.bo.shiftwidth = 2
-    vim.bo.tabstop = 2
-    vim.bo.softtabstop = 2
+    vim.bo.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
   end
 })
 
