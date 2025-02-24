@@ -64,8 +64,6 @@ end
 function M.init()
   local actions = require("telescope.actions")
 
-  local screen_width = vim.opt.columns:get()
-
   require("telescope").setup({
     defaults = {
       mappings = {
@@ -77,7 +75,8 @@ function M.init()
         }
       },
 
-      layout_strategy = screen_width < 120 and "vertical" or "horizontal",
+      -- layout_strategy = vim.opt.columns:get() < 120 and "vertical" or "horizontal",
+      layout_strategy = "vertical",
       layout_config = {
         vertical = {
           height = 0.9,
