@@ -150,7 +150,7 @@ function M.python_config()
       program = "${file}", -- This configuration will launch the current file if used.
       pythonPath = function()
         local venv = os.getenv("VIRTUAL_ENV")
-        if venv ~= "" then
+        if venv ~= nil then
           return venv .. "/bin/python"
         else
           return "/usr/bin/python3"
