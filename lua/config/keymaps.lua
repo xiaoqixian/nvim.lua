@@ -84,6 +84,8 @@ vim.keymap.set("n", "==", function()
 
   if ft == "rust" then
     utils.format_rs(fallback)
+  elseif ft == "cpp" then
+    utils.format_cpp(fallback)
   end
 end, opts("extra format"))
 

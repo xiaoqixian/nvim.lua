@@ -381,6 +381,50 @@ function M.format_rs(fallback)
   end
 end
 
+function M.format_cpp(fallback)
+  local function split_string(input, delimiter)
+    local result = {}
+    for match in (input .. delimiter):gmatch("%s*(.-)%s*" .. delimiter) do
+      table.insert(result, match)
+    end
+    return result
+  end
+
+  local line = vim.api.nvim_get_current_line()
+  local ln = vim.fn.line(".")
+
+  local identifier, parameters, ret, brackets = line:match("([^%)]+)%(([^%)]*)%)([^%{]-)%s*({?}?)%s*$")
+  if identifier and parameters and ret then
+    local indent = vim.fn.indent(".")
+    local pad = (" "):rep(indent)
+    local more_pad = (" "):rep(indent + vim.bo.shiftwidth)
+
+    local lines = {}
+    table.insert(lines, identifier .. "(")
+
+    if #parameters > 0 then
+      local args = split_string(parameters, ",")
+      for i, arg in ipairs(args) do
+        if i == #args then
+          table.insert(lines, more_pad .. arg)
+        else
+          table.insert(lines, more_pad .. arg .. ",")
+        end
+      end
+    end
+
+    table.insert(lines, pad .. ")" .. ret)
+
+    if brackets ~= "" then
+      table.insert(lines, brackets)
+    end
+
+    vim.api.nvim_buf_set_lines(0, ln-1, ln, false, lines)
+  else
+    fallback()
+  end
+end
+
 M.sidebar_plugins = {}
 --- toggle sidebar plugins, I wish there's only one sidebar plugin 
 --- at a time, and I don't want to always close one before opening 
