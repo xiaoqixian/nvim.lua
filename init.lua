@@ -20,6 +20,7 @@ vim.g.distro = require("utils").distro()
 
 require("config/keymaps")
 require("config/autocmds")
+require("config/cmds")
 require("config/indent")
 require("config/options")
 
