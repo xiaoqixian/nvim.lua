@@ -107,7 +107,7 @@ function! CustomPythonIndent()
 endfunction
 
 " I tried to use au FileType, but it's not triggered.
-autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
-autocmd BufEnter * if expand('%:e') == '' | setlocal indentexpr=CppNoNamespaceAndTemplateIndent() | endif
+" autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
+" autocmd BufEnter * if expand('%:e') == '' | setlocal indentexpr=CppNoNamespaceAndTemplateIndent() | endif
 autocmd BufEnter *.typ setlocal indentexpr=CustomTypstIndent()
 autocmd BufEnter *.py setlocal indentexpr=CustomPythonIndent()

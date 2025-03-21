@@ -45,14 +45,6 @@ vim.api.nvim_create_autocmd("BufAdd", {
   end
 })
 
--- to stop indent access specifier in C++
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "cpp" },
-  callback = function()
-    vim.keymap.set("i", ":", utils.stop_cpp_access_indent, utils.keymap_opts("stop c++ access specifier indent", { buffer = 0 }))
-  end
-})
-
 vim.api.nvim_create_autocmd("BufWinLeave", {
   pattern = "?*",
   callback = function()
