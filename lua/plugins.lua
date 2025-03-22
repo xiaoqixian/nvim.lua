@@ -306,6 +306,13 @@ local plugins = {
     config = function ()
       require("mini.align").setup()
     end
+  },
+
+  {
+    "Shatur/neovim-session-manager",
+    config = function()
+      require("session_manager").setup({})
+    end
   }
 }
 
