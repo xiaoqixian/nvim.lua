@@ -9,6 +9,8 @@ function! CppNoNamespaceAndTemplateIndent()
   let l:pline_num = prevnonblank(l:cline_num - 1)
   let l:pline = getline(l:pline_num)
 
+  echom "pline: " . l:pline
+
   while l:pline =~# '\(^\s*{\s*\|^\s*//\|^\s*/\*\|\*/\s*$\)'
     let l:pline_num = prevnonblank(l:pline_num - 1)
     let l:pline = getline(l:pline_num)
@@ -106,8 +108,32 @@ function! CustomPythonIndent()
   endif
 endfunction
 
+function! CustomRustIndent()
+  let l:cline_num = line('.')
+  let l:cline = getline(l:cline_num)
+  let l:pline_num = prevnonblank(l:cline_num - 1)
+  let l:pline = getline(l:pline_num)
+  let l:pindent = indent(l:pline_num)
+  " echom "pline: " . l:pline
+  " echom "cline: " . l:cline
+
+  " a.method(...) like
+  if l:pline =~# '\w\+\.\w\+(.*)\s*$'
+    let l:prefix = matchlist(l:pline, '\([^\.]\+\)\.\w\+(.*)\s*$')[1]
+    echom "l:prefix = " . l:prefix
+    return strlen(l:prefix)
+  " .chained(...) like
+  elseif l:pline =~# '^\s\+\.\w\+(.*)\s*$'
+    fuck()
+    return l:pindent
+  else
+    return cindent('.')
+  endif
+endfunction
+
 " I tried to use au FileType, but it's not triggered.
 " autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
 " autocmd BufEnter * if expand('%:e') == '' | setlocal indentexpr=CppNoNamespaceAndTemplateIndent() | endif
 autocmd BufEnter *.typ setlocal indentexpr=CustomTypstIndent()
-autocmd BufEnter *.py setlocal indentexpr=CustomPythonIndent()
+autocmd BufEnter *.py  setlocal indentexpr=CustomPythonIndent()
+autocmd BufEnter *.rs  setlocal indentexpr=CustomRustIndent()
