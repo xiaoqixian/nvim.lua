@@ -93,3 +93,10 @@ if vim.g.distro == "Ubuntu" then
   -- map <leader>c to copying things into the clipboard.
   vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts("copy to clipboard"))
 end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.api.nvim_buf_set_keymap(0, "i", "<Tab>", '\u{200b}'..' ', { noremap = true, silent = true })
+  end
+})
