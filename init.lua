@@ -11,17 +11,18 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- require("lazy").setup({
---   install = {
---     missing = true,
---   }
--- })
 vim.g.distro = require("utils").distro()
+
+-- typst filetype support
+vim.filetype.add({
+  extension = {
+    typ = "typst"
+  }
+})
 
 require("config/keymaps")
 require("config/autocmds")
 require("config/cmds")
-vim.cmd("source " .. vim.fn.stdpath("config") .. "/lua/config/indent.vim")
 require("config/options")
 
 require("plugins")
