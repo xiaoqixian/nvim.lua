@@ -10,6 +10,8 @@ vim.api.nvim_create_user_command(
       "// Date:   " .. vim.fn.strftime("%a %b %d %X %Y"),
       "// Mail:   lunar_ubuntu@qq.com",
       "// Author: https://github.com/xiaoqixian",
+      "",
+      "#pragma once",
       ""
     }
     vim.api.nvim_buf_set_lines(0, 0, 0, false, header_lines)
