@@ -52,7 +52,8 @@ function M.init()
     "cmake",
     "clangd",
     "tinymist",
-    "hls"
+    "hls",
+    "jdtls"
   }
 
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
