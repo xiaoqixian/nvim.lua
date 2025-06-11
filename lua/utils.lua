@@ -1,5 +1,13 @@
 local M = {}
 
+local function split_string(input, delimiter)
+  local result = {}
+  for match in (input .. delimiter):gmatch("%s*(.-)%s*" .. delimiter) do
+    table.insert(result, match)
+  end
+  return result
+end
+
 function M.echoerr(msg)
   vim.cmd(string.format("echoerr '%s'", msg))
 end
@@ -382,14 +390,6 @@ function M.format_rs(fallback)
 end
 
 function M.format_cpp(fallback)
-  local function split_string(input, delimiter)
-    local result = {}
-    for match in (input .. delimiter):gmatch("%s*(.-)%s*" .. delimiter) do
-      table.insert(result, match)
-    end
-    return result
-  end
-
   local line = vim.api.nvim_get_current_line()
   local ln = vim.fn.line(".")
 
@@ -419,6 +419,32 @@ function M.format_cpp(fallback)
       table.insert(lines, brackets)
     end
 
+    vim.api.nvim_buf_set_lines(0, ln-1, ln, false, lines)
+  else
+    fallback()
+  end
+end
+
+function M.format_go(fallback)
+  local line = vim.api.nvim_get_current_line()
+  local ln = vim.fn.line(".")
+
+  local identifier, params, ret = line:match("%s*(func.-[a-z])%(([^%)]*)%)(.*)")
+  if identifier and params and ret then
+    local indent = vim.fn.indent(".")
+    local pad = (" "):rep(indent)
+    local more_pad = (" "):rep(indent + vim.bo.shiftwidth)
+
+    local lines = {}
+    table.insert(lines, identifier .. "(")
+    if #params > 0 then
+      local ps = split_string(params, ",")
+      for _, param in ipairs(ps) do
+        table.insert(lines, more_pad .. param .. ",")
+      end
+    end
+
+    table.insert(lines, pad .. ")" .. ret)
     vim.api.nvim_buf_set_lines(0, ln-1, ln, false, lines)
   else
     fallback()

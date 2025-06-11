@@ -86,6 +86,8 @@ vim.keymap.set("n", "==", function()
     utils.format_rs(fallback)
   elseif ft == "cpp" then
     utils.format_cpp(fallback)
+  elseif ft == "go" then
+    utils.format_go(fallback)
   end
 end, opts("extra format"))
 
