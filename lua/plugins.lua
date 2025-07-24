@@ -343,6 +343,11 @@ local plugins = {
       }
       require('jdtls').start_or_attach(config)
     end
+  },
+
+  {
+    "Vimjas/vim-python-pep8-indent",
+    ft = "python",
   }
 }
 
