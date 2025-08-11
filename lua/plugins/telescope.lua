@@ -98,7 +98,13 @@ function M.init()
           prompt_position = "bottom",
           width = 0.8
         }
-      }
+      },
+      file_ignore_patterns = {
+        "node_modules",
+        ".git",
+        "%.cache",
+        "build"
+      },
     },
   })
   set_keymaps()
