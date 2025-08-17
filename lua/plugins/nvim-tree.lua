@@ -70,7 +70,17 @@ local function on_attach(bufnr)
   vim.keymap.set("n", "a", api.fs.create, opts("fs.create"))
   vim.keymap.set("n", "y", api.fs.copy.node, opts("copy node"))
   vim.keymap.set("n", "p", api.fs.paste, opts("paste node"))
-  vim.keymap.set("n", "d", api.fs.trash, opts("move file to trash"))
+  vim.keymap.set("n", "d", function()
+    local node = api.tree.get_node_under_cursor()
+    local os = utils.os()
+    if os == "Linux" then
+      local src = node.absolute_path
+      local dst = "/tmp/" .. vim.fn.fnamemodify(src, ":t")
+      vim.fn.system({ "mv", src, dst })
+    elseif os == "macOS" then
+      api.fs.trash(node)
+    end
+  end, opts("move file to trash"))
   vim.keymap.set("n", "D", api.fs.remove, opts("rm file"))
   vim.keymap.set("n", "x", api.fs.cut, opts("cut file"))
   vim.keymap.set("n", "r", api.fs.rename, opts("rename node"))

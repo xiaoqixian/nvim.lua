@@ -284,7 +284,8 @@ local plugins = {
     "xiaoqixian/winlocal-search.nvim",
     config = function()
       require("wl-search").setup()
-    end
+    end,
+    enabled = false
   },
 
   {
