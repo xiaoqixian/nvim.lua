@@ -4,6 +4,15 @@
 
 local M = {}
 
+local default_file_ignore_patterns = {
+  "node_modules",
+  ".git",
+  "%.cache",
+  "build"
+}
+
+M.dynamic_file_ignore_patterns = {}
+
 local function get_root()
   local path = vim.fn.expand("%:p")
   -- if match a python lib path, set the lib path as root
@@ -44,7 +53,8 @@ local function set_keymaps()
   map("n", "<leader>ff", function()
     builtin.find_files({
       path_display = { "truncate" },
-      cwd = get_root()
+      cwd = get_root(),
+      file_ignore_patterns = vim.list_extend(default_file_ignore_patterns, M.dynamic_file_ignore_patterns)
     })
   end, opts("telescope find files"))
 
@@ -99,15 +109,26 @@ function M.init()
           width = 0.8
         }
       },
-      file_ignore_patterns = {
-        "node_modules",
-        ".git",
-        "%.cache",
-        "build"
-      },
+      file_ignore_patterns = default_file_ignore_patterns
     },
   })
   set_keymaps()
+
+  vim.api.nvim_create_user_command("AddFileIgnorePattern", function(opts)
+    table.insert(M.dynamic_file_ignore_patterns, opts.args)
+    print("Added ignore pattern: " .. opts.args)
+  end, { nargs = 1 })
+
+  vim.api.nvim_create_user_command("RemoveFileIgnorePattern", function(opts)
+    for i, pattern in ipairs(M.dynamic_file_ignore_patterns) do
+      if pattern == opts.args then
+        table.remove(M.dynamic_file_ignore_patterns, i)
+        print("Removed ignore pattern: " .. opts.args)
+        return
+      end
+    end
+    print("Pattern not found: " .. opts.args)
+  end, { nargs = 1 })
 end
 
 return M
