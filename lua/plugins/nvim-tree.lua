@@ -54,8 +54,8 @@ local function on_attach(bufnr)
   vim.keymap.set('n', 't', api.node.open.tab, opts("open in new tab"))
   vim.keymap.set('n', '<leader>fe', toggle_or_focus, opts("toggle or focus"))
 
-  vim.keymap.set("n", "<CR>", float_wrap(api.node.open.no_window_picker), opts("edit"))
-  vim.keymap.set("n", "<S-CR>", float_wrap(api.node.open.edit), opts("edit with window picker"))
+  vim.keymap.set("n", "<S-CR>", float_wrap(api.node.open.no_window_picker), opts("edit"))
+  vim.keymap.set("n", "<CR>", float_wrap(api.node.open.edit), opts("edit with window picker"))
 
   vim.keymap.set("n", "s", float_wrap(api.node.open.vertical), opts("vertical split view"))
   vim.keymap.set("n", "i", float_wrap(api.node.open.horizontal), opts("horizontal split view"))
