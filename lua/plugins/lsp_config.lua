@@ -67,7 +67,7 @@ function M.init()
     "pyright",
     "ts_ls",
     "cmake",
-    "clangd",
+    -- "clangd",
     "tinymist",
     "hls",
     "jdtls"
@@ -105,8 +105,8 @@ function M.init()
   }
 
   -- set clangd
-  -- capabilities.semanticTokensProvider = nil
-  --
+  capabilities.semanticTokensProvider = nil
+
   -- local root_files = {
   --   '.clangd',
   --   '.clang-tidy',
@@ -119,18 +119,21 @@ function M.init()
   -- local fname = vim.api.nvim_buf_get_name(vim.fn.bufnr())
   -- local root_dir = util.root_pattern(unpack(root_files))(fname)
   -- local ext = fname:match(".*%.([^%.]+)$")
-  --
-  -- local cmd = { "clangd" }
-  --
+
+  local cmd = {
+    "clangd",
+    "-j=4"
+  }
+
   -- if root_dir == nil and ext ~= "c" then
   --   vim.notify(("root_dir = %s, ext = %s"):format(root_dir, ext))
   --   table.insert(cmd, ("--compile-commands-dir=%s/.config/nvim"):format(vim.fn.getenv("HOME")))
   -- end
-  -- lspconfig.clangd.setup {
-  --   capabilities = capabilities,
-  --   cmd = cmd,
-  --   handlers = handlers
-  -- }
+  lspconfig.clangd.setup {
+    capabilities = capabilities,
+    cmd = cmd,
+    handlers = handlers
+  }
 
 end
 
