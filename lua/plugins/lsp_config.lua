@@ -122,7 +122,12 @@ function M.init()
 
   local cmd = {
     "clangd",
-    "-j=4"
+    "-j=4",
+    "--background-index",
+    "--background-index-priority=low",
+    "--pch-storage=disk",
+    "--malloc-trim",
+    "--log=error"
   }
 
   -- if root_dir == nil and ext ~= "c" then
