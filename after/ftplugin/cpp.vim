@@ -19,8 +19,8 @@ function! CustomCppIndent()
   if l:pline =~# '^\s*namespace'
     let l:retv = 0
 
-  elseif l:pline =~# '^\s*case'
-    let l:retv = l:pindent
+  " elseif l:pline =~# '^\s*case'
+  "   let l:retv = l:pindent
 
   " don't indent after macros.
   elseif l:pline =~# '^#'
