@@ -349,6 +349,83 @@ local plugins = {
   {
     "Vimjas/vim-python-pep8-indent",
     ft = "python",
+  },
+
+  {
+    "yetone/avante.nvim",
+    build = vim.fn.has("win32") ~= 0
+        and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+        or "make",
+    event = "VeryLazy",
+    version = false,
+    ---@module 'avante'
+    ---@type avante.Config
+    opts = {
+      provider = "openai",
+      providers = {
+        claude = {
+          endpoint = "https://api.anthropic.com",
+          model = "claude-sonnet-4-20250514",
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 20480,
+          },
+        },
+        moonshot = {
+          endpoint = "https://api.moonshot.ai/v1",
+          model = "kimi-k2-0711-preview",
+          timeout = 30000,
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 32768,
+          },
+        },
+        openai = {
+          endpoint = "https://api.openai.com/v1",
+          model = "gpt-3.5",
+          timeout = 30000,
+          extra_request_body = {
+            temperature = 0.2,
+            max_tokens = 32768,
+          },
+        }
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- the following dependencies are optional
+      "echasnovski/mini.pick",
+      "nvim-telescope/telescope.nvim",
+      "hrsh7th/nvim-cmp",
+      "ibhagwan/fzf-lua",
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      -- "zbirenbaum/copilot.lua", -- for providers='copilot'
+      {
+        -- for image clipping
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
   }
 }
 
