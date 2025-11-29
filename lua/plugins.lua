@@ -425,6 +425,7 @@ local plugins = {
         },
         ft = { "markdown", "Avante" },
       },
+      enabled = false
     },
   }
 }
