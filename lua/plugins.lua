@@ -427,6 +427,9 @@ local plugins = {
       },
       enabled = false
     },
+  },
+  {
+    "neoclide/vim-jsx-improve"
   }
 }
 
