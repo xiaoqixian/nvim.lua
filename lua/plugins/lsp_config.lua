@@ -120,15 +120,20 @@ function M.init()
   -- local root_dir = util.root_pattern(unpack(root_files))(fname)
   -- local ext = fname:match(".*%.([^%.]+)$")
 
-  local cmd = {
-    "clangd",
-    "-j=4",
-    "--background-index",
-    "--background-index-priority=low",
-    "--pch-storage=disk",
-    "--malloc-trim",
-    "--log=error"
-  }
+  local cmd = nil
+  if vim.fn.has("linux") == 1 then
+    cmd = {
+      "clangd",
+      "-j=4",
+      "--background-index",
+      "--background-index-priority=low",
+      "--pch-storage=disk",
+      "--malloc-trim",
+      "--log=error"
+    }
+  else
+    cmd = {"clangd"}
+  end
 
   -- if root_dir == nil and ext ~= "c" then
   --   vim.notify(("root_dir = %s, ext = %s"):format(root_dir, ext))
