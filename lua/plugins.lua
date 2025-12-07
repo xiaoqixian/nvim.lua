@@ -361,7 +361,7 @@ local plugins = {
     ---@module 'avante'
     ---@type avante.Config
     opts = {
-      provider = "openai",
+      provider = "gemini",
       providers = {
         claude = {
           endpoint = "https://api.anthropic.com",
