@@ -8,7 +8,41 @@ local default_file_ignore_patterns = {
   "node_modules",
   ".git",
   "%.cache",
-  "build"
+  "build",
+  "third_party",
+
+  -- Build output directories
+  "dist",        -- frontend build output
+  "target",      -- Rust / JVM build output
+  "out",         -- general output directory
+  "bin",         -- compiled binaries
+  "obj",         -- C/C++ intermediate objects
+
+  -- CMake generated files
+  "CMakeFiles",
+  "CMakeCache.txt",
+
+  -- Python cache
+  "__pycache__",
+  "%.pyc$",
+
+  -- Go related directories
+  "pkg",
+  "vendor",
+
+  -- OS temporary files
+  ".DS_Store",
+  "Thumbs%.db",
+
+  -- Large archive files
+  "%.zip$",
+  "%.tar$",
+  "%.tar%.gz$",
+
+  -- Editor / IDE config directories
+  "%.swp$",
+  ".idea",
+  ".vscode"
 }
 
 M.dynamic_file_ignore_patterns = {}
@@ -60,7 +94,8 @@ local function set_keymaps()
 
   map("n", "F", function()
     builtin.live_grep({
-      cwd = get_root()
+      cwd = get_root(),
+      file_ignore_patterns = vim.list_extend(default_file_ignore_patterns, M.dynamic_file_ignore_patterns)
     })
   end, opts("telescope live grep"))
 

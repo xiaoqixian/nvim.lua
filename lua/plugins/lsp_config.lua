@@ -124,7 +124,7 @@ function M.init()
   if vim.fn.has("linux") == 1 then
     cmd = {
       "clangd",
-      "-j=4",
+      "-j=1",
       "--background-index",
       "--background-index-priority=low",
       "--pch-storage=disk",
