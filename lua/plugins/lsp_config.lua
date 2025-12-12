@@ -29,24 +29,6 @@ function M.init()
     underline = true,
     signs = {
       active = signs,
-      -- text = {
-      --   [vim.diagnostic.severity.ERROR] = "",
-      --   [vim.diagnostic.severity.WARN] = "",
-      --   [vim.diagnostic.severity.HINT] = "󰌵",
-      --   [vim.diagnostic.severity.INFO] = "",
-      -- },
-      -- texthl = {
-      --   [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
-      --   [vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
-      --   [vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
-      --   [vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
-      -- },
-      -- numhl = {
-      --   [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
-      --   [vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
-      --   [vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
-      --   [vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
-      -- },
     },
     float = {
       header = false,
@@ -64,7 +46,6 @@ function M.init()
 
   local servers = {
     "rust_analyzer",
-    "pyright",
     "ts_ls",
     "cmake",
     -- "clangd",
@@ -76,12 +57,27 @@ function M.init()
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
   for _, server in ipairs(servers) do
     lspconfig[server].setup {
-      -- on_attach = my_custom_on_attach,
       capabilities = capabilities,
       handlers = handlers,
       single_file_support = true
     }
   end
+
+  lspconfig["pyright"].setup({
+    capabilities = capabilities,
+    handlers = handlers,
+    single_file_support = true,
+    settings = {
+      python = {
+        analysis = {
+          diagnosticSeverityOverrides = {
+            reportOptionalMemberAccess = "none", -- or "warning", "information", "hint"
+            reportAttributeAccessIssue = "none",
+          },
+        }
+      }
+    }
+  })
 
   --- set gopls
   lspconfig['gopls'].setup{
