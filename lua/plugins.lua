@@ -358,6 +358,7 @@ local plugins = {
         or "make",
     event = "VeryLazy",
     version = false,
+    enabled = false,
     ---@module 'avante'
     ---@type avante.Config
     opts = {
@@ -425,7 +426,6 @@ local plugins = {
         },
         ft = { "markdown", "Avante" },
       },
-      enabled = false
     },
   },
   {
