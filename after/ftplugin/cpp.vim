@@ -26,12 +26,21 @@ function! CustomCppIndent()
   elseif l:pline =~# '^#'
     let l:retv = 0
 
+  " indent rules for multiline brackets/parenthesis
   elseif l:pline =~# '[<{(]\s*$'
-    if l:cline =~# '[>})][,;]*\s*$'
+    " extract the last non-space char from pline
+    let l:opener = matchstr(l:pline, '[<{(]\ze\s*$')
+    
+    let l:closer_map = {'(': ')', '{': '}', '<': '>'}
+    let l:target_closer = l:closer_map[l:opener]
+
+    " \V (very nomagic) 
+    if l:cline =~# l:target_closer . '\s*$'
       let l:retv = l:pindent
     else
       let l:retv = l:pindent + &shiftwidth
-    endif 
+    endif
+
   elseif l:pline =~# '>[,;]*\s*$'
     let l:retv = l:pindent
 
