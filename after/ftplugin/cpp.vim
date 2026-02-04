@@ -37,6 +37,9 @@ function! CustomCppIndent()
     " \V (very nomagic) 
     if l:cline =~# l:target_closer . '\s*$'
       let l:retv = l:pindent
+    " special case: struct {};
+    elseif l:target_closer == '}' && l:clinet =~# l:target_closer . ';\s*$'
+      let l:retv = l:pindent
     else
       let l:retv = l:pindent + &shiftwidth
     endif
