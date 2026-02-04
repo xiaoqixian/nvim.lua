@@ -5,9 +5,8 @@ function! CustomCppIndent()
   let l:pline_num = prevnonblank(l:cline_num - 1)
   let l:pline = getline(l:pline_num)
 
-  echom "pline: " . l:pline
-
-  while l:pline =~# '\(^\s*{\s*\|^\s*//\|^\s*/\*\|\*/\s*$\)'
+  " pline skip the start of inline comment, start and end of block comments
+  while l:pline =~# '\(^\s*//\|^\s*/\*\|\*/\s*$\)'
     let l:pline_num = prevnonblank(l:pline_num - 1)
     let l:pline = getline(l:pline_num)
   endwhile
