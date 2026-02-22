@@ -430,6 +430,9 @@ local plugins = {
   },
   {
     "neoclide/vim-jsx-improve"
+  },
+  {
+    "aklt/plantuml-syntax"
   }
 }
 
