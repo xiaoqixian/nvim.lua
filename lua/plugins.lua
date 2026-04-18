@@ -165,10 +165,14 @@ local plugins = {
       injector = {
         cpp = {
           before = utils.leetcode_cpp_injector_before
+        },
+        rust = {
+          before = {"struct Solution;"},
+          after = {"fn main() {}"}
         }
       }
     },
-    cmd = "Leet",
+    cmd = "Leet"
   },
 
   {
@@ -433,6 +437,10 @@ local plugins = {
   },
   {
     "aklt/plantuml-syntax"
+  },
+  {
+    "simrat39/rust-tools.nvim",
+    config = {}
   }
 }
 
