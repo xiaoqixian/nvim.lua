@@ -152,6 +152,7 @@ local plugins = {
       "rcarriga/nvim-notify",
       "nvim-tree/nvim-web-devicons",
     },
+    lang = "rust",
     opts = {
       cn = {
         enabled = true,
@@ -170,6 +171,9 @@ local plugins = {
           before = {"struct Solution;"},
           after = {"fn main() {}"}
         }
+      },
+      hooks = {
+        ["question_enter"] = utils.add_bin_to_cargo,
       }
     },
     cmd = "Leet"
@@ -438,10 +442,6 @@ local plugins = {
   {
     "aklt/plantuml-syntax"
   },
-  {
-    "simrat39/rust-tools.nvim",
-    config = {}
-  }
 }
 
 local theme_plugins = require("colorschemes")

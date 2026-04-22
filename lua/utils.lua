@@ -538,4 +538,65 @@ function M.leetcode_cpp_injector_before(code)
   return res
 end
 
+function M.add_bin_to_cargo()
+  if vim.bo.filetype ~= "rust" then
+    return
+  end
+
+  local filename = vim.fn.expand("%:t")  -- e.g. "211.design-xxx.rs"
+
+  -- extract leading number
+  local name = filename:match("^(%d+)%.")
+
+  if not name then
+    vim.notify("Filename does not match pattern: " .. filename, vim.log.levels.ERROR)
+    return
+  end
+
+  local root = os.getenv("HOME") .. "/won/leetcode/"
+
+  local lines = {
+    "",
+    "[[bin]]",
+    'name = "' .. name .. '"',
+    'path = "' .. root .. filename .. '"',
+  }
+
+  local cargo_toml = os.getenv("HOME") .. "/won/Cargo.toml"
+
+  local fd = io.open(cargo_toml, "a")
+  if not fd then
+    vim.notify("Failed to open " .. cargo_toml, vim.log.levels.ERROR)
+    return
+  end
+
+  fd:write(table.concat(lines, "\n") .. "\n")
+  fd:close()
+
+  vim.notify("Added bin target for " .. filename)
+end
+
+function M.remove_bin_from_cargo()
+  if vim.bo.filetype ~= "rust" then
+    return
+  end
+  local cargo_toml = os.getenv("HOME") .. "/won/Cargo.toml"
+
+  if vim.fn.filereadable(cargo_toml) == 0 then
+    return
+  end
+
+  local lines = vim.fn.readfile(cargo_toml)
+
+  if #lines < 3 then
+    return
+  end
+
+  for _ = 1, 3 do
+    table.remove(lines)
+  end
+
+  vim.fn.writefile(lines, cargo_toml)
+end
+
 return M

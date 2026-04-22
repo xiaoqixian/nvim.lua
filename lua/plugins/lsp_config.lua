@@ -45,7 +45,7 @@ function M.init()
   }
 
   local servers = {
-    -- "rust_analyzer",
+    "rust_analyzer",
     "ts_ls",
     "cmake",
     -- "clangd",
