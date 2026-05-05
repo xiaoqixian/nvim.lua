@@ -366,11 +366,10 @@ local plugins = {
         or "make",
     event = "VeryLazy",
     version = false,
-    enabled = false,
     ---@module 'avante'
     ---@type avante.Config
     opts = {
-      provider = "gemini",
+      provider = "openai",
       providers = {
         claude = {
           endpoint = "https://api.anthropic.com",
@@ -391,8 +390,8 @@ local plugins = {
           },
         },
         openai = {
-          endpoint = "https://api.openai.com/v1",
-          model = "gpt-3.5",
+          endpoint = "https://api.deepseek.com",
+          model = "deepseek-v4-pro",
           timeout = 30000,
           extra_request_body = {
             temperature = 0.2,
