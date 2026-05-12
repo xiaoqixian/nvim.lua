@@ -8,11 +8,8 @@ function M.config()
   -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
   require("neodev").setup({})
 
-  -- then setup your lsp server as usual
-  local lspconfig = require('lspconfig')
-
   -- example to setup lua_ls and enable call snippets
-  lspconfig.lua_ls.setup({
+  vim.lsp.config.lua_ls.setup({
     settings = {
       Lua = {
         completion = {

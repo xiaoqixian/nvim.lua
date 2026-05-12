@@ -5,24 +5,24 @@
 local M = {}
 
 function M.init()
-  local lspconfig = require('lspconfig')
-
-  local border = {
-    {"╭", "FloatBorder"},
-    {"─", "FloatBorder"},
-    {"╮", "FloatBorder"},
-    {"│", "FloatBorder"},
-    {"╯", "FloatBorder"},
-    {"─", "FloatBorder"},
-    {"╰", "FloatBorder"},
-    {"│", "FloatBorder"},
-  }
+  -- local border = {
+  --   {"╭", "FloatBorder"},
+  --   {"─", "FloatBorder"},
+  --   {"╮", "FloatBorder"},
+  --   {"│", "FloatBorder"},
+  --   {"╯", "FloatBorder"},
+  --   {"─", "FloatBorder"},
+  --   {"╰", "FloatBorder"},
+  --   {"│", "FloatBorder"},
+  -- }
+  local border = "rounded"
 
   local signs = { Error = "", Warn = "", Hint = "󰌵", Info = "" }
   for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
+
   -- config vim.diagnostic
   vim.diagnostic.config({
     virtual_text = false,
@@ -32,15 +32,14 @@ function M.init()
     },
     float = {
       header = false,
-      border = "rounded",
+      border = border,
       focusable = false
     }
   })
 
   -- LSP settings (for overriding per client)
   local handlers =  {
-    ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
-    -- ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
+    ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
   }
 
@@ -48,22 +47,23 @@ function M.init()
     "rust_analyzer",
     "ts_ls",
     "cmake",
-    -- "clangd",
     "tinymist",
     "hls",
     "jdtls"
   }
 
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
   for _, server in ipairs(servers) do
-    lspconfig[server].setup {
+    vim.lsp.config[server] = {
       capabilities = capabilities,
       handlers = handlers,
-      single_file_support = true
+      single_file_support = true,
     }
+    vim.lsp.enable(server)
   end
 
-  lspconfig["pyright"].setup({
+  vim.lsp.config.pyright = {
     capabilities = capabilities,
     handlers = handlers,
     single_file_support = true,
@@ -71,18 +71,17 @@ function M.init()
       python = {
         analysis = {
           diagnosticSeverityOverrides = {
-            reportOptionalMemberAccess = "none", -- or "warning", "information", "hint"
+            reportOptionalMemberAccess = "none",
             reportAttributeAccessIssue = "none",
           },
         }
       }
     }
-  })
+  }
+  vim.lsp.enable("pyright")
 
-  --- set gopls
-  lspconfig['gopls'].setup{
+  vim.lsp.config.gopls = {
     cmd = {'gopls'},
-    -- on_attach = on_attach,
     capabilities = capabilities,
     settings = {
       gopls = {
@@ -99,22 +98,10 @@ function M.init()
     },
     handlers = handlers
   }
+  vim.lsp.enable("gopls")
 
-  -- set clangd
-  capabilities.semanticTokensProvider = nil
-
-  -- local root_files = {
-  --   '.clangd',
-  --   '.clang-tidy',
-  --   '.clang-format',
-  --   'compile_commands.json',
-  --   'compile_flags.txt',
-  --   'configure.ac', -- AutoTools
-  -- }
-  -- local util = require("lspconfig.util")
-  -- local fname = vim.api.nvim_buf_get_name(vim.fn.bufnr())
-  -- local root_dir = util.root_pattern(unpack(root_files))(fname)
-  -- local ext = fname:match(".*%.([^%.]+)$")
+  local clangd_capabilities = vim.deepcopy(capabilities)
+  clangd_capabilities.semanticTokensProvider = nil
 
   local cmd = nil
   if vim.fn.has("linux") == 1 then
@@ -131,15 +118,12 @@ function M.init()
     cmd = {"clangd"}
   end
 
-  -- if root_dir == nil and ext ~= "c" then
-  --   vim.notify(("root_dir = %s, ext = %s"):format(root_dir, ext))
-  --   table.insert(cmd, ("--compile-commands-dir=%s/.config/nvim"):format(vim.fn.getenv("HOME")))
-  -- end
-  lspconfig.clangd.setup {
-    capabilities = capabilities,
+  vim.lsp.config.clangd = {
+    capabilities = clangd_capabilities,
     cmd = cmd,
     handlers = handlers
   }
+  vim.lsp.enable("clangd")
 
 end
 

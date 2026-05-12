@@ -50,12 +50,6 @@ local plugins = {
     -- enabled = false
   },
 
-  {
-    "neovim/nvim-lspconfig",
-    init = require("plugins/lsp_config").init,
-    -- enabled = false
-  },
-
   -- {
   --   "hrsh7th/vim-vsnip",
   --   "hrsh7th/vim-vsnip-integ"
@@ -182,6 +176,7 @@ local plugins = {
   {
     "folke/neodev.nvim",
     config = require("plugins/neodev").config,
+    enabled = false
   },
 
   {
@@ -457,3 +452,4 @@ require("lazy").setup(plugins, {
     border = "rounded"
   }
 })
+require("plugins/lsp_config").init()

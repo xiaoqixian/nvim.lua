@@ -37,3 +37,6 @@ vim.cmd(":unmap ]%")
 require("config/highlights")
 require("config/machine_specific")
 
+-- override normalfloat colorscheme
+-- required for neovim 0.11+
+vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })

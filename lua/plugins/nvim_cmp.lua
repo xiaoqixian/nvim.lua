@@ -112,15 +112,27 @@ function M.init()
       { name = 'buffer' },
     }),
 
+    -- window = {
+    --   completion = cmp.config.window.bordered({
+    --     winhighlight = "CursorLine:PmenuSel",
+    --     scrollbar = false
+    --   }),
+    --   documentation = cmp.config.window.bordered({
+    --   }),
+    -- },
     window = {
-      completion = cmp.config.window.bordered({
-        -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
-        winhighlight = "CursorLine:PmenuSel",
-        scrollbar = false
-      }),
-      documentation = cmp.config.window.bordered({
-        -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
-      }),
+      completion = {
+        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+        scrollbar = false,
+        col_offset = -3,
+        side_padding = 0,
+      },
+      
+      documentation = {
+        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+      },
     },
 
     -- formatting = {
@@ -176,7 +188,15 @@ function M.init()
     )
   end
 
-  vim.keymap.set("n", "M", vim.lsp.buf.hover)
+  vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(event)
+      vim.keymap.set('n', 'M', function()
+        vim.lsp.buf.hover {
+          border = 'rounded',
+        }
+      end, { buffer = event.buf })
+    end,
+  })
   vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 
 end
