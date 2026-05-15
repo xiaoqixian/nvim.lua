@@ -4,26 +4,16 @@
 
 local M = {}
 
-function M.init()
-  -- local border = {
-  --   {"╭", "FloatBorder"},
-  --   {"─", "FloatBorder"},
-  --   {"╮", "FloatBorder"},
-  --   {"│", "FloatBorder"},
-  --   {"╯", "FloatBorder"},
-  --   {"─", "FloatBorder"},
-  --   {"╰", "FloatBorder"},
-  --   {"│", "FloatBorder"},
-  -- }
+-- Extract diagnostic configuration into a dedicated function for cleaner initialization
+local function setup_diagnostics()
   local border = "rounded"
-
   local signs = { Error = "", Warn = "", Hint = "󰌵", Info = "" }
+
   for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
 
-  -- config vim.diagnostic
   vim.diagnostic.config({
     virtual_text = false,
     underline = true,
@@ -33,98 +23,109 @@ function M.init()
     float = {
       header = false,
       border = border,
-      focusable = false
-    }
+      focusable = false,
+    },
   })
 
-  -- LSP settings (for overriding per client)
-  local handlers =  {
-    ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
-    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
-  }
+  return border
+end
 
-  local servers = {
-    "rust_analyzer",
-    "ts_ls",
-    "cmake",
-    "tinymist",
-    "hls",
-    "jdtls"
-  }
+function M.init()
+  local border = setup_diagnostics()
 
+  -- Define global LSP capabilities and handlers
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-  for _, server in ipairs(servers) do
-    vim.lsp.config[server] = {
-      capabilities = capabilities,
-      handlers = handlers,
-      single_file_support = true,
-    }
-    vim.lsp.enable(server)
-  end
-
-  vim.lsp.config.pyright = {
-    capabilities = capabilities,
-    handlers = handlers,
-    single_file_support = true,
-    settings = {
-      python = {
-        analysis = {
-          diagnosticSeverityOverrides = {
-            reportOptionalMemberAccess = "none",
-            reportAttributeAccessIssue = "none",
-          },
-        }
-      }
-    }
+  local handlers = {
+    ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
   }
-  vim.lsp.enable("pyright")
 
-  vim.lsp.config.gopls = {
-    cmd = {'gopls'},
-    capabilities = capabilities,
-    settings = {
-      gopls = {
-        experimentalPostfixCompletions = true,
-        analyses = {
-          unusedparams = true,
-          shadow = true,
-        },
-        staticcheck = true,
-      },
-    },
-    init_options = {
-      usePlaceholders = true,
-    },
-    handlers = handlers
-  }
-  vim.lsp.enable("gopls")
-
-  local clangd_capabilities = vim.deepcopy(capabilities)
-  clangd_capabilities.semanticTokensProvider = nil
-
-  local cmd = nil
+  -- Pre-configure OS-specific commands and custom capabilities
+  local clangd_cmd = { "clangd" }
   if vim.fn.has("linux") == 1 then
-    cmd = {
+    clangd_cmd = {
       "clangd",
       "-j=1",
       "--background-index",
       "--background-index-priority=low",
       "--pch-storage=disk",
       "--malloc-trim",
-      "--log=error"
+      "--log=error",
     }
-  else
-    cmd = {"clangd"}
   end
 
-  vim.lsp.config.clangd = {
-    capabilities = clangd_capabilities,
-    cmd = cmd,
-    handlers = handlers
-  }
-  vim.lsp.enable("clangd")
+  local clangd_capabilities = vim.deepcopy(capabilities)
+  clangd_capabilities.semanticTokensProvider = nil
 
+  -- Centralized server configuration table
+  local servers = {
+    -- Servers relying entirely on default configurations
+    ts_ls = {},
+    cmake = {},
+    tinymist = {},
+    hls = {},
+    jdtls = {},
+
+    -- Custom server configurations
+    pyright = {
+      settings = {
+        python = {
+          analysis = {
+            diagnosticSeverityOverrides = {
+              reportOptionalMemberAccess = "none",
+              reportAttributeAccessIssue = "none",
+            },
+          },
+        },
+      },
+    },
+
+    gopls = {
+      cmd = { "gopls" },
+      init_options = {
+        usePlaceholders = true,
+      },
+      settings = {
+        gopls = {
+          experimentalPostfixCompletions = true,
+          analyses = {
+            unusedparams = true,
+            shadow = true,
+          },
+          staticcheck = true,
+        },
+      },
+    },
+
+    rust_analyzer = {
+      settings = {
+        ["rust-analyzer"] = {
+          cargo = {
+            allFeatures = true,
+          },
+        },
+      },
+    },
+
+    clangd = {
+      cmd = clangd_cmd,
+      capabilities = clangd_capabilities,
+    },
+  }
+
+  -- Base configuration applied to all language servers
+  local default_config = {
+    capabilities = capabilities,
+    handlers = handlers,
+    single_file_support = true,
+  }
+
+  -- Iterate through the table, merge configurations, and enable servers
+  for server, custom_config in pairs(servers) do
+    -- vim.tbl_deep_extend safely merges the base config with specific overrides (like clangd's capabilities)
+    vim.lsp.config[server] = vim.tbl_deep_extend("force", default_config, custom_config)
+    vim.lsp.enable(server)
+  end
 end
 
 return M
