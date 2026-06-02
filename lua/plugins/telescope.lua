@@ -9,14 +9,11 @@ local default_file_ignore_patterns = {
   ".git",
   "%.cache",
   "build",
-  "third_party",
 
   -- Build output directories
   "dist",        -- frontend build output
   "target",      -- Rust / JVM build output
   "out",         -- general output directory
-  "bin",         -- compiled binaries
-  "obj",         -- C/C++ intermediate objects
 
   -- CMake generated files
   "CMakeFiles",
