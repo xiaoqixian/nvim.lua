@@ -386,7 +386,7 @@ local plugins = {
         },
         openai = {
           endpoint = "https://api.deepseek.com",
-          model = "deepseek-v4-pro",
+          model = "deepseek-v4-flash",
           timeout = 30000,
           extra_request_body = {
             temperature = 0.2,
