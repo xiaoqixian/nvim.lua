@@ -151,7 +151,7 @@ local plugins = {
       cn = {
         enabled = true,
         translator = false,
-        translate_problems = false
+        translate_problems = true
       },
       storage = {
         home = os.getenv("HOME") .. "/won/leetcode",
