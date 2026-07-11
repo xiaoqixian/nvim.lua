@@ -364,9 +364,10 @@ local plugins = {
     ---@module 'avante'
     ---@type avante.Config
     opts = {
-      provider = "openai",
+      provider = "deepseek-v4-flash",
       providers = {
-        openai = {
+        ["deepseek-v4-flash"] = {
+          __inherited_from = "openai",
           endpoint = "https://api.deepseek.com",
           model = "deepseek-v4-flash",
           timeout = 30000,
@@ -374,7 +375,17 @@ local plugins = {
             temperature = 0.2,
             max_tokens = 32768,
           },
-        }
+        },
+        ["deepseek-v4-pro"] = {
+          __inherited_from = "openai",
+          endpoint = "https://api.deepseek.com",
+          model = "deepseek-v4-pro",
+          timeout = 30000,
+          extra_request_body = {
+            temperature = 0.2,
+            max_tokens = 32768,
+          },
+        },
       },
     },
     dependencies = {
