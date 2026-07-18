@@ -387,6 +387,11 @@ local plugins = {
           },
         },
       },
+      windows = {
+        input = {
+          height = 16
+        }
+      }
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
